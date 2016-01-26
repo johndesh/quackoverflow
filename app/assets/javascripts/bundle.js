@@ -24690,8 +24690,54 @@
 
 	    return React.createElement(
 	      'div',
-	      null,
-	      questions
+	      { className: 'main' },
+	      React.createElement(
+	        'div',
+	        { className: 'question-index-wrapper' },
+	        React.createElement(
+	          'div',
+	          { className: 'sub-header' },
+	          React.createElement(
+	            'h2',
+	            { className: 'group' },
+	            'Top Questions'
+	          ),
+	          React.createElement(
+	            'nav',
+	            { className: 'sub-header-nav group' },
+	            React.createElement(
+	              'a',
+	              { className: 'clicked group' },
+	              'interesting'
+	            ),
+	            React.createElement(
+	              'a',
+	              { className: 'group' },
+	              'featured'
+	            ),
+	            React.createElement(
+	              'a',
+	              { className: 'group' },
+	              'hot'
+	            ),
+	            React.createElement(
+	              'a',
+	              { className: 'group' },
+	              'week'
+	            ),
+	            React.createElement(
+	              'a',
+	              { className: 'group' },
+	              'month'
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'question-index group' },
+	          questions
+	        )
+	      )
 	    );
 	  }
 	});
@@ -31191,19 +31237,33 @@
 	      width: '50px',
 	      height: '50px'
 	    };
+	    var timeAgo;
+	    if (question.modified !== question.asked) {
+	      timeAgo = React.createElement(
+	        'div',
+	        { className: 'question-details' },
+	        'Modified ',
+	        question.modified,
+	        ' ago by ',
+	        question.author.username
+	      );
+	    } else {
+	      timeAgo = React.createElement(
+	        'div',
+	        { className: 'question-details' },
+	        'Asked ',
+	        question.asked,
+	        ' ago by ',
+	        question.author.username
+	      );
+	    }
+
 	    return React.createElement(
 	      'div',
 	      { className: 'question-index-item' },
 	      question.title,
 	      React.createElement('br', null),
-	      question.body,
-	      React.createElement('br', null),
-	      'Asked by: ',
-	      question.author.username,
-	      ' on ',
-	      question.created_at,
-	      '.',
-	      React.createElement('img', { src: question.author.user_img || "https://www.gravatar.com/avatar/773721a79e9d145173f19c314be992c7?s=328&d=identicon&r=PG&f=1", style: thumb_style })
+	      timeAgo
 	    );
 	  }
 	});

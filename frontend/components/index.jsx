@@ -28,10 +28,23 @@ var Index = React.createClass({
     });
 
     return (
-      <div>
-        {questions}
+      <div className="main">
+        <div className="question-index-wrapper">
+        <div className="sub-header">
+          <h2 className="group">Top Questions</h2>
+          <nav className="sub-header-nav group">
+            <a className="clicked group">interesting</a>
+            <a className="group">featured</a>
+            <a className="group">hot</a>
+            <a className="group">week</a>
+            <a className="group">month</a>
+          </nav>
+        </div>
+        <div className="question-index group">
+          {questions}
+        </div>
       </div>
-
+    </div>
     );
   }
 });
