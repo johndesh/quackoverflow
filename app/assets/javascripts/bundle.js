@@ -51,6 +51,16 @@
 	var Router = ReactRouter.Router;
 	var Route = ReactRouter.Route;
 
+	ReactDOM.render(React.createElement(
+	  'div',
+	  null,
+	  React.createElement(
+	    'p',
+	    null,
+	    'hi'
+	  )
+	), root);
+
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {

@@ -4,3 +4,10 @@ var ReactRouter = require('react-router');
 var root = document.getElementById('content');
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
+
+ReactDOM.render(
+  <div>
+    <p>hi</p>
+  </div>,
+  root
+);
