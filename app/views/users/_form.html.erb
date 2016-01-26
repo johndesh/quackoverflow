@@ -6,10 +6,11 @@
     <input type="text" name="user[username]" value="">
   </label>
 
+<% if action_url == users_url %>
   <label>Email
     <input type="text" name="user[email]" value="">
   </label>
-
+<% end %>
   <label>Password
     <input type="password" name="user[password]">
   </label>
