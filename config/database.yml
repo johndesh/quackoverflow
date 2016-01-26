@@ -13,9 +13,8 @@
 #
 # Configure Using Gemfile
 # gem 'pg'
-#
 default: &default
-  adapter: postgresql
+  adapter: pg
   pool: 5
   timeout: 5000
 
@@ -32,3 +31,4 @@ test:
 
 production:
   <<: *default
+  database: db/production.pg
