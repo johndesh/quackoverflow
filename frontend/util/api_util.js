@@ -1,6 +1,7 @@
 var ApiActions = require('../actions/api_actions');
 
 var ApiUtil = {
+  
   fetchQuestions: function(){
     $.get('api/questions', function(questions){
       ApiActions.receiveAll(questions);
