@@ -1,0 +1,19 @@
+<form action="<%= action_url %>" method="post">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <input type="hidden" name="_method" value="<%= method %>">
+
+  <label>Username
+    <input type="text" name="user[username]" value="">
+  </label>
+
+  <label>Email
+    <input type="text" name="user[email]" value="">
+  </label>
+
+  <label>Password
+    <input type="password" name="user[password]">
+  </label>
+
+  <button><%= button_text %></button>
+
+</form>
