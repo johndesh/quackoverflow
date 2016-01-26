@@ -31,6 +31,7 @@ var Index = React.createClass({
       <div>
         {questions}
       </div>
+
     );
   }
 });
