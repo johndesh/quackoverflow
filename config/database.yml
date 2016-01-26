@@ -32,4 +32,3 @@ test:
 
 production:
   <<: *default
-  database: db/production.pg
