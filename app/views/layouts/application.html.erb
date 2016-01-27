@@ -6,7 +6,13 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+ <header className="main-header">
+  	<div className="main-header-logo">
+  	  <a href="/" style="background-image: url(<%= asset_path('sprites.svg') %>);">
+  	  	Quack Overflow
+  	  </a>
+  	</div>
+ </header>
 <%= yield %>
 <%= javascript_include_tag 'application' %>
 
