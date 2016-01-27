@@ -60,67 +60,12 @@
 	};
 
 	var App = React.createClass({
-	  displayName: 'App',
-
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'main' },
-	      React.createElement(
-	        'div',
-	        { className: 'question-index-wrapper' },
-	        React.createElement(
-	          'div',
-	          { className: 'sub-header' },
-	          React.createElement(
-	            'h2',
-	            { className: 'group' },
-	            'Top Questions'
-	          ),
-	          React.createElement(
-	            'nav',
-	            { className: 'sub-header-nav group' },
-	            React.createElement(
-	              'a',
-	              { href: '#', onClick: _handleClick, className: 'clicked group' },
-	              'interesting'
-	            ),
-	            React.createElement(
-	              'a',
-	              { href: '#', onClick: _handleClick, className: 'group' },
-	              'featured',
-	              React.createElement(
-	                'span',
-	                { className: 'featured-count-tab group' },
-	                '391'
-	              )
-	            ),
-	            React.createElement(
-	              'a',
-	              { href: '#', onClick: _handleClick, className: 'group' },
-	              'hot'
-	            ),
-	            React.createElement(
-	              'a',
-	              { href: '#', onClick: _handleClick, className: 'group' },
-	              'week'
-	            ),
-	            React.createElement(
-	              'a',
-	              { href: '#', onClick: _handleClick, className: 'group' },
-	              'month'
-	            )
-	          )
-	        ),
-	        this.props.children
-	      )
-	    );
-	  }
+	  displayName: 'App'
 	});
 
 	var routes = React.createElement(
 	  Route,
-	  { path: '/', component: App },
+	  { path: '/', component: QuestionsIndex },
 	  React.createElement(IndexRoute, { component: QuestionsIndex }),
 	  React.createElement(Route, { path: 'questions/:questionId', component: QuestionShow })
 	);
