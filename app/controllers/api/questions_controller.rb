@@ -1,11 +1,11 @@
 class Api::QuestionsController < ApplicationController
 
   def index
-    @questions = Question.includes(:answers, :author).all
+    @questions = Question.includes({:answers => :author}, :author).all
   end
 
   def show
-    @question = Question.includes(:answers).find(params[:id])
+    @question = Question.includes(:answers, :author).find(params[:id])
   end
 
   def create

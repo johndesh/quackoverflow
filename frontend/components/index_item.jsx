@@ -1,7 +1,11 @@
 var React = require('react');
+var ReactRouter = require('react-router');
 
 var IndexItem = React.createClass({
+  mixins: [ReactRouter.history],
+
   render: function () {
+
     var question = this.props.question;
     var thumb_style = {
       width: '50px',
@@ -14,6 +18,7 @@ var IndexItem = React.createClass({
       timeAgo = <div className="question-details">Asked {question.asked} ago by {question.author.username}</div>;
     }
 
+
     return (
       <div className="question-item-wrapper">
         <div className="question-stats group">
@@ -22,8 +27,8 @@ var IndexItem = React.createClass({
             <div className="stat-label">votes</div>
           </div>
           <div className="question-stat-count answers group">
-            <div className="stat-count">{question.answers}</div>
-            <div className="stat-label">answer{question.answers === 1 ? "" : "s"}</div>
+            <div className="stat-count">{question.answers.length}</div>
+            <div className="stat-label">answer{question.answers.length === 1 ? "" : "s"}</div>
           </div>
           <div className="question-stat-count views group">
             <div className="stat-count">1</div>
@@ -31,7 +36,7 @@ var IndexItem = React.createClass({
           </div>
         </div>
         <div className="question-index-item group">
-          <a className="question-link">{question.title}</a>
+          <a onClick={this.props.onClick} className="question-link">{question.title}</a>
 
           {timeAgo}
         </div>

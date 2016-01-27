@@ -49,65 +49,86 @@
 	var ReactRouter = __webpack_require__(159);
 	var Router = ReactRouter.Router;
 	var Route = ReactRouter.Route;
+	var IndexRoute = ReactRouter.IndexRoute;
 	var ApiUtil = __webpack_require__(208);
-	var Index = __webpack_require__(215);
+	var QuestionsIndex = __webpack_require__(215);
+	var QuestionShow = __webpack_require__(235);
 	var _handleClick = function (e) {
-			e.preventDefault();
-			$('.sub-header-nav').children('a').removeClass('clicked');
-			$(e.currentTarget).addClass("clicked");
+	  e.preventDefault();
+	  $('.sub-header-nav').children('a').removeClass('clicked');
+	  $(e.currentTarget).addClass("clicked");
 	};
 
+	var App = React.createClass({
+	  displayName: 'App',
+
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'main' },
+	      React.createElement(
+	        'div',
+	        { className: 'question-index-wrapper' },
+	        React.createElement(
+	          'div',
+	          { className: 'sub-header' },
+	          React.createElement(
+	            'h2',
+	            { className: 'group' },
+	            'Top Questions'
+	          ),
+	          React.createElement(
+	            'nav',
+	            { className: 'sub-header-nav group' },
+	            React.createElement(
+	              'a',
+	              { href: '#', onClick: _handleClick, className: 'clicked group' },
+	              'interesting'
+	            ),
+	            React.createElement(
+	              'a',
+	              { href: '#', onClick: _handleClick, className: 'group' },
+	              'featured',
+	              React.createElement(
+	                'span',
+	                { className: 'featured-count-tab group' },
+	                '391'
+	              )
+	            ),
+	            React.createElement(
+	              'a',
+	              { href: '#', onClick: _handleClick, className: 'group' },
+	              'hot'
+	            ),
+	            React.createElement(
+	              'a',
+	              { href: '#', onClick: _handleClick, className: 'group' },
+	              'week'
+	            ),
+	            React.createElement(
+	              'a',
+	              { href: '#', onClick: _handleClick, className: 'group' },
+	              'month'
+	            )
+	          )
+	        ),
+	        this.props.children
+	      )
+	    );
+	  }
+	});
+
+	var routes = React.createElement(
+	  Route,
+	  { path: '/', component: App },
+	  React.createElement(IndexRoute, { component: QuestionsIndex }),
+	  React.createElement(Route, { path: 'questions/:questionId', component: QuestionShow })
+	);
+
 	ReactDOM.render(React.createElement(
-			'div',
-			{ className: 'main' },
-			React.createElement(
-					'div',
-					{ className: 'question-index-wrapper' },
-					React.createElement(
-							'div',
-							{ className: 'sub-header' },
-							React.createElement(
-									'h2',
-									{ className: 'group' },
-									'Top Questions'
-							),
-							React.createElement(
-									'nav',
-									{ className: 'sub-header-nav group' },
-									React.createElement(
-											'a',
-											{ href: '#', onClick: _handleClick, className: 'clicked group' },
-											'interesting'
-									),
-									React.createElement(
-											'a',
-											{ href: '#', onClick: _handleClick, className: 'group' },
-											'featured',
-											React.createElement(
-													'span',
-													{ className: 'featured-count-tab group' },
-													'391'
-											)
-									),
-									React.createElement(
-											'a',
-											{ href: '#', onClick: _handleClick, className: 'group' },
-											'hot'
-									),
-									React.createElement(
-											'a',
-											{ href: '#', onClick: _handleClick, className: 'group' },
-											'week'
-									),
-									React.createElement(
-											'a',
-											{ href: '#', onClick: _handleClick, className: 'group' },
-											'month'
-									)
-							)
-					),
-					React.createElement(Index, null)
-			)
+	  Router,
+	  null,
+	  routes
 	), document.getElementById('content'));
 
 /***/ },
@@ -24359,6 +24380,14 @@
 	      ApiActions.receiveAll(questions);
 	    });
 	  },
+
+	  fetchQuestion: function (questionId) {
+	    $.get('api/questions/' + questionId, function (question) {
+	      debugger;
+	      ApiActions.receiveAll([question]);
+	    });
+	  },
+
 	  createQuestion: function (data) {
 	    $.post('api/questions', { question: data }, function (question) {
 	      ApiActions.receiveAll([question]);
@@ -24382,6 +24411,7 @@
 	      questions: questions
 	    });
 	  }
+
 	};
 
 	module.exports = ApiActions;
@@ -24707,7 +24737,8 @@
 /***/ function(module, exports) {
 
 	var QuestionConstants = {
-	  QUESTIONS_RECEIVED: "QUESTIONS_RECEIVED"
+	  QUESTIONS_RECEIVED: "QUESTIONS_RECEIVED",
+	  QUESTION_RECEIVED: "QUESTION_RECEIVED"
 	};
 
 	module.exports = QuestionConstants;
@@ -24740,9 +24771,15 @@
 	    this.questionListener.remove();
 	  },
 
+	  handleItemClick: function (question) {
+	    this.props.history.pushState(null, "/questions/" + question.id);
+	  },
+
 	  render: function () {
+	    var handleItemClick = this.handleItemClick;
 	    var questions = this.state.questions.map(function (question, idx) {
-	      return React.createElement(IndexItem, { key: idx, question: question });
+	      var boundClick = handleItemClick.bind(null, question);
+	      return React.createElement(IndexItem, { key: idx, question: question, onClick: boundClick });
 	    });
 
 	    return React.createElement(
@@ -24777,7 +24814,7 @@
 	QuestionStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case QuestionConstants.QUESTIONS_RECEIVED:
-	      var result = resetQuestions(payload.questions);
+	      resetQuestions(payload.questions);
 	      QuestionStore.__emitChange();
 	      break;
 	  }
@@ -31238,11 +31275,15 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(159);
 
 	var IndexItem = React.createClass({
 	  displayName: 'IndexItem',
 
+	  mixins: [ReactRouter.history],
+
 	  render: function () {
+
 	    var question = this.props.question;
 	    var thumb_style = {
 	      width: '50px',
@@ -31295,13 +31336,13 @@
 	          React.createElement(
 	            'div',
 	            { className: 'stat-count' },
-	            question.answers
+	            question.answers.length
 	          ),
 	          React.createElement(
 	            'div',
 	            { className: 'stat-label' },
 	            'answer',
-	            question.answers === 1 ? "" : "s"
+	            question.answers.length === 1 ? "" : "s"
 	          )
 	        ),
 	        React.createElement(
@@ -31324,7 +31365,7 @@
 	        { className: 'question-index-item group' },
 	        React.createElement(
 	          'a',
-	          { className: 'question-link' },
+	          { onClick: this.props.onClick, className: 'question-link' },
 	          question.title
 	        ),
 	        timeAgo
@@ -31334,6 +31375,88 @@
 	});
 
 	module.exports = IndexItem;
+
+/***/ },
+/* 235 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(159);
+	var QuestionStore = __webpack_require__(216);
+	var ApiUtil = __webpack_require__(208);
+	var QuestionShow = React.createClass({
+	  displayName: 'QuestionShow',
+
+	  contextTypes: {
+	    router: React.PropTypes.func
+	  },
+	  getInitialState: function () {
+	    var questionId = this.props.params.questionId;
+	    var question = this._findQuestionById(questionId) || {};
+	    return { question: question };
+	  },
+	  _findQuestionById: function (id) {
+	    var res;
+	    QuestionStore.all().forEach(function (question) {
+	      if (id == question.id) {
+	        res = question;
+	      }
+	    }.bind(this));
+	    return res;
+	  },
+
+	  componentDidMount: function () {
+	    this.questionListener = QuestionStore.addListener(this._questionsChanged);
+	    ApiUtil.fetchQuestions();
+	  },
+
+	  componentWillUnmount: function () {
+	    this.questionListener.remove();
+	  },
+
+	  _questionsChanged: function () {
+	    var questionId = this.props.params.questionId;
+	    var question = this._findQuestionById(questionId);
+	    this.setState({ question: question });
+	  },
+
+	  render: function () {
+	    var Link = ReactRouter.Link;
+	    var answers = this.state.question.answers.map(function (answer, idx) {
+	      return React.createElement(
+	        'li',
+	        { className: 'answer', key: idx },
+	        answer.body
+	      );
+	    });
+	    return React.createElement(
+	      'div',
+	      { className: 'question-wrapper' },
+	      React.createElement(
+	        'div',
+	        { className: 'question' },
+	        React.createElement(
+	          Link,
+	          { to: '/' },
+	          'Back to Questions'
+	        ),
+	        React.createElement(
+	          'h1',
+	          null,
+	          this.state.question.title
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          this.state.question.body
+	        )
+	      ),
+	      answers
+	    );
+	  }
+	});
+
+	module.exports = QuestionShow;
 
 /***/ }
 /******/ ]);

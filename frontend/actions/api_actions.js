@@ -7,7 +7,8 @@ var ApiActions = {
       actionType: QuestionConstants.QUESTIONS_RECEIVED,
       questions: questions
     });
-  }
+  },
+
 };
 
 module.exports = ApiActions;
