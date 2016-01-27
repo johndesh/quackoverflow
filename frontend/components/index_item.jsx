@@ -16,10 +16,23 @@ var IndexItem = React.createClass({
 
     return (
       <div className="question-item-wrapper">
-        <div className="question-stats group"></div>
+        <div className="question-stats group">
+          <div className="votes">
+            <div className="stat-count"></div>
+            <div className="stat-label">votes</div>
+          </div>
+          <div className="answers">
+            <div className="stat-count"></div>
+            <div className="stat-label">answers</div>
+          </div>
+          <div className="views">
+            <div className="stat-count"></div>
+            <div className="stat-label">views</div>
+          </div>
+        </div>
         <div className="question-index-item group">
           <a className="question-link">{question.title}</a>
-          
+
           {timeAgo}
         </div>
       </div>
