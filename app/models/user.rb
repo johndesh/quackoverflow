@@ -6,7 +6,8 @@ class User < ActiveRecord::Base
   after_initialize :ensure_session_token
 
   has_many :questions, foreign_key: :author_id
-  
+  has_many :answers, class_name: "QuestionAnswer", foreign_key: :author_id
+
   attr_reader :password
 
   def self.find_by_credentials(username, password)
