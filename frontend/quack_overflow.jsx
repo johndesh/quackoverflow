@@ -8,7 +8,7 @@ var Index = require('./components/index');
 var _handleClick = function(e) {
   e.preventDefault();
   $('.sub-header-nav').children('a').removeClass('clicked');
-  $(e.target).addClass("clicked");
+  $(e.currentTarget).addClass("clicked");
 };
 
 ReactDOM.render(	
@@ -18,7 +18,8 @@ ReactDOM.render(
 	      <h2 className="group">Top Questions</h2>
 	      <nav className="sub-header-nav group">
 	        <a href="#" onClick={_handleClick} className="clicked group">interesting</a>
-	        <a href="#" onClick={_handleClick} className="group">featured</a>
+	        <a href="#" onClick={_handleClick} className="group">featured
+	          <span className="featured-count-tab group">391</span></a>
 	        <a href="#" onClick={_handleClick} className="group">hot</a>
 	        <a href="#" onClick={_handleClick} className="group">week</a>
 	        <a href="#" onClick={_handleClick} className="group">month</a>

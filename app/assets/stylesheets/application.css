@@ -107,6 +107,7 @@ time, mark, audio, video {
  .sub-header-nav a {
    float: left;
    display: block;
+   height: 12px;
    border: 1px solid transparent;
    color: #767d84;
    border-top-width: 2px;
@@ -127,6 +128,16 @@ time, mark, audio, video {
    color: black;
  }
 
+.featured-count-tab {
+   color: #fff;
+   display: block;
+   float: left;
+   background-color: #0077dd;
+   padding: .2em .5em .25em .5em;
+   border-radius: 2px;
+   font-size: 10px;
+   margin-right: 8px;
+}
 
  .group:after {
    content: "";

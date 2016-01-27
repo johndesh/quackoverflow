@@ -54,7 +54,7 @@
 	var _handleClick = function (e) {
 			e.preventDefault();
 			$('.sub-header-nav').children('a').removeClass('clicked');
-			$(e.target).addClass("clicked");
+			$(e.currentTarget).addClass("clicked");
 	};
 
 	ReactDOM.render(React.createElement(
@@ -82,7 +82,12 @@
 									React.createElement(
 											'a',
 											{ href: '#', onClick: _handleClick, className: 'group' },
-											'featured'
+											'featured',
+											React.createElement(
+													'span',
+													{ className: 'featured-count-tab group' },
+													'391'
+											)
 									),
 									React.createElement(
 											'a',
