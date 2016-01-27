@@ -24,7 +24,9 @@
  }
 
  .main-header {
+   display: block;
    width: 1060px;
+   height: 96px;
    margin: auto;
  }
 
