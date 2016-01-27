@@ -31275,13 +31275,12 @@
 	      React.createElement('div', { className: 'question-stats group' }),
 	      React.createElement(
 	        'div',
-	        { className: 'question-index-item group' },
+	        { className: 'question-index-item' },
 	        React.createElement(
 	          'a',
 	          { className: 'question-link' },
 	          question.title
 	        ),
-	        React.createElement('br', null),
 	        timeAgo
 	      )
 	    );
