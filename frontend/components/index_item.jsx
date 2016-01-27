@@ -17,7 +17,8 @@ var IndexItem = React.createClass({
     } else {
       timeAgo = <div className="question-details">Asked {question.asked} ago by {question.author.username}</div>;
     }
-
+    var answersKlass = "question-stat-count answers group";
+    answersKlass += (question.answers.length > 0) ? " answered" : "";
 
     return (
       <div className="question-item-wrapper">
@@ -26,7 +27,7 @@ var IndexItem = React.createClass({
             <div className="stat-count">0</div>
             <div className="stat-label">votes</div>
           </div>
-          <div className="question-stat-count answers group">
+          <div className={answersKlass}>
             <div className="stat-count">{question.answers.length}</div>
             <div className="stat-label">answer{question.answers.length === 1 ? "" : "s"}</div>
           </div>

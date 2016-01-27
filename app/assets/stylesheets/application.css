@@ -177,7 +177,6 @@ time, mark, audio, video {
   color: #777;
   width: 38px;
   height: 38px;
-
   padding: 5px;
   padding-bottom: 6px;
   margin-right: 3px;
@@ -185,25 +184,49 @@ time, mark, audio, video {
 
 .stat-count {
   text-align: center;
+
   margin-bottom: 4px;
-  
+
+  height: 16px;
+  width: 100%;
   font-size: 17px;
   font-weight: 300;
 
 }
 
+
 .stat-label {
-  height: 16px;
+  line-height: 16.9px;
+
   display: block;
   text-align: center;
+
   font-size: 11px;
 }
+
 
 .answers {
   color: black;
   width: 44px;
-  height: 36px;
-  padding: 6px;
+  height: 38px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.answers.answered {
+  background-color: #75845c;
+  color: white;
+}
+
+.answers.answered.accepted {
+  color: rgb(225, 232, 24);
+}
+
+.views {
+  margin-right: 7px;
+}
+
+.answers .stat-label {
 }
 
  .question-index-item {

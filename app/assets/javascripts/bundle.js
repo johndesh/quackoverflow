@@ -24381,13 +24381,6 @@
 	    });
 	  },
 
-	  fetchQuestion: function (questionId) {
-	    $.get('api/questions/' + questionId, function (question) {
-	      debugger;
-	      ApiActions.receiveAll([question]);
-	    });
-	  },
-
 	  createQuestion: function (data) {
 	    $.post('api/questions', { question: data }, function (question) {
 	      ApiActions.receiveAll([question]);
@@ -31309,6 +31302,8 @@
 	        question.author.username
 	      );
 	    }
+	    var answersKlass = "question-stat-count answers group";
+	    answersKlass += question.answers.length > 0 ? " answered" : "";
 
 	    return React.createElement(
 	      'div',
@@ -31332,7 +31327,7 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'question-stat-count answers group' },
+	          { className: answersKlass },
 	          React.createElement(
 	            'div',
 	            { className: 'stat-count' },
