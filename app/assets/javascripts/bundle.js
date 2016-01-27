@@ -51,8 +51,59 @@
 	var Route = ReactRouter.Route;
 	var ApiUtil = __webpack_require__(208);
 	var Index = __webpack_require__(215);
+	var _handleClick = function (e) {
+			e.preventDefault();
+			$('.sub-header-nav').children('a').removeClass('clicked');
+			$(e.target).addClass("clicked");
+	};
 
-	ReactDOM.render(React.createElement(Index, null), document.getElementById('content'));
+	ReactDOM.render(React.createElement(
+			'div',
+			{ className: 'main' },
+			React.createElement(
+					'div',
+					{ className: 'question-index-wrapper' },
+					React.createElement(
+							'div',
+							{ className: 'sub-header' },
+							React.createElement(
+									'h2',
+									{ className: 'group' },
+									'Top Questions'
+							),
+							React.createElement(
+									'nav',
+									{ className: 'sub-header-nav group' },
+									React.createElement(
+											'a',
+											{ href: '#', onClick: _handleClick, className: 'clicked group' },
+											'interesting'
+									),
+									React.createElement(
+											'a',
+											{ href: '#', onClick: _handleClick, className: 'group' },
+											'featured'
+									),
+									React.createElement(
+											'a',
+											{ href: '#', onClick: _handleClick, className: 'group' },
+											'hot'
+									),
+									React.createElement(
+											'a',
+											{ href: '#', onClick: _handleClick, className: 'group' },
+											'week'
+									),
+									React.createElement(
+											'a',
+											{ href: '#', onClick: _handleClick, className: 'group' },
+											'month'
+									)
+							)
+					),
+					React.createElement(Index, null)
+			)
+	), document.getElementById('content'));
 
 /***/ },
 /* 1 */
@@ -24691,54 +24742,8 @@
 
 	    return React.createElement(
 	      'div',
-	      { className: 'main' },
-	      React.createElement(
-	        'div',
-	        { className: 'question-index-wrapper' },
-	        React.createElement(
-	          'div',
-	          { className: 'sub-header' },
-	          React.createElement(
-	            'h2',
-	            { className: 'group' },
-	            'Top Questions'
-	          ),
-	          React.createElement(
-	            'nav',
-	            { className: 'sub-header-nav group' },
-	            React.createElement(
-	              'a',
-	              { className: 'clicked group' },
-	              'interesting'
-	            ),
-	            React.createElement(
-	              'a',
-	              { className: 'group' },
-	              'featured'
-	            ),
-	            React.createElement(
-	              'a',
-	              { className: 'group' },
-	              'hot'
-	            ),
-	            React.createElement(
-	              'a',
-	              { className: 'group' },
-	              'week'
-	            ),
-	            React.createElement(
-	              'a',
-	              { className: 'group' },
-	              'month'
-	            )
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'question-index group' },
-	          questions
-	        )
-	      )
+	      { className: 'question-index group' },
+	      questions
 	    );
 	  }
 	});

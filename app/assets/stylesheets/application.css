@@ -34,6 +34,7 @@ time, mark, audio, video {
    color: inherit;
    font-size: 100%;
    font: inherit;
+   box-sizing: content-box;
    vertical-align: baseline;
 }
 
@@ -51,11 +52,17 @@ time, mark, audio, video {
    display: block;
    width: 1060px;
    height: 96px;
-   margin: auto;
+   padding: 0 15px;
+   margin: 0 auto;
+   position: relative;
+   
  }
 
 .main-header-logo {
+   
    display: inline-block;
+   margin: 23px 0;
+
    float: left;
 }
 
@@ -73,11 +80,11 @@ time, mark, audio, video {
  }
 
  .sub-header {
-   margin: 0;
-   margin-bottom: 1px;
+   
+   margin-bottom: 0;
 
-
-   height: 35px;
+   border-bottom: 1px solid #eaebec;
+   height: 34px;
  }
 
  .sub-header h2 {
@@ -101,14 +108,25 @@ time, mark, audio, video {
    float: left;
    display: block;
    border: 1px solid transparent;
+   color: #767d84;
+   border-top-width: 2px;
+   border-bottom-color: #eaebec;
+   text-decoration: none;
    line-height: 1;
    padding: 10px;
    margin-right: 8px;
  }
 
- .sub-header-nav a.clicked {
-   border-top: 2px solid orange;
+ .sub-header-nav a.clicked, .sub-header-nav a:hover {
+   border-color: #eaebec;
+   border-bottom-color: #fff;
+   border-top-color: orange;
  }
+ 
+ .sub-header-nav a.clicked {
+   color: black;
+ }
+
 
  .group:after {
    content: "";
