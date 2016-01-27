@@ -23,6 +23,11 @@
    width: 1060px;
  }
 
+ .main-header {
+   width: 1060px;
+   margin: auto;
+ }
+
  .question-index-wrapper {
    width: 728px;
  }
