@@ -136,6 +136,7 @@ time, mark, audio, video {
  }
 
  .sub-header-nav a:last-child {
+   
    margin-right: 0;
  }
 
@@ -171,8 +172,7 @@ time, mark, audio, video {
  .question-index-item {
    width: 530px;
    text-align: left;
-   /*margin: auto;*/
+   
    height: 20px;
-   margin-bottom: 2px;
    padding: 12px 0 10px 0;
  }

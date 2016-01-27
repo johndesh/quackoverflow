@@ -31271,14 +31271,19 @@
 
 	    return React.createElement(
 	      'div',
-	      { className: 'question-index-item' },
+	      { className: 'question-item-wrapper' },
+	      React.createElement('div', { className: 'question-stats group' }),
 	      React.createElement(
-	        'a',
-	        { className: 'question-link' },
-	        question.title
-	      ),
-	      React.createElement('br', null),
-	      timeAgo
+	        'div',
+	        { className: 'question-index-item group' },
+	        React.createElement(
+	          'a',
+	          { className: 'question-link' },
+	          question.title
+	        ),
+	        React.createElement('br', null),
+	        timeAgo
+	      )
 	    );
 	  }
 	});
