@@ -121,7 +121,7 @@ time, mark, audio, video {
  .sub-header-nav a.clicked, .sub-header-nav a:hover {
    border-color: #eaebec;
    border-bottom-color: #fff;
-   border-top-color: orange;
+   border-top-color: #f69c55;
  }
  
  .sub-header-nav a.clicked {
