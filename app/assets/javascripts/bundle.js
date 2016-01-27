@@ -31295,12 +31295,13 @@
 	          React.createElement(
 	            'div',
 	            { className: 'stat-count' },
-	            '0'
+	            question.answers
 	          ),
 	          React.createElement(
 	            'div',
 	            { className: 'stat-label' },
-	            'answers'
+	            'answer',
+	            question.answers === 1 ? "" : "s"
 	          )
 	        ),
 	        React.createElement(
