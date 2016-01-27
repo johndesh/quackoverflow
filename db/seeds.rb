@@ -17,7 +17,11 @@ end
 
 guest.questions.create!(title: "Database config for Rails Heroku deployment?", body: "Can't get my database.yml to play nice with Heroku, any ideas?")
 
+user[1].questions.create!(title: "Avoid n+1 queries in Rails", body: "How can I avoid querying the DB excessively?")
+
 example.questions.create!(title: "How do you answer questions on QuackOverflow?", body: "Trying to figure out how to answer on QuackOverflow?!?!?")
 
 example.questions[0].answers.create!(body: "Like this!", author_id: users[0].id)
 example.questions[0].answers.create!(body: "Or this...", author_id: users.last.id)
+
+user[1].questions.first.answers.create!(body: "Use .includes() with an association to reduce queries.", author_id: example.id)
