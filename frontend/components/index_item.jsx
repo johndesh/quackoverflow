@@ -16,7 +16,7 @@ var IndexItem = React.createClass({
 
     return (
         <div className="question-index-item">
-          {question.title}
+          <a className="question-link">{question.title}</a>
           <br/>
           {timeAgo}
         </div>

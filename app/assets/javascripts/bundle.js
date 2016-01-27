@@ -31272,7 +31272,11 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'question-index-item' },
-	      question.title,
+	      React.createElement(
+	        'a',
+	        { className: 'question-link' },
+	        question.title
+	      ),
 	      React.createElement('br', null),
 	      timeAgo
 	    );
