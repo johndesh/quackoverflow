@@ -18,8 +18,6 @@ var IndexItem = React.createClass({
         <div className="question-index-item">
           {question.title}
           <br/>
-
-
           {timeAgo}
         </div>
     );
