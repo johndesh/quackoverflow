@@ -31278,15 +31278,11 @@
 	  render: function () {
 
 	    var question = this.props.question;
-	    var thumb_style = {
-	      width: '50px',
-	      height: '50px'
-	    };
 	    var timeAgo;
 	    if (question.modified !== question.asked) {
 	      timeAgo = React.createElement(
 	        'div',
-	        { className: 'question-details' },
+	        { className: 'question-details group' },
 	        'Modified ',
 	        question.modified,
 	        ' ago by ',
@@ -31295,11 +31291,19 @@
 	    } else {
 	      timeAgo = React.createElement(
 	        'div',
-	        { className: 'question-details' },
-	        'Asked ',
-	        question.asked,
-	        ' ago by ',
-	        question.author.username
+	        { className: 'question-details group' },
+	        React.createElement(
+	          'span',
+	          { className: 'question-details-time' },
+	          'asked ',
+	          question.asked,
+	          ' ago '
+	        ),
+	        React.createElement(
+	          'span',
+	          { className: 'question-details-author' },
+	          question.author.username
+	        )
 	      );
 	    }
 	    var answersKlass = "question-stat-count answers group";
@@ -31359,9 +31363,13 @@
 	        'div',
 	        { className: 'question-index-item group' },
 	        React.createElement(
-	          'a',
-	          { onClick: this.props.onClick, className: 'question-link' },
-	          question.title
+	          'div',
+	          { className: 'question-link-wrapper' },
+	          React.createElement(
+	            'a',
+	            { onClick: this.props.onClick, className: 'question-link' },
+	            question.title
+	          )
 	        ),
 	        timeAgo
 	      )
