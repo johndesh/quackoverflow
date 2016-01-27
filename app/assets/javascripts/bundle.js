@@ -31275,7 +31275,7 @@
 	      React.createElement('div', { className: 'question-stats group' }),
 	      React.createElement(
 	        'div',
-	        { className: 'question-index-item' },
+	        { className: 'question-index-item group' },
 	        React.createElement(
 	          'a',
 	          { className: 'question-link' },

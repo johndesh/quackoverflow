@@ -17,7 +17,7 @@ var IndexItem = React.createClass({
     return (
       <div className="question-item-wrapper">
         <div className="question-stats group"></div>
-        <div className="question-index-item">
+        <div className="question-index-item group">
           <a className="question-link">{question.title}</a>
           
           {timeAgo}

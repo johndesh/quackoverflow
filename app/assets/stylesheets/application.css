@@ -175,8 +175,8 @@ time, mark, audio, video {
  .question-index-item {
    width: 530px;
    text-align: left;
-   
-   margin-left: 0;
+   float: middle;
+   margin-left:;
    height: 52.25px;
 
    
