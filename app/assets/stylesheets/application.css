@@ -128,6 +128,10 @@ time, mark, audio, video {
    color: black;
  }
 
+ .sub-header-nav a:last-child {
+   margin-right: 0;
+ }
+
 .featured-count-tab {
    color: #fff;
    display: block;
@@ -151,7 +155,6 @@ time, mark, audio, video {
 }
 
 .question-details:hover {
-
   color: rgb(0, 119, 204);
 }
  .question-index-item {
