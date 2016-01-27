@@ -55,7 +55,8 @@ time, mark, audio, video {
  }
 
 .main-header-logo {
-   position: relative;
+   display: inline-block;
+   float: left;
 }
 
  .question-index-wrapper {
