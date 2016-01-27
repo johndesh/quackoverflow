@@ -31272,7 +31272,52 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'question-item-wrapper' },
-	      React.createElement('div', { className: 'question-stats group' }),
+	      React.createElement(
+	        'div',
+	        { className: 'question-stats group' },
+	        React.createElement(
+	          'div',
+	          { className: 'question-stat-count votes group' },
+	          React.createElement(
+	            'div',
+	            { className: 'stat-count' },
+	            '0'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'stat-label' },
+	            'votes'
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'question-stat-count answers group' },
+	          React.createElement(
+	            'div',
+	            { className: 'stat-count' },
+	            '0'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'stat-label' },
+	            'answers'
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'question-stat-count views group' },
+	          React.createElement(
+	            'div',
+	            { className: 'stat-count' },
+	            '1'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'stat-label' },
+	            'view'
+	          )
+	        )
+	      ),
 	      React.createElement(
 	        'div',
 	        { className: 'question-index-item group' },

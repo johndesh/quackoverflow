@@ -17,17 +17,17 @@ var IndexItem = React.createClass({
     return (
       <div className="question-item-wrapper">
         <div className="question-stats group">
-          <div className="votes">
-            <div className="stat-count"></div>
+          <div className="question-stat-count votes group">
+            <div className="stat-count">0</div>
             <div className="stat-label">votes</div>
           </div>
-          <div className="answers">
-            <div className="stat-count"></div>
+          <div className="question-stat-count answers group">
+            <div className="stat-count">0</div>
             <div className="stat-label">answers</div>
           </div>
-          <div className="views">
-            <div className="stat-count"></div>
-            <div className="stat-label">views</div>
+          <div className="question-stat-count views group">
+            <div className="stat-count">1</div>
+            <div className="stat-label">view</div>
           </div>
         </div>
         <div className="question-index-item group">
