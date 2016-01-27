@@ -42,6 +42,12 @@ time, mark, audio, video {
    font-family: Arial;
  }
 
+ .topbar {
+   height: 34px;
+   width: 100%;
+   background: black;
+ }
+
  .main {
    margin: auto;
    padding: 15px;
@@ -61,7 +67,7 @@ time, mark, audio, video {
 .main-header-logo {
    
    display: inline-block;
-   margin: 23px 0;
+   margin: 21px 0;
 
    float: left;
 }
@@ -134,12 +140,14 @@ time, mark, audio, video {
 
 .featured-count-tab {
    color: #fff;
-   display: block;
+   display: inline;
    float: left;
    background-color: #0077dd;
-   padding: .2em .5em .25em .5em;
+   padding: 2.5px 5px 3px 5px;
    border-radius: 2px;
    font-size: 10px;
+   text-align: left;
+   line-height: 1;
    margin-right: 8px;
 }
 
