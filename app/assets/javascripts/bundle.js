@@ -31454,7 +31454,7 @@
 	  },
 
 	  _onChange: function () {
-	    debugger;
+
 	    this.setState(this.getStateFromStore());
 	  },
 
@@ -31463,7 +31463,7 @@
 	  },
 
 	  componentWillReceiveProps: function (newProps) {
-	    debugger;
+
 	    ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
 	  },
 

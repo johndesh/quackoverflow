@@ -10,7 +10,7 @@ var QuestionShow = React.createClass({
   },
 
   _onChange: function () {
-    debugger;
+    
     this.setState(this.getStateFromStore());
   },
 
@@ -19,7 +19,7 @@ var QuestionShow = React.createClass({
   },
 
   componentWillReceiveProps: function (newProps) {
-    debugger;
+    
     ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
   },
 
