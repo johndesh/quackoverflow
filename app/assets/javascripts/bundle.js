@@ -31445,7 +31445,7 @@
 
 	  componentDidMount: function () {
 	    // this.questionListener = QuestionStore.addListener(this._questionsChanged);
-	    ApiUtil.fetchQuestion(this.props.params.questionId);
+	    this._findQuestionById(this.props.params.questionId);
 	  },
 
 	  componentWillUnmount: function () {
