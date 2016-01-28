@@ -8,9 +8,10 @@ var ApiUtil = {
     });
   },
 
-  fetchQuestion: function(id){
+  fetchSingleQuestion: function(id){
     $.get('api/questions/' + id, function(question){
-      ApiActions.receiveAll([question]);
+      ApiActions.receiveSingleQuestion(question);
+
     });
   },
   

@@ -20,16 +20,10 @@ var Index = React.createClass({
     this.questionListener.remove();
   },
 
-  handleItemClick: function (question) {
-    this.props.history.pushState(null, "/questions/" + question.id);
-  },
-
   render: function () {
-    var handleItemClick = this.handleItemClick;
     var questions = this.state.questions.map(function (question, idx) {
-      var boundClick = handleItemClick.bind(null, question);
       return (
-        <IndexItem key={idx} question={question} onClick={boundClick}/>
+        <IndexItem key={idx} question={question}/>
       );
     });
     var _handleClick = function(e) {

@@ -24329,9 +24329,9 @@
 	    });
 	  },
 
-	  fetchQuestion: function (id) {
+	  fetchSingleQuestion: function (id) {
 	    $.get('api/questions/' + id, function (question) {
-	      ApiActions.receiveAll([question]);
+	      ApiActions.receiveSingleQuestion(question);
 	    });
 	  },
 
@@ -24356,6 +24356,13 @@
 	    AppDispatcher.dispatch({
 	      actionType: QuestionConstants.QUESTIONS_RECEIVED,
 	      questions: questions
+	    });
+	  },
+
+	  receiveSingleQuestion: function (question) {
+	    AppDispatcher.dispatch({
+	      actionType: QuestionConstants.QUESTION_RECEIVED,
+	      question: question
 	    });
 	  }
 
@@ -24718,15 +24725,9 @@
 	    this.questionListener.remove();
 	  },
 
-	  handleItemClick: function (question) {
-	    this.props.history.pushState(null, "/questions/" + question.id);
-	  },
-
 	  render: function () {
-	    var handleItemClick = this.handleItemClick;
 	    var questions = this.state.questions.map(function (question, idx) {
-	      var boundClick = handleItemClick.bind(null, question);
-	      return React.createElement(IndexItem, { key: idx, question: question, onClick: boundClick });
+	      return React.createElement(IndexItem, { key: idx, question: question });
 	    });
 	    var _handleClick = function (e) {
 	      e.preventDefault();
@@ -24796,24 +24797,43 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(217).Store;
-	var _questions = [];
+	var _questions = {};
 	var QuestionConstants = __webpack_require__(214);
 	var AppDispatcher = __webpack_require__(210);
 
 	var QuestionStore = new Store(AppDispatcher);
 
 	var resetQuestions = function (questions) {
-	  _questions = questions.slice(0);
+	  _questions = {};
+	  questions.forEach(function (question) {
+	    _questions[question.id] = question;
+	  });
+	};
+
+	var resetQuestion = function (question) {
+	  _questions[question.id] = question;
 	};
 
 	QuestionStore.all = function () {
-	  return _questions.slice(0);
+	  var questions = [];
+	  for (var id in _questions) {
+	    questions.push(_questions[id]);
+	  }
+	  return questions;
+	};
+
+	QuestionStore.find = function (id) {
+	  return _questions[id];
 	};
 
 	QuestionStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case QuestionConstants.QUESTIONS_RECEIVED:
 	      resetQuestions(payload.questions);
+	      QuestionStore.__emitChange();
+	      break;
+	    case QuestionConstants.QUESTION_RECEIVED:
+	      resetQuestion(payload.question);
 	      QuestionStore.__emitChange();
 	      break;
 	  }
@@ -31274,12 +31294,16 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ReactRouter = __webpack_require__(159);
+	var History = __webpack_require__(159).History;
 
 	var IndexItem = React.createClass({
 	  displayName: 'IndexItem',
 
-	  mixins: [ReactRouter.browserHistory],
+	  mixins: [History],
+
+	  showQuestion: function () {
+	    this.history.pushState(null, '/questions/' + this.props.question.id, {});
+	  },
 
 	  render: function () {
 
@@ -31401,7 +31425,7 @@
 	          { className: 'question-link-wrapper' },
 	          React.createElement(
 	            'a',
-	            { onClick: this.props.onClick, className: 'question-link' },
+	            { onClick: this.showQuestion, className: 'question-link' },
 	            question.title
 	          )
 	        ),
@@ -31424,42 +31448,38 @@
 	var QuestionShow = React.createClass({
 	  displayName: 'QuestionShow',
 
-	  contextTypes: {
-	    router: React.PropTypes.func
+	  getStateFromStore: function () {
+
+	    return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };
 	  },
+
+	  _onChange: function () {
+	    debugger;
+	    this.setState(this.getStateFromStore());
+	  },
+
 	  getInitialState: function () {
-	    var questionId = this.props.params.questionId;
-	    var question = this._findQuestionById(questionId) || {};
-	    return { question: question };
+	    return this.getStateFromStore();
 	  },
-	  _findQuestionById: function (id) {
-	    var res;
-	    QuestionStore.all().forEach(function (question) {
-	      if (id == question.id) {
-	        res = question;
-	      }
-	    }.bind(this));
-	    ApiUtil.fetchQuestion(id);
-	    return res;
+
+	  componentWillReceiveProps: function (newProps) {
+	    debugger;
+	    ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
 	  },
 
 	  componentDidMount: function () {
-	    // this.questionListener = QuestionStore.addListener(this._questionsChanged);
-	    this._findQuestionById(this.props.params.questionId);
+	    this.questionListener = QuestionStore.addListener(this._onChange);
+	    ApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
 	  },
 
 	  componentWillUnmount: function () {
-	    // this.questionListener.remove();
-	  },
-
-	  _questionsChanged: function () {
-	    debugger;
-	    var questionId = this.props.params.questionId;
-	    var question = this._findQuestionById(questionId);
-	    this.setState({ question: question });
+	    this.questionListener.remove();
 	  },
 
 	  render: function () {
+	    if (this.state.question === undefined) {
+	      return React.createElement('div', null);
+	    }
 	    var Link = ReactRouter.Link;
 	    var answers = this.state.question.answers.map(function (answer, idx) {
 	      return React.createElement(

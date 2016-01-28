@@ -9,6 +9,13 @@ var ApiActions = {
     });
   },
 
+  receiveSingleQuestion: function (question) {
+  	AppDispatcher.dispatch({
+  		actionType: QuestionConstants.QUESTION_RECEIVED,
+  		question: question
+  	});
+  }
+
 };
 
 module.exports = ApiActions;

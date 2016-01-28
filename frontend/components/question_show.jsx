@@ -3,45 +3,37 @@ var ReactRouter = require('react-router');
 var QuestionStore = require('../stores/question');
 var ApiUtil = require('../util/api_util');
 var QuestionShow = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.func
+
+  getStateFromStore: function () {
+    
+    return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };
   },
+
+  _onChange: function () {
+    debugger;
+    this.setState(this.getStateFromStore());
+  },
+
   getInitialState: function () {
-    var questionId = this.props.params.questionId;
-    var question = this._findQuestionById(questionId) || {} ;
-        return { question: question };
+    return this.getStateFromStore();
   },
-  _findQuestionById: function (id) {
-    var res;
-     QuestionStore.all().forEach(function (question) {
-      if (id == question.id) {
-        res = question;
-      }
-    }.bind(this));
-     ApiUtil.fetchQuestion(id);
-     return res;
+
+  componentWillReceiveProps: function (newProps) {
+    debugger;
+    ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
   },
 
   componentDidMount: function () {
-    // this.questionListener = QuestionStore.addListener(this._questionsChanged);
-    this._findQuestionById(this.props.params.questionId)
-
+    this.questionListener = QuestionStore.addListener(this._onChange);
+    ApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
   },
 
   componentWillUnmount: function () {
-    // this.questionListener.remove();
+    this.questionListener.remove();
   },
-
-  _questionsChanged: function () {
-    debugger;
-    var questionId = this.props.params.questionId;
-    var question = this._findQuestionById(questionId);
-    this.setState({ question: question });
-
-  },
-
 
   render: function () {
+    if(this.state.question === undefined) { return <div></div>; } 
     var Link = ReactRouter.Link;
     var answers = this.state.question.answers.map(function (answer, idx){
       return(

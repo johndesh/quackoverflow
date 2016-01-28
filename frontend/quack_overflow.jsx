@@ -24,6 +24,7 @@ var routes = (
   <Route path="/" component={App}>
     <IndexRoute component={QuestionsIndex}/>
     <Route path="questions/:questionId" component={QuestionShow}/>
+    
   </Route>
 );
 

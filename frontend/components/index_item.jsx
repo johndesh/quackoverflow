@@ -1,8 +1,13 @@
 var React = require('react');
-var ReactRouter = require('react-router');
+var History = require('react-router').History;
+
 
 var IndexItem = React.createClass({
-  mixins: [ReactRouter.browserHistory],
+  mixins: [History],
+
+  showQuestion: function () {
+    this.history.pushState(null, '/questions/' + this.props.question.id, {});
+  },
 
   render: function () {
 
@@ -38,10 +43,11 @@ var IndexItem = React.createClass({
         </div>
         <div className="question-index-item group">
           <div className="question-link-wrapper">
-          <a onClick={this.props.onClick} className="question-link">{question.title}</a>
+          <a onClick={this.showQuestion} className="question-link">{question.title}</a>
           </div>
           {timeAgo}
         </div>
+        
       </div>
     );
   }
