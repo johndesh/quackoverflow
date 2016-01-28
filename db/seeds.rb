@@ -25,3 +25,8 @@ example.questions[0].answers.create!(body: "Like this!", author_id: users[0].id)
 example.questions[0].answers.create!(body: "Or this...", author_id: users.last.id)
 
 users[1].questions.first.answers.create!(body: "Use .includes() with an association to reduce queries.", author_id: example.id)
+
+Question.first.views.create(user_id: example.id)
+
+Question.last.views.create(user_id: example.id)
+Question.last.views.create(user_id: users.first.id)
