@@ -31362,7 +31362,7 @@
 	            'div',
 	            { className: 'stat-label' },
 	            'view',
-	            question.views === "1" ? "" : "s"
+	            question.views === 1 ? "" : "s"
 	          )
 	        )
 	      ),

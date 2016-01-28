@@ -30,7 +30,7 @@ var IndexItem = React.createClass({
           </div>
           <div className="question-stat-count views group">
             <div className="stat-count">{question.views | 0}</div>
-            <div className="stat-label">view{question.views === "1" ? "" : "s"}</div>
+            <div className="stat-label">view{question.views === 1 ? "" : "s"}</div>
           </div>
         </div>
         <div className="question-index-item group">
