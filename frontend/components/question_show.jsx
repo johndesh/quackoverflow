@@ -18,19 +18,21 @@ var QuestionShow = React.createClass({
         res = question;
       }
     }.bind(this));
+     ApiUtil.fetchQuestion(id);
      return res;
   },
 
   componentDidMount: function () {
-    this.questionListener = QuestionStore.addListener(this._questionsChanged);
-    ApiUtil.fetchQuestions();
+    // this.questionListener = QuestionStore.addListener(this._questionsChanged);
+    ApiUtil.fetchQuestion(this.props.params.questionId);
   },
 
   componentWillUnmount: function () {
-    this.questionListener.remove();
+    // this.questionListener.remove();
   },
 
   _questionsChanged: function () {
+    debugger;
     var questionId = this.props.params.questionId;
     var question = this._findQuestionById(questionId);
     this.setState({ question: question });

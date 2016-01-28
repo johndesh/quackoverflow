@@ -7,3 +7,4 @@ json.answers @question.answers do |answer|
   json.modified time_ago_in_words(answer.updated_at)
 end
 json.author @question.author, :username, :user_img
+json.views @question.views.length

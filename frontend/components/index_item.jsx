@@ -16,6 +16,7 @@ var IndexItem = React.createClass({
     var answersKlass = "question-stat-count answers group";
     answersKlass += (question.answers.length > 0) ? " answered" : "";
 
+
     return (
       <div className="question-item-wrapper">
         <div className="question-stats group">
@@ -28,8 +29,8 @@ var IndexItem = React.createClass({
             <div className="stat-label">answer{question.answers.length === 1 ? "" : "s"}</div>
           </div>
           <div className="question-stat-count views group">
-            <div className="stat-count">1</div>
-            <div className="stat-label">view</div>
+            <div className="stat-count">{question.views | 0}</div>
+            <div className="stat-label">view{question.views === "1" ? "" : "s"}</div>
           </div>
         </div>
         <div className="question-index-item group">

@@ -11,4 +11,5 @@ json.array! @questions do |question|
     json.answered time_ago_in_words(answer.created_at)
     json.modified time_ago_in_words(answer.updated_at)
   end
+  json.views question.views.length
 end

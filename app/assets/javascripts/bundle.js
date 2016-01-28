@@ -24381,6 +24381,12 @@
 	    });
 	  },
 
+	  fetchQuestion: function (id) {
+	    $.get('api/questions/' + id, function (question) {
+	      ApiActions.receiveAll([question]);
+	    });
+	  },
+
 	  createQuestion: function (data) {
 	    $.post('api/questions', { question: data }, function (question) {
 	      ApiActions.receiveAll([question]);
@@ -31350,12 +31356,13 @@
 	          React.createElement(
 	            'div',
 	            { className: 'stat-count' },
-	            '1'
+	            question.views | 0
 	          ),
 	          React.createElement(
 	            'div',
 	            { className: 'stat-label' },
-	            'view'
+	            'view',
+	            question.views === "1" ? "" : "s"
 	          )
 	        )
 	      ),
@@ -31405,19 +31412,21 @@
 	        res = question;
 	      }
 	    }.bind(this));
+	    ApiUtil.fetchQuestion(id);
 	    return res;
 	  },
 
 	  componentDidMount: function () {
-	    this.questionListener = QuestionStore.addListener(this._questionsChanged);
-	    ApiUtil.fetchQuestions();
+	    // this.questionListener = QuestionStore.addListener(this._questionsChanged);
+	    ApiUtil.fetchQuestion(this.props.params.questionId);
 	  },
 
 	  componentWillUnmount: function () {
-	    this.questionListener.remove();
+	    // this.questionListener.remove();
 	  },
 
 	  _questionsChanged: function () {
+	    debugger;
 	    var questionId = this.props.params.questionId;
 	    var question = this._findQuestionById(questionId);
 	    this.setState({ question: question });

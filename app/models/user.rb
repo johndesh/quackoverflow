@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
 
   has_many :questions, foreign_key: :author_id
   has_many :answers, class_name: "QuestionAnswer", foreign_key: :author_id
+  has_many :views, class_name: "QuestionView"
+  has_many :viewed_questions, through: :views, source: :question
 
   attr_reader :password
 
@@ -27,7 +29,6 @@ class User < ActiveRecord::Base
     self.save!
     self.session_token
   end
-
 
   def password=(password)
     @password = password
