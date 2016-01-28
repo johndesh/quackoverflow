@@ -20,7 +20,6 @@ var IndexItem = React.createClass({
     var answersKlass = "question-stat-count answers group";
     answersKlass += (question.answers.length > 0) ? " answered" : "";
 
-
     return (
       <div className="question-item-wrapper">
         <div className="question-stats group">

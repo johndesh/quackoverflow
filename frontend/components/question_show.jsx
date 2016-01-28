@@ -48,6 +48,10 @@ var QuestionShow = React.createClass({
       );
     });
     return(
+    <div className="question-index-wrapper">
+      <div className="sub-header">
+          <h2 className="group">{this.state.question.title}</h2>
+      </div>
       <div className="question-wrapper">
         <div className="question">
           <Link to="/" >Back to Questions</Link>
@@ -56,6 +60,7 @@ var QuestionShow = React.createClass({
         </div>
       {answers}
        </div>
+     </div>
     );
   }
 });

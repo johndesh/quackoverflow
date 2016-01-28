@@ -66,54 +66,7 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'main' },
-	      React.createElement(
-	        'div',
-	        { className: 'question-index-wrapper' },
-	        React.createElement(
-	          'div',
-	          { className: 'sub-header' },
-	          React.createElement(
-	            'h2',
-	            { className: 'group' },
-	            'Top Questions'
-	          ),
-	          React.createElement(
-	            'nav',
-	            { className: 'sub-header-nav group' },
-	            React.createElement(
-	              'a',
-	              { href: '#', onClick: _handleClick, className: 'clicked group' },
-	              'interesting'
-	            ),
-	            React.createElement(
-	              'a',
-	              { href: '#', onClick: _handleClick, className: 'group' },
-	              'featured',
-	              React.createElement(
-	                'span',
-	                { className: 'featured-count-tab group' },
-	                '391'
-	              )
-	            ),
-	            React.createElement(
-	              'a',
-	              { href: '#', onClick: _handleClick, className: 'group' },
-	              'hot'
-	            ),
-	            React.createElement(
-	              'a',
-	              { href: '#', onClick: _handleClick, className: 'group' },
-	              'week'
-	            ),
-	            React.createElement(
-	              'a',
-	              { href: '#', onClick: _handleClick, className: 'group' },
-	              'month'
-	            )
-	          )
-	        ),
-	        this.props.children
-	      )
+	      this.props.children
 	    );
 	  }
 	});
@@ -24783,8 +24736,55 @@
 
 	    return React.createElement(
 	      'div',
-	      { className: 'question-index group' },
-	      questions
+	      { className: 'question-index-wrapper' },
+	      React.createElement(
+	        'div',
+	        { className: 'sub-header' },
+	        React.createElement(
+	          'h2',
+	          { className: 'group' },
+	          'Top Questions'
+	        ),
+	        React.createElement(
+	          'nav',
+	          { className: 'sub-header-nav group' },
+	          React.createElement(
+	            'a',
+	            { href: '#', onClick: _handleClick, className: 'clicked group' },
+	            'interesting'
+	          ),
+	          React.createElement(
+	            'a',
+	            { href: '#', onClick: _handleClick, className: 'group' },
+	            'featured',
+	            React.createElement(
+	              'span',
+	              { className: 'featured-count-tab group' },
+	              '391'
+	            )
+	          ),
+	          React.createElement(
+	            'a',
+	            { href: '#', onClick: _handleClick, className: 'group' },
+	            'hot'
+	          ),
+	          React.createElement(
+	            'a',
+	            { href: '#', onClick: _handleClick, className: 'group' },
+	            'week'
+	          ),
+	          React.createElement(
+	            'a',
+	            { href: '#', onClick: _handleClick, className: 'group' },
+	            'month'
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'question-index group' },
+	        questions
+	      )
 	    );
 	  }
 	});
@@ -31470,27 +31470,40 @@
 	    });
 	    return React.createElement(
 	      'div',
-	      { className: 'question-wrapper' },
+	      { className: 'question-index-wrapper' },
 	      React.createElement(
 	        'div',
-	        { className: 'question' },
+	        { className: 'sub-header' },
 	        React.createElement(
-	          Link,
-	          { to: '/' },
-	          'Back to Questions'
-	        ),
-	        React.createElement(
-	          'h1',
-	          null,
+	          'h2',
+	          { className: 'group' },
 	          this.state.question.title
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          this.state.question.body
 	        )
 	      ),
-	      answers
+	      React.createElement(
+	        'div',
+	        { className: 'question-wrapper' },
+	        React.createElement(
+	          'div',
+	          { className: 'question' },
+	          React.createElement(
+	            Link,
+	            { to: '/' },
+	            'Back to Questions'
+	          ),
+	          React.createElement(
+	            'h1',
+	            null,
+	            this.state.question.title
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            this.state.question.body
+	          )
+	        ),
+	        answers
+	      )
 	    );
 	  }
 	});
