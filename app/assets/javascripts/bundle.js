@@ -31427,8 +31427,6 @@
 	  contextTypes: {
 	    router: React.PropTypes.func
 	  },
-	  mixins: [ReactRouter.browswerHistory],
-
 	  getInitialState: function () {
 	    var questionId = this.props.params.questionId;
 	    var question = this._findQuestionById(questionId) || {};
@@ -31446,20 +31444,18 @@
 	  },
 
 	  componentDidMount: function () {
-	    this.questionListener = QuestionStore.addListener(this._questionChanged);
+	    // this.questionListener = QuestionStore.addListener(this._questionsChanged);
 	    this._findQuestionById(this.props.params.questionId);
 	  },
 
 	  componentWillUnmount: function () {
-	    this.questionListener.remove();
+	    // this.questionListener.remove();
 	  },
 
-	  _questionChanged: function () {
+	  _questionsChanged: function () {
 	    debugger;
-
-	    var newId = this.props.params.questionId;
-
-	    var question = this._findQuestionById(newId);
+	    var questionId = this.props.params.questionId;
+	    var question = this._findQuestionById(questionId);
 	    this.setState({ question: question });
 	  },
 
