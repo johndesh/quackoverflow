@@ -24733,6 +24733,11 @@
 	      var boundClick = handleItemClick.bind(null, question);
 	      return React.createElement(IndexItem, { key: idx, question: question, onClick: boundClick });
 	    });
+	    var _handleClick = function (e) {
+	      e.preventDefault();
+	      $('.sub-header-nav').children('a').removeClass('clicked');
+	      $(e.currentTarget).addClass("clicked");
+	    };
 
 	    return React.createElement(
 	      'div',

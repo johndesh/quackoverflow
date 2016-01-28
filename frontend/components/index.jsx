@@ -32,6 +32,12 @@ var Index = React.createClass({
         <IndexItem key={idx} question={question} onClick={boundClick}/>
       );
     });
+    var _handleClick = function(e) {
+      e.preventDefault();
+      $('.sub-header-nav').children('a').removeClass('clicked');
+      $(e.currentTarget).addClass("clicked");
+    };
+
 
     return (
       <div className="question-index-wrapper">
