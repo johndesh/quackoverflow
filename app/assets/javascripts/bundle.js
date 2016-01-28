@@ -31279,7 +31279,7 @@
 	var IndexItem = React.createClass({
 	  displayName: 'IndexItem',
 
-	  mixins: [ReactRouter.history],
+	  mixins: [ReactRouter.browserHistory],
 
 	  render: function () {
 
@@ -31427,7 +31427,7 @@
 	  contextTypes: {
 	    router: React.PropTypes.func
 	  },
-	  mixins: [ReactRouter.history],
+	  mixins: [ReactRouter.browswerHistory],
 
 	  getInitialState: function () {
 	    var questionId = this.props.params.questionId;

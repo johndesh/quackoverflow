@@ -6,8 +6,8 @@ var QuestionShow = React.createClass({
   contextTypes: {
     router: React.PropTypes.func
   },
-  mixins: [ReactRouter.history],
-  
+  mixins: [ReactRouter.browswerHistory],
+
   getInitialState: function () {
     var questionId = this.props.params.questionId;
     var question = this._findQuestionById(questionId) || {} ;
