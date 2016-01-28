@@ -31476,9 +31476,13 @@
 	        'div',
 	        { className: 'question-header' },
 	        React.createElement(
-	          Link,
-	          { to: linkTo, className: 'question-title group' },
-	          this.state.question.title
+	          'h2',
+	          null,
+	          React.createElement(
+	            Link,
+	            { to: linkTo, className: 'question-title group' },
+	            this.state.question.title
+	          )
 	        )
 	      ),
 	      React.createElement(

@@ -51,7 +51,9 @@ var QuestionShow = React.createClass({
     return(
     <div className="question-index-wrapper">
       <div className="question-header">
+        <h2>
           <Link to={linkTo} className="question-title group">{this.state.question.title}</Link>
+        </h2>
       </div>
       <div className="question-wrapper">
         <div className="question">

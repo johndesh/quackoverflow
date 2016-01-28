@@ -135,6 +135,12 @@ time, mark, audio, video {
    margin-bottom: 1em;
  }
 
+.question-header h2 {
+  text-align: left;
+  display: block;
+  margin-bottom: 11px;
+}
+
  .question-title {
    color: #222426;
    text-decoration: none;
