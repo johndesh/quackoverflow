@@ -28,6 +28,6 @@ var routes = (
 );
 
 ReactDOM.render(
-  <Router history={createBrowserHistory()}>{routes}</Router>,
+  <Router history={ReactRouter.broswerHistory}>{routes}</Router>,
   document.getElementById('content')
 );
