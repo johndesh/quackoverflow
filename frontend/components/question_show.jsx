@@ -50,12 +50,10 @@ var QuestionShow = React.createClass({
     return(
     <div className="question-index-wrapper">
       <div className="sub-header">
-          <h2 className="group">{this.state.question.title}</h2>
+          <Link to="/questions/"+{this.state.question.id} className="question-title group">{this.state.question.title}</h2>
       </div>
       <div className="question-wrapper">
         <div className="question">
-          <Link to="/" >Back to Questions</Link>
-          <h1>{this.state.question.title}</h1>
           <p>{this.state.question.body}</p>
         </div>
       {answers}

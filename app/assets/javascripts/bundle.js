@@ -52,7 +52,7 @@
 	var IndexRoute = ReactRouter.IndexRoute;
 	var ApiUtil = __webpack_require__(208);
 	var QuestionsIndex = __webpack_require__(215);
-	var QuestionShow = __webpack_require__(235);
+	var QuestionShow = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/question_show\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var _handleClick = function (e) {
 	  e.preventDefault();
 	  $('.sub-header-nav').children('a').removeClass('clicked');
@@ -31417,103 +31417,6 @@
 	});
 
 	module.exports = IndexItem;
-
-/***/ },
-/* 235 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ReactRouter = __webpack_require__(159);
-	var QuestionStore = __webpack_require__(216);
-	var ApiUtil = __webpack_require__(208);
-	var QuestionShow = React.createClass({
-	  displayName: 'QuestionShow',
-
-	  contextTypes: {
-	    router: React.PropTypes.func
-	  },
-	  getInitialState: function () {
-	    var questionId = this.props.params.questionId;
-	    var question = this._findQuestionById(questionId) || {};
-	    return { question: question };
-	  },
-	  _findQuestionById: function (id) {
-	    var res;
-	    QuestionStore.all().forEach(function (question) {
-	      if (id == question.id) {
-	        res = question;
-	      }
-	    }.bind(this));
-	    ApiUtil.fetchQuestion(id);
-	    return res;
-	  },
-
-	  componentDidMount: function () {
-	    // this.questionListener = QuestionStore.addListener(this._questionsChanged);
-	    ApiUtil.fetchQuestion(this.props.params.questionId);
-	  },
-
-	  componentWillUnmount: function () {
-	    // this.questionListener.remove();
-	  },
-
-	  _questionsChanged: function () {
-	    debugger;
-	    var questionId = this.props.params.questionId;
-	    var question = this._findQuestionById(questionId);
-	    this.setState({ question: question });
-	  },
-
-	  render: function () {
-	    var Link = ReactRouter.Link;
-	    var answers = this.state.question.answers.map(function (answer, idx) {
-	      return React.createElement(
-	        'li',
-	        { className: 'answer', key: idx },
-	        answer.body
-	      );
-	    });
-	    return React.createElement(
-	      'div',
-	      { className: 'question-index-wrapper' },
-	      React.createElement(
-	        'div',
-	        { className: 'sub-header' },
-	        React.createElement(
-	          'h2',
-	          { className: 'group' },
-	          this.state.question.title
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'question-wrapper' },
-	        React.createElement(
-	          'div',
-	          { className: 'question' },
-	          React.createElement(
-	            Link,
-	            { to: '/' },
-	            'Back to Questions'
-	          ),
-	          React.createElement(
-	            'h1',
-	            null,
-	            this.state.question.title
-	          ),
-	          React.createElement(
-	            'p',
-	            null,
-	            this.state.question.body
-	          )
-	        ),
-	        answers
-	      )
-	    );
-	  }
-	});
-
-	module.exports = QuestionShow;
 
 /***/ }
 /******/ ]);

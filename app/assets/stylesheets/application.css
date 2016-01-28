@@ -94,7 +94,14 @@ time, mark, audio, video {
    text-align: left;
 
  }
-
+ .question-title {
+   color: #222426;
+   text-decoration: none;
+   font-size: 24px;
+   line-height: 1.35;
+   font-weight: normal;
+   margin-bottom: .5em;
+ }
  .sub-header-nav {
    float: right;
    margin: 0;
