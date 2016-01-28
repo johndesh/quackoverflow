@@ -75,7 +75,7 @@
 
 	ReactDOM.render(React.createElement(
 	  Router,
-	  null,
+	  { history: createBrowserHistory() },
 	  routes
 	), document.getElementById('content'));
 
