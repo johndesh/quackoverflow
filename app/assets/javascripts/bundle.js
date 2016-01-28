@@ -31454,11 +31454,14 @@
 	    // this.questionListener.remove();
 	  },
 
-	  _questionsChanged: function () {
+	  componentDidUpdate: function (oldProps) {
 	    debugger;
-	    var questionId = this.props.params.questionId;
-	    var question = this._findQuestionById(questionId);
-	    this.setState({ question: question });
+	    var oldId = oldProps.params.questionId;
+	    var newId = this.props.params.questionId;
+	    if (newId !== oldId) {
+	      var question = this._findQuestionById(newId);
+	      this.setState({ question: question });
+	    }
 	  },
 
 	  render: function () {
