@@ -31446,12 +31446,12 @@
 	  },
 
 	  componentDidMount: function () {
-	    // this.questionListener = QuestionStore.addListener(this._questionsChanged);
+	    this.questionListener = QuestionStore.addListener(this.componentDidUpdate);
 	    this._findQuestionById(this.props.params.questionId);
 	  },
 
 	  componentWillUnmount: function () {
-	    // this.questionListener.remove();
+	    this.questionListener.remove();
 	  },
 
 	  componentDidUpdate: function (oldProps) {
