@@ -53,11 +53,6 @@
 	var ApiUtil = __webpack_require__(208);
 	var QuestionsIndex = __webpack_require__(215);
 	var QuestionShow = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/question_show\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-	var _handleClick = function (e) {
-	  e.preventDefault();
-	  $('.sub-header-nav').children('a').removeClass('clicked');
-	  $(e.currentTarget).addClass("clicked");
-	};
 
 	var App = React.createClass({
 	  displayName: 'App',

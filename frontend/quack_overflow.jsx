@@ -7,11 +7,6 @@ var IndexRoute = ReactRouter.IndexRoute;
 var ApiUtil = require('./util/api_util');
 var QuestionsIndex = require('./components/index');
 var QuestionShow = require('./components/question_show');
-var _handleClick = function(e) {
-  e.preventDefault();
-  $('.sub-header-nav').children('a').removeClass('clicked');
-  $(e.currentTarget).addClass("clicked");
-};
 
 var App = React.createClass({
   render: function(){
