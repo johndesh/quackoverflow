@@ -47,10 +47,11 @@ var QuestionShow = React.createClass({
         <li className="answer" key={idx}>{answer.body}</li>
       );
     });
+    var linkTo = "/questions/" + this.props.params.questionId
     return(
     <div className="question-index-wrapper">
       <div className="sub-header">
-          <Link to="/questions/"+{this.state.question.id} className="question-title group">{this.state.question.title}</Link>
+          <Link to={linkTo} className="question-title group">{this.state.question.title}</Link>
       </div>
       <div className="question-wrapper">
         <div className="question">
