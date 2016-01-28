@@ -94,14 +94,6 @@ time, mark, audio, video {
    text-align: left;
 
  }
- .question-title {
-   color: #222426;
-   text-decoration: none;
-   font-size: 24px;
-   line-height: 1.35;
-   font-weight: normal;
-   margin-bottom: .5em;
- }
  .sub-header-nav {
    float: right;
    margin: 0;
@@ -135,6 +127,21 @@ time, mark, audio, video {
  .sub-header-nav a:last-child {
 
    margin-right: 0;
+ }
+
+ .question-header {
+   padding: 5px 0;
+   border-bottom: 1px solid #E5E5E5;
+   margin-bottom: 1em;
+ }
+
+ .question-title {
+   color: #222426;
+   text-decoration: none;
+   font-size: 24px;
+   line-height: 1.35;
+   font-weight: normal;
+   margin-bottom: .5em;
  }
 
 .featured-count-tab {

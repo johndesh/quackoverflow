@@ -31474,7 +31474,7 @@
 	      { className: 'question-index-wrapper' },
 	      React.createElement(
 	        'div',
-	        { className: 'sub-header' },
+	        { className: 'question-header' },
 	        React.createElement(
 	          Link,
 	          { to: linkTo, className: 'question-title group' },
