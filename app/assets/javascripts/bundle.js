@@ -31285,14 +31285,41 @@
 
 	    var question = this.props.question;
 	    var timeAgo;
-	    if (question.modified !== question.asked) {
+	    if (question.answers.length > 0) {
+	      var answered = question.answers[question.answers.length - 1].answered;
+	      var author = question.answers[question.answers.length - 1].author;
 	      timeAgo = React.createElement(
 	        'div',
 	        { className: 'question-details group' },
-	        'Modified ',
-	        question.modified,
-	        ' ago by ',
-	        question.author.username
+	        React.createElement(
+	          'span',
+	          { className: 'question-details-time' },
+	          'answered ',
+	          answered,
+	          ' ago '
+	        ),
+	        React.createElement(
+	          'span',
+	          { className: 'question-details-author' },
+	          author.username
+	        )
+	      );
+	    } else if (question.modified !== question.asked) {
+	      timeAgo = React.createElement(
+	        'div',
+	        { className: 'question-details group' },
+	        React.createElement(
+	          'span',
+	          { className: 'question-details-time' },
+	          'modified ',
+	          question.modified,
+	          ' ago '
+	        ),
+	        React.createElement(
+	          'span',
+	          { className: 'question-details-author' },
+	          question.author.username
+	        )
 	      );
 	    } else {
 	      timeAgo = React.createElement(
