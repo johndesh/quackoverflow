@@ -74,10 +74,11 @@ time, mark, audio, video {
  }
 
  .links-container a {
-
    text-decoration: none;
    color: #e0e0e0;
    font-size: 13px;
+   line-height: 1;
+   font-weight: 400;
    padding: 10px 7px 0 7px;
    display: inline-block;
 
