@@ -31757,6 +31757,9 @@
 	  displayName: 'SessionForm',
 
 	  mixins: [History],
+	  getInitialState: function () {
+	    return { errors: {} };
+	  },
 
 	  submit: function (e) {
 	    e.preventDefault();
@@ -31764,7 +31767,11 @@
 	    var credentials = $(e.currentTarget).serializeJSON();
 	    SessionsApiUtil.login(credentials, function () {
 	      this.history.pushState({}, "/");
-	    }.bind(this));
+	    }.bind(this), this._renderErrors);
+	  },
+
+	  _renderErrors: function (errors) {
+	    this.setState({ errors: errors });
 	  },
 
 	  login_as_guest: function (e) {
@@ -31778,6 +31785,17 @@
 	  },
 
 	  render: function () {
+	    var errors;
+	    console.log(this.state.errors);
+	    if (this.state.errors.responseJSON === undefined) {
+	      errors = React.createElement('div', null);
+	    } else {
+	      errors = React.createElement(
+	        'div',
+	        { className: 'form-error' },
+	        this.state.errors.responseJSON[0]
+	      );
+	    }
 	    return React.createElement(
 	      'div',
 	      { className: 'form-container' },
@@ -31810,7 +31828,8 @@
 	            'Log in'
 	          )
 	        )
-	      )
+	      ),
+	      errors
 	    );
 	  }
 	});
@@ -31824,7 +31843,7 @@
 	var CurrentUserActions = __webpack_require__(243);
 
 	var SessionsApiUtil = {
-	  login: function (credentials, success) {
+	  login: function (credentials, success, error) {
 	    $.ajax({
 	      url: '/api/session',
 	      type: 'POST',
@@ -31834,6 +31853,9 @@
 
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success();
+	      },
+	      error: function (data) {
+	        error && error(data);
 	      }
 	    });
 	  },
@@ -31913,6 +31935,10 @@
 	    CurrentUserStore.addListener(this._onChange);
 
 	    SessionsApiUtil.fetchCurrentUser();
+	  },
+
+	  componentWillUnmount: function () {
+	    CurrentUserStore.remove(this._onChange);
 	  },
 
 	  _onChange: function () {

@@ -4,6 +4,9 @@ var SessionsApiUtil = require('./../../util/sessions_api_util');
 
 var SessionForm = React.createClass({
   mixins: [History],
+  getInitialState: function () {
+    return {errors: {}};
+  },
 
   submit: function (e) {
     e.preventDefault();
@@ -11,7 +14,11 @@ var SessionForm = React.createClass({
     var credentials = $(e.currentTarget).serializeJSON();
     SessionsApiUtil.login(credentials, function () {
       this.history.pushState({}, "/");
-    }.bind(this));
+    }.bind(this), this._renderErrors);
+  },
+
+  _renderErrors: function (errors) {
+    this.setState({errors: errors});
   },
 
   login_as_guest: function (e) {
@@ -25,6 +32,13 @@ var SessionForm = React.createClass({
   },
 
   render: function () {
+    var errors;
+    console.log(this.state.errors);
+    if (this.state.errors.responseJSON === undefined) {
+      errors = <div></div>;
+    } else {
+      errors = <div className="form-error">{this.state.errors.responseJSON[0]}</div>;
+    }
     return (
       <div className="form-container">
         <form className="users-form" onSubmit={this.submit}>
@@ -43,6 +57,7 @@ var SessionForm = React.createClass({
             <button className="submit group">Log in</button>
           </div>
         </form>
+        {errors}
       </div>
     );
   }

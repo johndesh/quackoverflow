@@ -14,6 +14,10 @@ var Header = React.createClass({
     SessionsApiUtil.fetchCurrentUser();
   },
 
+  componentWillUnmount: function () {
+    CurrentUserStore.remove(this._onChange);
+  },
+
   _onChange: function () {
     this.setState({ currentUser: CurrentUserStore.currentUser() });
   },
