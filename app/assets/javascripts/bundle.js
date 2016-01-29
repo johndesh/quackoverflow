@@ -50,6 +50,7 @@
 	var Router = ReactRouter.Router;
 	var Route = ReactRouter.Route;
 	var IndexRoute = ReactRouter.IndexRoute;
+	var Header = __webpack_require__(245);
 	var UserForm = __webpack_require__(236);
 	var SessionForm = __webpack_require__(241);
 	var QuestionsIndex = __webpack_require__(208);
@@ -61,8 +62,26 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'main' },
-	      this.props.children
+	      null,
+	      React.createElement(Header, null),
+	      React.createElement(
+	        'header',
+	        { className: 'main-header' },
+	        React.createElement(
+	          'div',
+	          { className: 'main-header-logo group' },
+	          React.createElement(
+	            'a',
+	            { href: '/' },
+	            'Quack Overflow'
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'main' },
+	        this.props.children
+	      )
 	    );
 	  }
 	});
@@ -31852,6 +31871,137 @@
 	};
 
 	module.exports = CurrentUserConstants;
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var SessionsApiUtil = __webpack_require__(242);
+	var CurrentUserStore = __webpack_require__(246);
+
+	var Header = React.createClass({
+	  displayName: 'Header',
+
+	  getInitialState: function () {
+	    return { currentUser: {} };
+	  },
+
+	  componentDidMount: function () {
+	    CurrentUserStore.addListener(this._onChange);
+	  },
+
+	  _onChange: function () {
+	    this.setState({ currentUser: CurrentUserStore.currentUser() });
+	  },
+
+	  logout: function () {
+	    SessionsApiUtil.logout();
+	  },
+
+	  render: function () {
+	    if (CurrentUserStore.isLoggedIn()) {
+	      return React.createElement(
+	        'div',
+	        { className: 'topbar' },
+	        React.createElement(
+	          'div',
+	          { className: 'topbar-wrapper' },
+	          React.createElement(
+	            'div',
+	            { className: 'network-items group' },
+	            'QuackExchange'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'topbar-links group' },
+	            React.createElement(
+	              'div',
+	              { className: 'links-container' },
+	              'Logged in as',
+	              this.state.currentUser.email,
+	              React.createElement(
+	                'button',
+	                { onClick: this.logout },
+	                'Log Out'
+	              )
+	            ),
+	            React.createElement('div', { className: 'search-container' })
+	          )
+	        )
+	      );
+	    } else {
+	      return React.createElement(
+	        'div',
+	        { className: 'topbar' },
+	        React.createElement(
+	          'div',
+	          { className: 'topbar-wrapper' },
+	          React.createElement(
+	            'div',
+	            { className: 'network-items' },
+	            'QuackExchange'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'topbar-links' },
+	            React.createElement(
+	              'div',
+	              { className: 'links-container' },
+	              React.createElement(
+	                'a',
+	                { href: '#/users/signup' },
+	                'sign up'
+	              ),
+	              React.createElement(
+	                'a',
+	                { href: '#/users/login' },
+	                'log in'
+	              )
+	            ),
+	            React.createElement('div', { className: 'search-container' })
+	          )
+	        )
+	      );
+	    }
+	  }
+	});
+
+	module.exports = Header;
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(210).Store;
+	var AppDispatcher = __webpack_require__(229);
+	var CurrentUserConstants = __webpack_require__(244);
+
+	var _currentUser = {};
+	var _currentUserHasBeenFetched = false;
+	var CurrentUserStore = new Store(AppDispatcher);
+
+	CurrentUserStore.currentUser = function () {
+	  return $.extend({}, _currentUser);
+	};
+
+	CurrentUserStore.isLoggedIn = function () {
+	  return !!_currentUser.id;
+	};
+
+	CurrentUserStore.userHasBeenFetched = function () {
+	  return _currentUserHasBeenFetched;
+	};
+
+	CurrentUserStore.__onDispatch = function (payload) {
+	  if (payload.actionType === CurrentUserConstants.RECEIVE_CURRENT_USER) {
+	    _currentUserHasBeenFetched = true;
+	    _currentUser = payload.currentUser;
+	    CurrentUserStore.__emitChange();
+	  }
+	};
+
+	module.exports = CurrentUserStore;
 
 /***/ }
 /******/ ]);

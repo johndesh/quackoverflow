@@ -39,7 +39,7 @@ time, mark, audio, video {
 }
 
  body {
-   font-family: Arial;
+   font-family: "Helvetica Neue", Arial;
  }
 .group:after {
    content: "";
@@ -50,6 +50,37 @@ time, mark, audio, video {
    height: 34px;
    width: 100%;
    background: black;
+ }
+
+ .topbar-wrapper {
+   width: 1060px;
+   display: block;
+   height: 100%;
+
+   margin: auto;
+ }
+
+ .network-items {
+   color: white;
+
+   width: 147px;
+   padding-top: 9px;
+   float: left;
+ }
+
+ .topbar-links {
+   width: 440px;
+   float: right;
+ }
+
+ .links-container a {
+
+   text-decoration: none;
+   color: #e0e0e0;
+   font-size: 13px;
+   padding: 10px 7px 0 7px;
+   display: inline-block;
+
  }
 
  .main {
@@ -74,6 +105,16 @@ time, mark, audio, video {
    margin: 21px 0;
 
    float: left;
+}
+
+.main-header-logo a {
+  background-image: url(/assets/sprites-2b991ba5e6bd52e1ca2b29244ee87ecb9651bab57cb0bab1514b21b04069a284.svg), none;
+  background-position: top left;
+  text-indent: -999em;
+  display: block;
+  width: 200px;
+  height: 50px;
+  background-repeat: no-repeat;
 }
 
 
