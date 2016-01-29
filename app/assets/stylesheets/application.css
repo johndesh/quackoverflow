@@ -377,13 +377,18 @@ time, mark, audio, video {
 .form-controls .submit {
   float: right;
   display: block;
+  outline: none;
   background: #0077cc;
   margin: 5px 0 5px 0;
   width: 130px;
+
   height: 37px;
   text-align: center;
   color: white;
   padding: 12px 40px;
+  box-shadow: none;
+  text-decoration: none;
+  border: none;
   cursor: pointer;
   line-height: 1;
   border-radius: 3px;
