@@ -25,8 +25,8 @@ var routes = (
   <Route path="/" component={App} >
     <IndexRoute component={QuestionsIndex}/>
     <Route path="questions/:questionId" component={QuestionShow}/>
-    <Route path="login" component={ SessionForm }/>
-    <Route path="users/new" component={ UserForm } />
+    <Route path="users/login" component={ SessionForm }/>
+    <Route path="users/signup" component={ UserForm } />
 
   </Route>
 );

@@ -72,8 +72,8 @@
 	  { path: '/', component: App },
 	  React.createElement(IndexRoute, { component: QuestionsIndex }),
 	  React.createElement(Route, { path: 'questions/:questionId', component: QuestionShow }),
-	  React.createElement(Route, { path: 'login', component: SessionForm }),
-	  React.createElement(Route, { path: 'users/new', component: UserForm })
+	  React.createElement(Route, { path: 'users/login', component: SessionForm }),
+	  React.createElement(Route, { path: 'users/signup', component: UserForm })
 	);
 
 	ReactDOM.render(React.createElement(
