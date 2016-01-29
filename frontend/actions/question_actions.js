@@ -1,7 +1,7 @@
 var AppDispatcher = require('../dispatcher/dispatcher');
 var QuestionConstants = require('../constants/question_constants');
 
-var ApiActions = {
+var QuestionActions = {
   receiveAll: function(questions){
     AppDispatcher.dispatch({
       actionType: QuestionConstants.QUESTIONS_RECEIVED,
@@ -18,4 +18,4 @@ var ApiActions = {
 
 };
 
-module.exports = ApiActions;
+module.exports = QuestionActions;

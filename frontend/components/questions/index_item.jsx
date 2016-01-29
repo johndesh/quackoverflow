@@ -14,8 +14,8 @@ var IndexItem = React.createClass({
     var question = this.props.question;
     var timeAgo;
     if (question.answers.length > 0) {
-      var answered = question.answers[question.answers.length - 1].answered
-      var author = question.answers[question.answers.length - 1].author
+      var answered = question.answers[question.answers.length - 1].answered;
+      var author = question.answers[question.answers.length - 1].author;
       timeAgo = <div className="question-details group"><span className="question-details-time">answered {answered} ago </span><span className="question-details-author">{author.username}</span></div>;
     } else if (question.modified !== question.asked) {
       timeAgo = <div className="question-details group"><span className="question-details-time">modified {question.modified} ago </span><span className="question-details-author">{question.author.username}</span></div>;
@@ -47,7 +47,7 @@ var IndexItem = React.createClass({
           </div>
           {timeAgo}
         </div>
-        
+
       </div>
     );
   }

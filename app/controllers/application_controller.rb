@@ -21,4 +21,10 @@ class ApplicationController < ActionController::Base
     user.reset_session_token
     session[:token] = nil
   end
+
+  def ensure_user_logged_in
+    unless current_user
+      render json: ["Not logged in."]
+    end
+  end
 end

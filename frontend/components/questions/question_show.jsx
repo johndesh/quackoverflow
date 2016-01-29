@@ -1,16 +1,16 @@
 var React = require('react');
 var ReactRouter = require('react-router');
-var QuestionStore = require('../stores/question');
-var ApiUtil = require('../util/api_util');
+var QuestionStore = require('../../stores/question');
+var QuestionsApiUtil = require('../../util/questions_api_util');
 var QuestionShow = React.createClass({
 
   getStateFromStore: function () {
-    
+
     return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };
   },
 
   _onChange: function () {
-    
+
     this.setState(this.getStateFromStore());
   },
 
@@ -19,13 +19,13 @@ var QuestionShow = React.createClass({
   },
 
   componentWillReceiveProps: function (newProps) {
-    
-    ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
+
+    QuestionsApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
   },
 
   componentDidMount: function () {
     this.questionListener = QuestionStore.addListener(this._onChange);
-    ApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
+    QuestionsApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
   },
 
   componentWillUnmount: function () {
@@ -33,14 +33,14 @@ var QuestionShow = React.createClass({
   },
 
   render: function () {
-    if(this.state.question === undefined) { return <div></div>; } 
+    if(this.state.question === undefined) { return <div></div>; }
     var Link = ReactRouter.Link;
     var answers = this.state.question.answers.map(function (answer, idx){
       return(
         <li className="answer" key={idx}>{answer.body}</li>
       );
     });
-    var linkTo = "/questions/" + this.props.params.questionId
+    var linkTo = "/questions/" + this.props.params.questionId;
     return(
     <div className="question-index-wrapper">
       <div className="question-header">
