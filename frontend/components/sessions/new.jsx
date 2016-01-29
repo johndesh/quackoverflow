@@ -28,8 +28,9 @@ var SessionForm = React.createClass({
           Password
           <input type="password" name="password" />
         </label>
-
-        <button>Log In</button>
+        <div className="form-controls">
+          <button>Log In</button>
+        </div>
       </form>
     );
   }

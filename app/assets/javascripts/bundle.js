@@ -31586,30 +31586,28 @@
 	          'label',
 	          null,
 	          'Display Name',
-	          React.createElement('br', null),
 	          React.createElement('input', { type: 'text', name: 'username', placeholder: 'J. Doe' })
 	        ),
-	        React.createElement('br', null),
 	        React.createElement(
 	          'label',
 	          null,
 	          'Email (required, but never shown)',
-	          React.createElement('br', null),
 	          React.createElement('input', { type: 'text', name: 'email', placeholder: 'you@example.org' })
 	        ),
-	        React.createElement('br', null),
 	        React.createElement(
 	          'label',
 	          null,
 	          'Password',
-	          React.createElement('br', null),
 	          React.createElement('input', { type: 'password', name: 'password', placeholder: '********' })
 	        ),
-	        React.createElement('br', null),
 	        React.createElement(
-	          'button',
-	          { className: 'submit group' },
-	          'Sign up'
+	          'div',
+	          { className: 'form-controls' },
+	          React.createElement(
+	            'button',
+	            { className: 'submit group' },
+	            'Sign up'
+	          )
 	        )
 	      )
 	    );
@@ -31791,9 +31789,13 @@
 	        React.createElement('input', { type: 'password', name: 'password' })
 	      ),
 	      React.createElement(
-	        'button',
-	        null,
-	        'Log In'
+	        'div',
+	        { className: 'form-controls' },
+	        React.createElement(
+	          'button',
+	          null,
+	          'Log In'
+	        )
 	      )
 	    );
 	  }

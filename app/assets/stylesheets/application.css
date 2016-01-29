@@ -336,10 +336,10 @@ time, mark, audio, video {
 .form-container {
   border: 1px solid rgb(230, 230, 230);
   width: 280px;
-  height: 428px;
   display: block;
   padding: 30px;
   margin: auto;
+
 }
 
 .users-form label {
@@ -368,10 +368,15 @@ time, mark, audio, video {
   border: 1px solid lightblue;
 }
 
-.users-form .submit {
+.form-controls {
+  width: 100%;
+  height: 37px;
+  padding-top: 20px;
+}
+
+.form-controls .submit {
   float: right;
   display: block;
-  outline: none;
   background: #0077cc;
   margin: 5px 0 5px 0;
   width: 130px;
@@ -379,9 +384,6 @@ time, mark, audio, video {
   text-align: center;
   color: white;
   padding: 12px 40px;
-  box-shadow: none;
-  text-decoration: none;
-  border: none;
   cursor: pointer;
   line-height: 1;
   border-radius: 3px;
