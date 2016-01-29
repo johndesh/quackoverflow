@@ -332,3 +332,58 @@ time, mark, audio, video {
 .question-details-author {
   color: #0077cc;
 }
+
+.form-container {
+  border: 1px solid rgb(230, 230, 230);
+  width: 280px;
+  height: 428px;
+  display: block;
+  padding: 30px;
+  margin: auto;
+}
+
+.users-form label {
+  font-family: Arial;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.users-form input {
+  width: 263px;
+  height: 18px;
+  outline: none;
+  display: block;
+  padding: 8px;
+  border: 1px solid rgb(230, 230, 230);
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.users-form input:hover {
+  border-color: lightblue;
+}
+
+.users-form input:focus {
+  box-shadow: none;
+  border: 1px solid lightblue;
+}
+
+.users-form .submit {
+  float: right;
+  display: block;
+  outline: none;
+  background: #0077cc;
+  margin: 5px 0 5px 0;
+  width: 130px;
+  height: 37px;
+  text-align: center;
+  color: white;
+  padding: 12px 40px;
+  box-shadow: none;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+  border-radius: 3px;
+  font-size: 13px;
+}
