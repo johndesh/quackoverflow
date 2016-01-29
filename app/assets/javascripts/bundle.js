@@ -31769,32 +31769,31 @@
 
 	  render: function () {
 	    return React.createElement(
-	      'form',
-	      { onSubmit: this.submit },
+	      'div',
+	      { className: 'form-container' },
 	      React.createElement(
-	        'h1',
-	        null,
-	        'Log In'
-	      ),
-	      React.createElement(
-	        'label',
-	        null,
-	        'Username',
-	        React.createElement('input', { type: 'text', name: 'username' })
-	      ),
-	      React.createElement(
-	        'label',
-	        null,
-	        'Password',
-	        React.createElement('input', { type: 'password', name: 'password' })
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'form-controls' },
+	        'form',
+	        { className: 'users-form', onSubmit: this.submit },
 	        React.createElement(
-	          'button',
+	          'label',
 	          null,
-	          'Log In'
+	          'Email',
+	          React.createElement('input', { type: 'text', name: 'email', placeholder: 'you@example.org' })
+	        ),
+	        React.createElement(
+	          'label',
+	          null,
+	          'Password',
+	          React.createElement('input', { type: 'password', name: 'password', placeholder: '********' })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-controls' },
+	          React.createElement(
+	            'button',
+	            { className: 'submit group' },
+	            'Log in'
+	          )
 	        )
 	      )
 	    );
