@@ -23,7 +23,10 @@ class Api::SessionsController < ApplicationController
   end
 
   def destroy
-    sign_out!
+    if current_user
+      log_out!
+    end
+    render json: {}
   end
 
 end

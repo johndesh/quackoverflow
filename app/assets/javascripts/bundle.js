@@ -31816,6 +31816,7 @@
 	      dataType: 'json',
 	      data: credentials,
 	      success: function (currentUser) {
+	        console.log('logged in');
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success();
 	      }
@@ -31828,7 +31829,7 @@
 	      type: 'DELETE',
 	      dataType: 'json',
 	      success: function () {
-	        console.log("logged out");
+	        CurrentUserActions.receiveCurrentUser({});
 	      }
 	    });
 	  },
@@ -31895,6 +31896,8 @@
 
 	  componentDidMount: function () {
 	    CurrentUserStore.addListener(this._onChange);
+
+	    SessionsApiUtil.fetchCurrentUser();
 	  },
 
 	  _onChange: function () {
@@ -31906,6 +31909,7 @@
 	  },
 
 	  render: function () {
+
 	    if (CurrentUserStore.isLoggedIn()) {
 	      return React.createElement(
 	        'div',

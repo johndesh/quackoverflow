@@ -10,6 +10,8 @@ var Header = React.createClass({
 
   componentDidMount: function () {
     CurrentUserStore.addListener(this._onChange);
+
+    SessionsApiUtil.fetchCurrentUser();
   },
 
   _onChange: function () {
@@ -21,6 +23,7 @@ var Header = React.createClass({
   },
 
   render: function () {
+
     if (CurrentUserStore.isLoggedIn()) {
       return (
         <div className="topbar">
