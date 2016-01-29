@@ -33,11 +33,11 @@ var SessionForm = React.createClass({
 
   render: function () {
     var errors;
-    console.log(this.state.errors);
+
     if (this.state.errors.responseJSON === undefined) {
       errors = <div></div>;
     } else {
-      errors = <div className="form-error">{this.state.errors.responseJSON[0]}</div>;
+      errors = <div className="form-error"><div className="message-tip group"></div>{this.state.errors.responseJSON[0]}</div>;
     }
     return (
       <div className="form-container">

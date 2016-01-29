@@ -426,3 +426,22 @@ time, mark, audio, video {
   cursor: pointer;
   margin-top: 5px;
 }
+
+.form-error {
+  position: absolute;
+  padding: 15px 35px 15px 15px;
+  text-align: left;
+  font-size: 13px;
+  color: white;
+  top: 215px;
+  left: 60%;
+  background-color: #C04848;
+}
+
+.message-tip {
+  position: absolute;
+  top: 0;
+  left: -9px;
+  border-left: 9px solid transparent;
+  border-top: 9px  solid #C04848;
+}

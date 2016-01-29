@@ -31786,13 +31786,14 @@
 
 	  render: function () {
 	    var errors;
-	    console.log(this.state.errors);
+
 	    if (this.state.errors.responseJSON === undefined) {
 	      errors = React.createElement('div', null);
 	    } else {
 	      errors = React.createElement(
 	        'div',
 	        { className: 'form-error' },
+	        React.createElement('div', { className: 'message-tip group' }),
 	        this.state.errors.responseJSON[0]
 	      );
 	    }
