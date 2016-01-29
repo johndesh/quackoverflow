@@ -23,17 +23,23 @@ var Header = React.createClass({
   },
 
   render: function () {
-
-    if (CurrentUserStore.isLoggedIn()) {
+    if (!CurrentUserStore.userHasBeenFetched()) {
+      return(
+        <div className="topbar">
+          <div className="topbar-wrapper">
+            <div className="network-items group">QuackExchange</div>
+          </div>
+        </div>
+        );
+    } else if (CurrentUserStore.isLoggedIn()) {
       return (
         <div className="topbar">
           <div className="topbar-wrapper">
             <div className="network-items group">QuackExchange</div>
             <div className="topbar-links group">
               <div className="links-container">
-                Logged in as
-                { this.state.currentUser.email }
-                <button onClick={ this.logout }>Log Out</button>
+                <p className="group">Logged in as { this.state.currentUser.username }</p>
+                <button onClick={ this.logout } className="logout group">Log Out</button>
               </div>
               <div className="search-container"></div>
           </div>

@@ -374,6 +374,15 @@ time, mark, audio, video {
   padding-top: 20px;
 }
 
+.guest-login {
+  float: left;
+  position: relative;
+  top: 15px;
+  text-decoration: none;
+  color: #0077cc;
+  font-size: 13px;
+}
+
 .form-controls .submit {
   float: right;
   display: block;
@@ -393,4 +402,26 @@ time, mark, audio, video {
   line-height: 1;
   border-radius: 3px;
   font-size: 13px;
+}
+
+.links-container p {
+  color: white;
+  float: left;
+  font-size: 11px;
+  margin-top: 11px;
+  padding: 0 10px 0 0;
+}
+.logout {
+  float: left;
+  display: block;
+  border: none;
+  outline: none;
+
+  padding: 5px;
+  box-shadow: none;
+  background: #0077cc;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-top: 5px;
 }

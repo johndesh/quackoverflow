@@ -14,6 +14,16 @@ var SessionForm = React.createClass({
     }.bind(this));
   },
 
+  login_as_guest: function (e) {
+    e.preventDefault();
+
+    var credentials = { email: "guest@fake.com", password: "password" };
+
+    SessionsApiUtil.login(credentials, function () {
+      this.history.pushState({}, "/");
+    }.bind(this));
+  },
+
   render: function () {
     return (
       <div className="form-container">
@@ -29,6 +39,7 @@ var SessionForm = React.createClass({
             <input type="password" name="password" placeholder="********"/>
           </label>
           <div className="form-controls">
+            <a href="#" onClick={this.login_as_guest} className="guest-login group">Log in as guest user</a>
             <button className="submit group">Log in</button>
           </div>
         </form>

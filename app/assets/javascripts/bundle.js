@@ -31767,6 +31767,16 @@
 	    }.bind(this));
 	  },
 
+	  login_as_guest: function (e) {
+	    e.preventDefault();
+
+	    var credentials = { email: "guest@fake.com", password: "password" };
+
+	    SessionsApiUtil.login(credentials, function () {
+	      this.history.pushState({}, "/");
+	    }.bind(this));
+	  },
+
 	  render: function () {
 	    return React.createElement(
 	      'div',
@@ -31789,6 +31799,11 @@
 	        React.createElement(
 	          'div',
 	          { className: 'form-controls' },
+	          React.createElement(
+	            'a',
+	            { href: '#', onClick: this.login_as_guest, className: 'guest-login group' },
+	            'Log in as guest user'
+	          ),
 	          React.createElement(
 	            'button',
 	            { className: 'submit group' },
@@ -31909,8 +31924,21 @@
 	  },
 
 	  render: function () {
-
-	    if (CurrentUserStore.isLoggedIn()) {
+	    if (!CurrentUserStore.userHasBeenFetched()) {
+	      return React.createElement(
+	        'div',
+	        { className: 'topbar' },
+	        React.createElement(
+	          'div',
+	          { className: 'topbar-wrapper' },
+	          React.createElement(
+	            'div',
+	            { className: 'network-items group' },
+	            'QuackExchange'
+	          )
+	        )
+	      );
+	    } else if (CurrentUserStore.isLoggedIn()) {
 	      return React.createElement(
 	        'div',
 	        { className: 'topbar' },
@@ -31928,11 +31956,15 @@
 	            React.createElement(
 	              'div',
 	              { className: 'links-container' },
-	              'Logged in as',
-	              this.state.currentUser.email,
+	              React.createElement(
+	                'p',
+	                { className: 'group' },
+	                'Logged in as ',
+	                this.state.currentUser.username
+	              ),
 	              React.createElement(
 	                'button',
-	                { onClick: this.logout },
+	                { onClick: this.logout, className: 'logout group' },
 	                'Log Out'
 	              )
 	            ),
