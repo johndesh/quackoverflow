@@ -52,4 +52,3 @@ Question.all[3].views.create(user_id: guest.id)
 
 Question.last.views.create(user_id: example.id)
 Question.last.views.create(user_id: users.first.id)
-
