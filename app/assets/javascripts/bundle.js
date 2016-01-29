@@ -31831,7 +31831,7 @@
 	      dataType: 'json',
 	      data: credentials,
 	      success: function (currentUser) {
-	        console.log('logged in');
+
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success();
 	      }
@@ -31855,7 +31855,7 @@
 	      type: 'GET',
 	      dataType: 'json',
 	      success: function (currentUser) {
-	        console.log("fetched current user");
+
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        cb && cb(currentUser);
 	      }
