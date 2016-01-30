@@ -96,6 +96,7 @@ time, mark, audio, video {
    box-shadow: rgba(34, 36, 38, 0.0980392) 0px 1px 2px 0px inset;
    line-height: normal;
    background-image: url(/assets/share-sprite-new-87a5f5cd82547abe85298c6e3b1e84c60306265eaf240b21fecad7aec40c2b98.svg), none;
+   background-position: -269px -92px;
    font-weight: normal;
    text-shadow: none;
  }
