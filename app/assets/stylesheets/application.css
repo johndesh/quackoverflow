@@ -97,8 +97,7 @@ time, mark, audio, video {
    line-height: normal;
    background-image: url(/assets/share-sprite-new-87a5f5cd82547abe85298c6e3b1e84c60306265eaf240b21fecad7aec40c2b98.svg), none;
    background-position: -269px -92px;
-   background-clip: border-box;
-   background-origin: padding-box;
+   background-repeat: no-repeat;   
    font-weight: normal;
    text-shadow: none;
  }
