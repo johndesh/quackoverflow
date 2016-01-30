@@ -1,8 +1,8 @@
 # QUACKoverflow
 
-[Heroku link][heroku] **NB:** This should be a link to your production site
+[Heroku link][heroku]
 
-[heroku]: http://www.herokuapp.com
+[heroku]: http://quack-overflow.herokuapp.com
 
 ## Minimum Viable Product
 
@@ -24,8 +24,8 @@ and React.js. QUACKoverflow allows users to:
 * [View Wireframes][view]
 * [DB schema][schema]
 
-[view]: ./docs/views.md
-[schema]: ./docs/schema.md
+[view]: ./views.md
+[schema]: ./schema.md
 
 ## Implementation Timeline
 
@@ -82,8 +82,8 @@ or answer. This will be used to order the answers on the question show page.
 - [ ] Allow different 'forums' for questions to be organized by (beyond tagging)
 
 
-[phase-one]: ./docs/phases/phase1.md
-[phase-two]: ./docs/phases/phase2.md
-[phase-three]: ./docs/phases/phase3.md
-[phase-four]: ./docs/phases/phase4.md
-[phase-five]: ./docs/phases/phase5.md
+[phase-one]: ./phases/phase1.md
+[phase-two]: ./phases/phase2.md
+[phase-three]: ./phases/phase3.md
+[phase-four]: ./phases/phase4.md
+[phase-five]: ./phases/phase5.md
