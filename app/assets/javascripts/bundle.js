@@ -55,6 +55,7 @@
 	var SessionForm = __webpack_require__(239);
 	var QuestionsIndex = __webpack_require__(240);
 	var QuestionShow = __webpack_require__(246);
+	var QuestionForm = __webpack_require__(253);
 	var SearchResults = __webpack_require__(252);
 	var App = React.createClass({
 	  displayName: 'App',
@@ -91,6 +92,7 @@
 	  { path: '/', component: App },
 	  React.createElement(IndexRoute, { component: QuestionsIndex }),
 	  React.createElement(Route, { path: 'search', component: SearchResults }),
+	  React.createElement(Route, { path: 'questions/ask', component: QuestionForm }),
 	  React.createElement(Route, { path: 'questions/:questionId', component: QuestionShow }),
 	  React.createElement(Route, { path: 'users/login', component: SessionForm }),
 	  React.createElement(Route, { path: 'users/signup', component: UserForm })
@@ -31823,9 +31825,10 @@
 	    });
 	  },
 
-	  createQuestion: function (data) {
+	  createQuestion: function (data, callback) {
 	    $.post('api/questions', { question: data }, function (question) {
-	      QuestionActions.receiveAll([question]);
+	      QuestionActions.receiveSingleQuestion(question);
+	      callback && callback(question.id);
 	    });
 	  }
 	};
@@ -32050,13 +32053,18 @@
 	      return React.createElement('div', null);
 	    }
 	    var Link = ReactRouter.Link;
-	    var answers = this.state.question.answers.map(function (answer, idx) {
-	      return React.createElement(
-	        'li',
-	        { className: 'answer', key: idx },
-	        answer.body
-	      );
-	    });
+	    var answers;
+	    if (this.state.question.answers) {
+	      answers = this.state.question.answers.map(function (answer, idx) {
+	        return React.createElement(
+	          'li',
+	          { className: 'answer', key: idx },
+	          answer.body
+	        );
+	      });
+	    } else {
+	      answers = React.createElement('div', null);
+	    }
 	    var linkTo = "/questions/" + this.props.params.questionId;
 	    return React.createElement(
 	      'div',
@@ -32250,6 +32258,59 @@
 	});
 
 	module.exports = SearchResults;
+
+/***/ },
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var QuestionsApiUtil = __webpack_require__(243);
+	var History = __webpack_require__(159).History;
+
+	var QuestionForm = React.createClass({
+	  displayName: 'QuestionForm',
+
+	  mixins: [History],
+
+	  getInitialState: function () {
+	    return { title: "", body: "" };
+	  },
+
+	  createQuestion: function (e) {
+	    e.preventDefault();
+	    var question = $(e.currentTarget).serializeJSON();
+	    QuestionsApiUtil.createQuestion(question, function (id) {
+	      this.history.pushState(null, "/questions/" + id, {});
+	    }.bind(this));
+	  },
+
+	  render: function () {
+	    return React.createElement(
+	      'form',
+	      { className: 'new-question', onSubmit: this.createQuestion },
+	      React.createElement(
+	        'label',
+	        null,
+	        'Title',
+	        React.createElement('input', { type: 'text', name: 'title' })
+	      ),
+	      React.createElement(
+	        'label',
+	        null,
+	        'Question',
+	        React.createElement('textarea', { name: 'body' })
+	      ),
+	      React.createElement(
+	        'button',
+	        null,
+	        'Ask Question'
+	      )
+	    );
+	  }
+
+	});
+
+	module.exports = QuestionForm;
 
 /***/ }
 /******/ ]);

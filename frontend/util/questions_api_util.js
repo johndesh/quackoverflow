@@ -11,13 +11,13 @@ var QuestionsApiUtil = {
   fetchSingleQuestion: function(id){
     $.get('api/questions/' + id, function(question){
       QuestionActions.receiveSingleQuestion(question);
-
     });
   },
 
-  createQuestion: function(data){
+  createQuestion: function(data, callback){
     $.post('api/questions', { question: data }, function(question) {
-      QuestionActions.receiveAll([question]);
+      QuestionActions.receiveSingleQuestion(question);
+      callback && callback(question.id)
     });
   },
 };

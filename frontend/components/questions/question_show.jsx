@@ -35,11 +35,16 @@ var QuestionShow = React.createClass({
   render: function () {
     if(this.state.question === undefined) { return <div></div>; }
     var Link = ReactRouter.Link;
-    var answers = this.state.question.answers.map(function (answer, idx){
-      return(
-        <li className="answer" key={idx}>{answer.body}</li>
-      );
-    });
+    var answers;
+    if (this.state.question.answers) {
+      answers = this.state.question.answers.map(function (answer, idx){
+        return(
+          <li className="answer" key={idx}>{answer.body}</li>
+        );
+      });
+    } else {
+      answers = <div></div>;
+    }
     var linkTo = "/questions/" + this.props.params.questionId;
     return(
     <div className="question-index-wrapper">

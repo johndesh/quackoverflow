@@ -9,7 +9,8 @@ var UserForm = require('./components/users/user_form');
 var SessionForm = require('./components/sessions/new');
 var QuestionsIndex = require('./components/questions/index');
 var QuestionShow = require('./components/questions/question_show');
-var SearchResults = require('./components/search_results.jsx')
+var QuestionForm = require('./components/questions/question_form');
+var SearchResults = require('./components/search_results.jsx');
 var App = React.createClass({
   render: function(){
     return (
@@ -34,6 +35,7 @@ var routes = (
   <Route path="/" component={App} >
     <IndexRoute component={QuestionsIndex}/>
     <Route path="search" component={SearchResults}/>
+    <Route path="questions/ask" component={QuestionForm}/>
     <Route path="questions/:questionId" component={QuestionShow}/>
     <Route path="users/login" component={ SessionForm }/>
     <Route path="users/signup" component={ UserForm } />
