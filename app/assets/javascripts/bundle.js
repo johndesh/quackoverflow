@@ -55,7 +55,7 @@
 	var SessionForm = __webpack_require__(239);
 	var QuestionsIndex = __webpack_require__(240);
 	var QuestionShow = __webpack_require__(246);
-
+	var SearchResults = __webpack_require__(252);
 	var App = React.createClass({
 	  displayName: 'App',
 
@@ -90,6 +90,7 @@
 	  Route,
 	  { path: '/', component: App },
 	  React.createElement(IndexRoute, { component: QuestionsIndex }),
+	  React.createElement(Route, { path: 'search', component: SearchResults }),
 	  React.createElement(Route, { path: 'questions/:questionId', component: QuestionShow }),
 	  React.createElement(Route, { path: 'users/login', component: SessionForm }),
 	  React.createElement(Route, { path: 'users/signup', component: UserForm })
@@ -24350,10 +24351,12 @@
 	var React = __webpack_require__(1);
 	var SessionsApiUtil = __webpack_require__(209);
 	var CurrentUserStore = __webpack_require__(216);
-	var Search = __webpack_require__(247);
+	var History = __webpack_require__(159).History;
 
 	var Header = React.createClass({
 	  displayName: 'Header',
+
+	  mixins: [History],
 
 	  getInitialState: function () {
 	    return { currentUser: {} };
@@ -24375,6 +24378,16 @@
 
 	  logout: function () {
 	    SessionsApiUtil.logout();
+	  },
+
+	  search: function (e) {
+	    var code = e.keyCode ? e.keyCode : e.which;
+	    if (code === 13) {
+	      var query = e.target.value;
+	      this.history.pushState(null, '/search', { query: query });
+	    } else {
+	      // do nothing...
+	    }
 	  },
 
 	  render: function () {
@@ -24409,7 +24422,7 @@
 	            { className: 'topbar-links group' },
 	            React.createElement(
 	              'div',
-	              { className: 'links-container' },
+	              { className: 'links-container group' },
 	              React.createElement(
 	                'p',
 	                { className: 'group' },
@@ -24425,7 +24438,7 @@
 	            React.createElement(
 	              'div',
 	              { className: 'search-container group' },
-	              React.createElement(Search, null)
+	              React.createElement('input', { type: 'text', placeholder: 'Search Q&A', onKeyUp: this.search })
 	            )
 	          )
 	        )
@@ -24439,15 +24452,15 @@
 	          { className: 'topbar-wrapper' },
 	          React.createElement(
 	            'div',
-	            { className: 'network-items' },
+	            { className: 'network-items group' },
 	            'QuackExchange'
 	          ),
 	          React.createElement(
 	            'div',
-	            { className: 'topbar-links' },
+	            { className: 'topbar-links group' },
 	            React.createElement(
 	              'div',
-	              { className: 'links-container' },
+	              { className: 'links-container group' },
 	              React.createElement(
 	                'a',
 	                { href: '#/users/signup' },
@@ -24462,7 +24475,7 @@
 	            React.createElement(
 	              'div',
 	              { className: 'search-container group' },
-	              React.createElement(Search, null)
+	              React.createElement('input', { type: 'text', placeholder: 'Search Q&A', onKeyUp: this.search })
 	            )
 	          )
 	        )
@@ -32082,73 +32095,7 @@
 	module.exports = QuestionShow;
 
 /***/ },
-/* 247 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var SearchResultsStore = __webpack_require__(248);
-	var SearchApiUtil = __webpack_require__(250);
-	var QuestionIndexItem = __webpack_require__(245);
-
-	var Search = React.createClass({
-	  displayName: 'Search',
-
-	  componentDidMount: function () {
-	    this.listener = SearchResultsStore.addListener(this._onChange);
-	  },
-
-	  getInitialState: function () {
-	    return { page: 1, query: "" };
-	  },
-
-	  _onChange: function () {
-	    this.forceUpdate();
-	  },
-
-	  search: function (e) {
-	    var code = e.keyCode ? e.keyCode : e.which;
-	    if (code === 13) {
-	      var query = e.target.value;
-	      SearchApiUtil.search(query, 1);
-	      this.setState({ page: 1, query: query });
-	    } else {
-	      // do nothing
-	    }
-	  },
-
-	  nextPage: function () {
-	    var nextPage = this.state.page + 1;
-	    SearchApiUtil.search(this.state.query, nextPage);
-
-	    this.setState({ page: nextPage });
-	  },
-
-	  componentWillUnmount: function () {
-	    this.listener.remove();
-	  },
-
-	  render: function () {
-
-	    // var searchResults = SearchResultsStore.all().map(function (searchResult) {
-	    //   if (searchResult._type === "User") {
-	    //     return <UserIndexItem user={searchResult} />;
-	    //   } else {
-	    //     return <QuestionIndexItem question={searchResult} />;
-	    //   }
-	    // });
-
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement('input', { type: 'text', placeholder: 'Search Q&A', onKeyUp: this.search })
-	    );
-	  }
-
-	});
-
-	module.exports = Search;
-
-/***/ },
+/* 247 */,
 /* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -32234,6 +32181,69 @@
 	};
 
 	module.exports = SearchActions;
+
+/***/ },
+/* 252 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var SearchResultsStore = __webpack_require__(248);
+	var SearchApiUtil = __webpack_require__(250);
+	var QuestionIndexItem = __webpack_require__(245);
+
+	var SearchResults = React.createClass({
+	  displayName: 'SearchResults',
+
+	  componentDidMount: function () {
+	    this.listener = SearchResultsStore.addListener(this._onChange);
+	    SearchApiUtil.search(this.state.query);
+	  },
+
+	  getInitialState: function () {
+
+	    var query = this.props.location.query;
+	    return query;
+	  },
+
+	  _onChange: function () {
+	    this.forceUpdate();
+	  },
+
+	  search: function (e) {
+	    SearchApiUtil.search(query);
+	  },
+
+	  nextPage: function () {
+	    var nextPage = this.state.page + 1;
+	    SearchApiUtil.search(this.state.query, nextPage);
+
+	    this.setState({ page: nextPage });
+	  },
+
+	  componentWillUnmount: function () {
+	    this.listener.remove();
+	  },
+
+	  render: function () {
+
+	    var searchResults = SearchResultsStore.all().map(function (searchResult, idx) {
+	      return React.createElement(QuestionIndexItem, { question: searchResult, key: idx });
+	    });
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'ul',
+	        null,
+	        searchResults
+	      )
+	    );
+	  }
+
+	});
+
+	module.exports = SearchResults;
 
 /***/ }
 /******/ ]);

@@ -3,14 +3,17 @@ var SearchResultsStore = require('../stores/search_results_store');
 var SearchApiUtil = require('../util/search_api_util');
 var QuestionIndexItem = require('./questions/index_item');
 
-var Search = React.createClass({
+var SearchResults = React.createClass({
 
   componentDidMount: function() {
     this.listener = SearchResultsStore.addListener(this._onChange);
+    SearchApiUtil.search(this.state.query);
   },
 
   getInitialState: function () {
-    return {page: 1, query: ""};
+
+    var query = this.props.location.query;
+    return query;
   },
 
   _onChange: function() {
@@ -18,14 +21,7 @@ var Search = React.createClass({
   },
 
   search: function (e) {
-    var code = e.keyCode ? e.keyCode : e.which;
-    if (code === 13) {
-      var query = e.target.value;
-      SearchApiUtil.search(query, 1);
-      this.setState({page: 1, query: query});
-    } else {
-      // do nothing
-    }
+      SearchApiUtil.search(query);
   },
 
   nextPage: function () {
@@ -41,19 +37,15 @@ var Search = React.createClass({
 
   render: function() {
 
-    // var searchResults = SearchResultsStore.all().map(function (searchResult) {
-    //   if (searchResult._type === "User") {
-    //     return <UserIndexItem user={searchResult} />;
-    //   } else {
-    //     return <QuestionIndexItem question={searchResult} />;
-    //   }
-    // });
+    var searchResults = SearchResultsStore.all().map(function (searchResult, idx) {
+        return <QuestionIndexItem question={searchResult} key={idx}/>;
+    });
 
     return (
       <div>
-
-      <input type="text" placeholder="Search Q&A" onKeyUp={ this.search } />
-
+        <ul>
+          {searchResults}
+        </ul>
       </div>
     );
   },
@@ -61,4 +53,4 @@ var Search = React.createClass({
 
 });
 
-module.exports = Search;
+module.exports = SearchResults;

@@ -49,13 +49,16 @@ time, mark, audio, video {
  .topbar {
    height: 34px;
    width: 100%;
+   display: block;
    background: black;
+   position: relative;
  }
 
  .topbar-wrapper {
    width: 1060px;
    display: block;
    height: 100%;
+   background: black;
 
    margin: auto;
  }
@@ -70,18 +73,20 @@ time, mark, audio, video {
 
  .topbar-links {
    width: 440px;
+   height: 100%;
    float: right;
 
  }
  .links-container {
    width: 150px;
+   height: 100%;
    float: left;
  }
 
  .search-container {
    float: right;
    width: 237px;
-   height: 27px;
+   height: 100%;
    margin-top: 1px;
 
  }
@@ -97,7 +102,7 @@ time, mark, audio, video {
    line-height: normal;
    background-image: url(/assets/share-sprite-new-87a5f5cd82547abe85298c6e3b1e84c60306265eaf240b21fecad7aec40c2b98.svg), none;
    background-position: -269px -92px;
-   background-repeat: no-repeat;   
+   background-repeat: no-repeat;
    font-weight: normal;
    text-shadow: none;
  }
