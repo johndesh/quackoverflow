@@ -16,12 +16,19 @@ var SearchResults = React.createClass({
     return query;
   },
 
+  componentWillReceiveProps: function (newProps) {
+
+    this.search(newProps.location.query.query)
+  },
+
   _onChange: function() {
+
     this.forceUpdate();
   },
 
-  search: function (e) {
+  search: function (query) {
       SearchApiUtil.search(query);
+    
   },
 
   nextPage: function () {
