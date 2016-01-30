@@ -1,6 +1,7 @@
 var React = require('react');
 var SessionsApiUtil = require('./../util/sessions_api_util');
 var CurrentUserStore = require('./../stores/current_user_store');
+var Search = require('./search');
 
 var Header = React.createClass({
 
@@ -45,7 +46,7 @@ var Header = React.createClass({
                 <p className="group">Logged in as { this.state.currentUser.username }</p>
                 <button onClick={ this.logout } className="logout group">Log Out</button>
               </div>
-              <div className="search-container"></div>
+              <div className="search-container group"><Search /></div>
           </div>
         </div>
       </div>
@@ -60,7 +61,7 @@ var Header = React.createClass({
                 <a href="#/users/signup">sign up</a>
                 <a href="#/users/login">log in</a>
               </div>
-              <div className="search-container"></div>
+              <div className="search-container group"><Search /></div>
             </div>
           </div>
         </div>

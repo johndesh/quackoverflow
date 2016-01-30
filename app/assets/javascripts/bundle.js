@@ -50,11 +50,11 @@
 	var Router = ReactRouter.Router;
 	var Route = ReactRouter.Route;
 	var IndexRoute = ReactRouter.IndexRoute;
-	var Header = __webpack_require__(245);
-	var UserForm = __webpack_require__(236);
-	var SessionForm = __webpack_require__(241);
-	var QuestionsIndex = __webpack_require__(208);
-	var QuestionShow = __webpack_require__(235);
+	var Header = __webpack_require__(208);
+	var UserForm = __webpack_require__(234);
+	var SessionForm = __webpack_require__(239);
+	var QuestionsIndex = __webpack_require__(240);
+	var QuestionShow = __webpack_require__(246);
 
 	var App = React.createClass({
 	  displayName: 'App',
@@ -24348,147 +24348,211 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var QuestionStore = __webpack_require__(209);
-	var QuestionsApiUtil = __webpack_require__(232);
-	var IndexItem = __webpack_require__(234);
-	var Index = React.createClass({
-	  displayName: 'Index',
+	var SessionsApiUtil = __webpack_require__(209);
+	var CurrentUserStore = __webpack_require__(216);
+	var Search = __webpack_require__(247);
+
+	var Header = React.createClass({
+	  displayName: 'Header',
 
 	  getInitialState: function () {
-	    return { questions: QuestionStore.all() };
-	  },
-
-	  _questionsChanged: function () {
-	    this.setState({ questions: QuestionStore.all() });
+	    return { currentUser: {} };
 	  },
 
 	  componentDidMount: function () {
-	    this.questionListener = QuestionStore.addListener(this._questionsChanged);
-	    QuestionsApiUtil.fetchQuestions();
+	    CurrentUserStore.addListener(this._onChange);
+
+	    SessionsApiUtil.fetchCurrentUser();
 	  },
 
 	  componentWillUnmount: function () {
-	    this.questionListener.remove();
+	    CurrentUserStore.remove(this._onChange);
+	  },
+
+	  _onChange: function () {
+	    this.setState({ currentUser: CurrentUserStore.currentUser() });
+	  },
+
+	  logout: function () {
+	    SessionsApiUtil.logout();
 	  },
 
 	  render: function () {
-	    var questions = this.state.questions.map(function (question, idx) {
-	      return React.createElement(IndexItem, { key: idx, question: question });
-	    });
-	    var _handleClick = function (e) {
-	      e.preventDefault();
-	      $('.sub-header-nav').children('a').removeClass('clicked');
-	      $(e.currentTarget).addClass("clicked");
-	    };
-
-	    return React.createElement(
-	      'div',
-	      { className: 'question-index-wrapper' },
-	      React.createElement(
+	    if (!CurrentUserStore.userHasBeenFetched()) {
+	      return React.createElement(
 	        'div',
-	        { className: 'sub-header' },
+	        { className: 'topbar' },
 	        React.createElement(
-	          'h2',
-	          { className: 'group' },
-	          'Top Questions'
-	        ),
-	        React.createElement(
-	          'nav',
-	          { className: 'sub-header-nav group' },
+	          'div',
+	          { className: 'topbar-wrapper' },
 	          React.createElement(
-	            'a',
-	            { href: '#', onClick: _handleClick, className: 'clicked group' },
-	            'interesting'
-	          ),
-	          React.createElement(
-	            'a',
-	            { href: '#', onClick: _handleClick, className: 'group' },
-	            'featured',
-	            React.createElement(
-	              'span',
-	              { className: 'featured-count-tab group' },
-	              '391'
-	            )
-	          ),
-	          React.createElement(
-	            'a',
-	            { href: '#', onClick: _handleClick, className: 'group' },
-	            'hot'
-	          ),
-	          React.createElement(
-	            'a',
-	            { href: '#', onClick: _handleClick, className: 'group' },
-	            'week'
-	          ),
-	          React.createElement(
-	            'a',
-	            { href: '#', onClick: _handleClick, className: 'group' },
-	            'month'
+	            'div',
+	            { className: 'network-items group' },
+	            'QuackExchange'
 	          )
 	        )
-	      ),
-	      React.createElement(
+	      );
+	    } else if (CurrentUserStore.isLoggedIn()) {
+	      return React.createElement(
 	        'div',
-	        { className: 'question-index group' },
-	        questions
-	      )
-	    );
+	        { className: 'topbar' },
+	        React.createElement(
+	          'div',
+	          { className: 'topbar-wrapper' },
+	          React.createElement(
+	            'div',
+	            { className: 'network-items group' },
+	            'QuackExchange'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'topbar-links group' },
+	            React.createElement(
+	              'div',
+	              { className: 'links-container' },
+	              React.createElement(
+	                'p',
+	                { className: 'group' },
+	                'Logged in as ',
+	                this.state.currentUser.username
+	              ),
+	              React.createElement(
+	                'button',
+	                { onClick: this.logout, className: 'logout group' },
+	                'Log Out'
+	              )
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'search-container group' },
+	              React.createElement(Search, null)
+	            )
+	          )
+	        )
+	      );
+	    } else {
+	      return React.createElement(
+	        'div',
+	        { className: 'topbar' },
+	        React.createElement(
+	          'div',
+	          { className: 'topbar-wrapper' },
+	          React.createElement(
+	            'div',
+	            { className: 'network-items' },
+	            'QuackExchange'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'topbar-links' },
+	            React.createElement(
+	              'div',
+	              { className: 'links-container' },
+	              React.createElement(
+	                'a',
+	                { href: '#/users/signup' },
+	                'sign up'
+	              ),
+	              React.createElement(
+	                'a',
+	                { href: '#/users/login' },
+	                'log in'
+	              )
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'search-container group' },
+	              React.createElement(Search, null)
+	            )
+	          )
+	        )
+	      );
+	    }
 	  }
 	});
 
-	module.exports = Index;
+	module.exports = Header;
 
 /***/ },
 /* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Store = __webpack_require__(210).Store;
-	var _questions = {};
-	var QuestionConstants = __webpack_require__(228);
-	var AppDispatcher = __webpack_require__(229);
+	var CurrentUserActions = __webpack_require__(210);
 
-	var QuestionStore = new Store(AppDispatcher);
+	var SessionsApiUtil = {
+	  login: function (credentials, success, error) {
+	    $.ajax({
+	      url: '/api/session',
+	      type: 'POST',
+	      dataType: 'json',
+	      data: credentials,
+	      success: function (currentUser) {
 
-	var resetQuestions = function (questions) {
-	  _questions = {};
-	  questions.forEach(function (question) {
-	    _questions[question.id] = question;
-	  });
-	};
+	        CurrentUserActions.receiveCurrentUser(currentUser);
+	        success && success();
+	      },
+	      error: function (data) {
+	        error && error(data);
+	      }
+	    });
+	  },
 
-	var resetQuestion = function (question) {
-	  _questions[question.id] = question;
-	};
+	  logout: function () {
+	    $.ajax({
+	      url: '/api/session',
+	      type: 'DELETE',
+	      dataType: 'json',
+	      success: function () {
+	        CurrentUserActions.receiveCurrentUser({});
+	      }
+	    });
+	  },
 
-	QuestionStore.all = function () {
-	  var questions = [];
-	  for (var id in _questions) {
-	    questions.push(_questions[id]);
+	  fetchCurrentUser: function (cb) {
+	    $.ajax({
+	      url: '/api/session',
+	      type: 'GET',
+	      dataType: 'json',
+	      success: function (currentUser) {
+
+	        CurrentUserActions.receiveCurrentUser(currentUser);
+	        cb && cb(currentUser);
+	      }
+	    });
 	  }
-	  return questions;
 	};
 
-	QuestionStore.find = function (id) {
-	  return _questions[id];
-	};
-
-	QuestionStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case QuestionConstants.QUESTIONS_RECEIVED:
-	      resetQuestions(payload.questions);
-	      QuestionStore.__emitChange();
-	      break;
-	    case QuestionConstants.QUESTION_RECEIVED:
-	      resetQuestion(payload.question);
-	      QuestionStore.__emitChange();
-	      break;
-	  }
-	};
-
-	module.exports = QuestionStore;
+	module.exports = SessionsApiUtil;
 
 /***/ },
 /* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(211);
+	var CurrentUserConstants = __webpack_require__(215);
+
+	var CurrentUserActions = {
+
+	  receiveCurrentUser: function (currentUser) {
+	    AppDispatcher.dispatch({
+	      actionType: CurrentUserConstants.RECEIVE_CURRENT_USER,
+	      currentUser: currentUser
+	    });
+	  }
+	};
+
+	module.exports = CurrentUserActions;
+
+/***/ },
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Dispatcher = __webpack_require__(212).Dispatcher;
+
+	module.exports = new Dispatcher();
+
+/***/ },
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24500,15 +24564,367 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 */
 
-	module.exports.Container = __webpack_require__(211);
-	module.exports.MapStore = __webpack_require__(215);
-	module.exports.Mixin = __webpack_require__(227);
-	module.exports.ReduceStore = __webpack_require__(216);
-	module.exports.Store = __webpack_require__(217);
+	module.exports.Dispatcher = __webpack_require__(213);
 
 
 /***/ },
-/* 211 */
+/* 213 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright (c) 2014-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule Dispatcher
+	 * 
+	 * @preventMunge
+	 */
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var invariant = __webpack_require__(214);
+
+	var _prefix = 'ID_';
+
+	/**
+	 * Dispatcher is used to broadcast payloads to registered callbacks. This is
+	 * different from generic pub-sub systems in two ways:
+	 *
+	 *   1) Callbacks are not subscribed to particular events. Every payload is
+	 *      dispatched to every registered callback.
+	 *   2) Callbacks can be deferred in whole or part until other callbacks have
+	 *      been executed.
+	 *
+	 * For example, consider this hypothetical flight destination form, which
+	 * selects a default city when a country is selected:
+	 *
+	 *   var flightDispatcher = new Dispatcher();
+	 *
+	 *   // Keeps track of which country is selected
+	 *   var CountryStore = {country: null};
+	 *
+	 *   // Keeps track of which city is selected
+	 *   var CityStore = {city: null};
+	 *
+	 *   // Keeps track of the base flight price of the selected city
+	 *   var FlightPriceStore = {price: null}
+	 *
+	 * When a user changes the selected city, we dispatch the payload:
+	 *
+	 *   flightDispatcher.dispatch({
+	 *     actionType: 'city-update',
+	 *     selectedCity: 'paris'
+	 *   });
+	 *
+	 * This payload is digested by `CityStore`:
+	 *
+	 *   flightDispatcher.register(function(payload) {
+	 *     if (payload.actionType === 'city-update') {
+	 *       CityStore.city = payload.selectedCity;
+	 *     }
+	 *   });
+	 *
+	 * When the user selects a country, we dispatch the payload:
+	 *
+	 *   flightDispatcher.dispatch({
+	 *     actionType: 'country-update',
+	 *     selectedCountry: 'australia'
+	 *   });
+	 *
+	 * This payload is digested by both stores:
+	 *
+	 *   CountryStore.dispatchToken = flightDispatcher.register(function(payload) {
+	 *     if (payload.actionType === 'country-update') {
+	 *       CountryStore.country = payload.selectedCountry;
+	 *     }
+	 *   });
+	 *
+	 * When the callback to update `CountryStore` is registered, we save a reference
+	 * to the returned token. Using this token with `waitFor()`, we can guarantee
+	 * that `CountryStore` is updated before the callback that updates `CityStore`
+	 * needs to query its data.
+	 *
+	 *   CityStore.dispatchToken = flightDispatcher.register(function(payload) {
+	 *     if (payload.actionType === 'country-update') {
+	 *       // `CountryStore.country` may not be updated.
+	 *       flightDispatcher.waitFor([CountryStore.dispatchToken]);
+	 *       // `CountryStore.country` is now guaranteed to be updated.
+	 *
+	 *       // Select the default city for the new country
+	 *       CityStore.city = getDefaultCityForCountry(CountryStore.country);
+	 *     }
+	 *   });
+	 *
+	 * The usage of `waitFor()` can be chained, for example:
+	 *
+	 *   FlightPriceStore.dispatchToken =
+	 *     flightDispatcher.register(function(payload) {
+	 *       switch (payload.actionType) {
+	 *         case 'country-update':
+	 *         case 'city-update':
+	 *           flightDispatcher.waitFor([CityStore.dispatchToken]);
+	 *           FlightPriceStore.price =
+	 *             getFlightPriceStore(CountryStore.country, CityStore.city);
+	 *           break;
+	 *     }
+	 *   });
+	 *
+	 * The `country-update` payload will be guaranteed to invoke the stores'
+	 * registered callbacks in order: `CountryStore`, `CityStore`, then
+	 * `FlightPriceStore`.
+	 */
+
+	var Dispatcher = (function () {
+	  function Dispatcher() {
+	    _classCallCheck(this, Dispatcher);
+
+	    this._callbacks = {};
+	    this._isDispatching = false;
+	    this._isHandled = {};
+	    this._isPending = {};
+	    this._lastID = 1;
+	  }
+
+	  /**
+	   * Registers a callback to be invoked with every dispatched payload. Returns
+	   * a token that can be used with `waitFor()`.
+	   */
+
+	  Dispatcher.prototype.register = function register(callback) {
+	    var id = _prefix + this._lastID++;
+	    this._callbacks[id] = callback;
+	    return id;
+	  };
+
+	  /**
+	   * Removes a callback based on its token.
+	   */
+
+	  Dispatcher.prototype.unregister = function unregister(id) {
+	    !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.unregister(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
+	    delete this._callbacks[id];
+	  };
+
+	  /**
+	   * Waits for the callbacks specified to be invoked before continuing execution
+	   * of the current callback. This method should only be used by a callback in
+	   * response to a dispatched payload.
+	   */
+
+	  Dispatcher.prototype.waitFor = function waitFor(ids) {
+	    !this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Must be invoked while dispatching.') : invariant(false) : undefined;
+	    for (var ii = 0; ii < ids.length; ii++) {
+	      var id = ids[ii];
+	      if (this._isPending[id]) {
+	        !this._isHandled[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Circular dependency detected while ' + 'waiting for `%s`.', id) : invariant(false) : undefined;
+	        continue;
+	      }
+	      !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
+	      this._invokeCallback(id);
+	    }
+	  };
+
+	  /**
+	   * Dispatches a payload to all registered callbacks.
+	   */
+
+	  Dispatcher.prototype.dispatch = function dispatch(payload) {
+	    !!this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.') : invariant(false) : undefined;
+	    this._startDispatching(payload);
+	    try {
+	      for (var id in this._callbacks) {
+	        if (this._isPending[id]) {
+	          continue;
+	        }
+	        this._invokeCallback(id);
+	      }
+	    } finally {
+	      this._stopDispatching();
+	    }
+	  };
+
+	  /**
+	   * Is this Dispatcher currently dispatching.
+	   */
+
+	  Dispatcher.prototype.isDispatching = function isDispatching() {
+	    return this._isDispatching;
+	  };
+
+	  /**
+	   * Call the callback stored with the given id. Also do some internal
+	   * bookkeeping.
+	   *
+	   * @internal
+	   */
+
+	  Dispatcher.prototype._invokeCallback = function _invokeCallback(id) {
+	    this._isPending[id] = true;
+	    this._callbacks[id](this._pendingPayload);
+	    this._isHandled[id] = true;
+	  };
+
+	  /**
+	   * Set up bookkeeping needed when dispatching.
+	   *
+	   * @internal
+	   */
+
+	  Dispatcher.prototype._startDispatching = function _startDispatching(payload) {
+	    for (var id in this._callbacks) {
+	      this._isPending[id] = false;
+	      this._isHandled[id] = false;
+	    }
+	    this._pendingPayload = payload;
+	    this._isDispatching = true;
+	  };
+
+	  /**
+	   * Clear bookkeeping used for dispatching.
+	   *
+	   * @internal
+	   */
+
+	  Dispatcher.prototype._stopDispatching = function _stopDispatching() {
+	    delete this._pendingPayload;
+	    this._isDispatching = false;
+	  };
+
+	  return Dispatcher;
+	})();
+
+	module.exports = Dispatcher;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 214 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule invariant
+	 */
+
+	"use strict";
+
+	/**
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
+	 */
+
+	var invariant = function (condition, format, a, b, c, d, e, f) {
+	  if (process.env.NODE_ENV !== 'production') {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
+	  }
+
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error('Invariant Violation: ' + format.replace(/%s/g, function () {
+	        return args[argIndex++];
+	      }));
+	    }
+
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
+	};
+
+	module.exports = invariant;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 215 */
+/***/ function(module, exports) {
+
+	var CurrentUserConstants = {
+	  RECEIVE_CURRENT_USER: "RECEIVE_CURRENT_USER"
+	};
+
+	module.exports = CurrentUserConstants;
+
+/***/ },
+/* 216 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(217).Store;
+	var AppDispatcher = __webpack_require__(211);
+	var CurrentUserConstants = __webpack_require__(215);
+
+	var _currentUser = {};
+	var _currentUserHasBeenFetched = false;
+	var CurrentUserStore = new Store(AppDispatcher);
+
+	CurrentUserStore.currentUser = function () {
+	  return $.extend({}, _currentUser);
+	};
+
+	CurrentUserStore.isLoggedIn = function () {
+	  return !!_currentUser.id;
+	};
+
+	CurrentUserStore.userHasBeenFetched = function () {
+	  return _currentUserHasBeenFetched;
+	};
+
+	CurrentUserStore.__onDispatch = function (payload) {
+	  if (payload.actionType === CurrentUserConstants.RECEIVE_CURRENT_USER) {
+	    _currentUserHasBeenFetched = true;
+	    _currentUser = payload.currentUser;
+	    CurrentUserStore.__emitChange();
+	  }
+	};
+
+	module.exports = CurrentUserStore;
+
+/***/ },
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 */
+
+	module.exports.Container = __webpack_require__(218);
+	module.exports.MapStore = __webpack_require__(221);
+	module.exports.Mixin = __webpack_require__(233);
+	module.exports.ReduceStore = __webpack_require__(222);
+	module.exports.Store = __webpack_require__(223);
+
+
+/***/ },
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24530,10 +24946,10 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var FluxStoreGroup = __webpack_require__(212);
+	var FluxStoreGroup = __webpack_require__(219);
 
-	var invariant = __webpack_require__(213);
-	var shallowEqual = __webpack_require__(214);
+	var invariant = __webpack_require__(214);
+	var shallowEqual = __webpack_require__(220);
 
 	var DEFAULT_OPTIONS = {
 	  pure: true,
@@ -24691,7 +25107,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 212 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24710,7 +25126,7 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var invariant = __webpack_require__(213);
+	var invariant = __webpack_require__(214);
 
 	/**
 	 * FluxStoreGroup allows you to execute a callback on every dispatch after
@@ -24772,62 +25188,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 213 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule invariant
-	 */
-
-	"use strict";
-
-	/**
-	 * Use invariant() to assert state which your program assumes to be true.
-	 *
-	 * Provide sprintf-style format (only %s is supported) and arguments
-	 * to provide information about what broke and what you were
-	 * expecting.
-	 *
-	 * The invariant message will be stripped in production, but the invariant
-	 * will remain to ensure logic does not differ in production.
-	 */
-
-	var invariant = function (condition, format, a, b, c, d, e, f) {
-	  if (process.env.NODE_ENV !== 'production') {
-	    if (format === undefined) {
-	      throw new Error('invariant requires an error message argument');
-	    }
-	  }
-
-	  if (!condition) {
-	    var error;
-	    if (format === undefined) {
-	      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-	    } else {
-	      var args = [a, b, c, d, e, f];
-	      var argIndex = 0;
-	      error = new Error('Invariant Violation: ' + format.replace(/%s/g, function () {
-	        return args[argIndex++];
-	      }));
-	    }
-
-	    error.framesToPop = 1; // we don't care about invariant's own frame
-	    throw error;
-	  }
-	};
-
-	module.exports = invariant;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
-
-/***/ },
-/* 214 */
+/* 220 */
 /***/ function(module, exports) {
 
 	/**
@@ -24882,7 +25243,7 @@
 	module.exports = shallowEqual;
 
 /***/ },
-/* 215 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24903,10 +25264,10 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var FluxReduceStore = __webpack_require__(216);
-	var Immutable = __webpack_require__(226);
+	var FluxReduceStore = __webpack_require__(222);
+	var Immutable = __webpack_require__(232);
 
-	var invariant = __webpack_require__(213);
+	var invariant = __webpack_require__(214);
 
 	/**
 	 * This is a simple store. It allows caching key value pairs. An implementation
@@ -25032,7 +25393,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 216 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25053,10 +25414,10 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var FluxStore = __webpack_require__(217);
+	var FluxStore = __webpack_require__(223);
 
-	var abstractMethod = __webpack_require__(225);
-	var invariant = __webpack_require__(213);
+	var abstractMethod = __webpack_require__(231);
+	var invariant = __webpack_require__(214);
 
 	var FluxReduceStore = (function (_FluxStore) {
 	  _inherits(FluxReduceStore, _FluxStore);
@@ -25139,7 +25500,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 217 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25158,11 +25519,11 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _require = __webpack_require__(218);
+	var _require = __webpack_require__(224);
 
 	var EventEmitter = _require.EventEmitter;
 
-	var invariant = __webpack_require__(213);
+	var invariant = __webpack_require__(214);
 
 	/**
 	 * This class should be extended by the stores in your application, like so:
@@ -25322,7 +25683,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 218 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25335,14 +25696,14 @@
 	 */
 
 	var fbemitter = {
-	  EventEmitter: __webpack_require__(219)
+	  EventEmitter: __webpack_require__(225)
 	};
 
 	module.exports = fbemitter;
 
 
 /***/ },
-/* 219 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25361,11 +25722,11 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var EmitterSubscription = __webpack_require__(220);
-	var EventSubscriptionVendor = __webpack_require__(222);
+	var EmitterSubscription = __webpack_require__(226);
+	var EventSubscriptionVendor = __webpack_require__(228);
 
-	var emptyFunction = __webpack_require__(224);
-	var invariant = __webpack_require__(223);
+	var emptyFunction = __webpack_require__(230);
+	var invariant = __webpack_require__(229);
 
 	/**
 	 * @class BaseEventEmitter
@@ -25539,7 +25900,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 220 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25560,7 +25921,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var EventSubscription = __webpack_require__(221);
+	var EventSubscription = __webpack_require__(227);
 
 	/**
 	 * EmitterSubscription represents a subscription with listener and context data.
@@ -25592,7 +25953,7 @@
 	module.exports = EmitterSubscription;
 
 /***/ },
-/* 221 */
+/* 227 */
 /***/ function(module, exports) {
 
 	/**
@@ -25646,7 +26007,7 @@
 	module.exports = EventSubscription;
 
 /***/ },
-/* 222 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25665,7 +26026,7 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var invariant = __webpack_require__(223);
+	var invariant = __webpack_require__(229);
 
 	/**
 	 * EventSubscriptionVendor stores a set of EventSubscriptions that are
@@ -25755,7 +26116,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 223 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25811,7 +26172,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 224 */
+/* 230 */
 /***/ function(module, exports) {
 
 	/**
@@ -25854,7 +26215,7 @@
 	module.exports = emptyFunction;
 
 /***/ },
-/* 225 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25871,7 +26232,7 @@
 
 	'use strict';
 
-	var invariant = __webpack_require__(213);
+	var invariant = __webpack_require__(214);
 
 	function abstractMethod(className, methodName) {
 	   true ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Subclasses of %s must override %s() with their own implementation.', className, methodName) : invariant(false) : undefined;
@@ -25881,7 +26242,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 226 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -30868,7 +31229,7 @@
 	}));
 
 /***/ },
-/* 227 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -30885,9 +31246,9 @@
 
 	'use strict';
 
-	var FluxStoreGroup = __webpack_require__(212);
+	var FluxStoreGroup = __webpack_require__(219);
 
-	var invariant = __webpack_require__(213);
+	var invariant = __webpack_require__(214);
 
 	/**
 	 * `FluxContainer` should be preferred over this mixin, but it requires using
@@ -30991,7 +31352,435 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 228 */
+/* 234 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	var UsersStore = __webpack_require__(235);
+	var UsersApiUtil = __webpack_require__(237);
+
+	var UserForm = React.createClass({
+	  displayName: 'UserForm',
+
+	  mixins: [History],
+
+	  submit: function (e) {
+	    e.preventDefault();
+	    var credentials = $(e.currentTarget).serializeJSON();
+	    UsersApiUtil.createUser({ user: credentials }, function () {
+	      this.history.pushState({}, "/");
+	    }.bind(this));
+	  },
+
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'form-container' },
+	      React.createElement(
+	        'form',
+	        { className: 'users-form', onSubmit: this.submit },
+	        React.createElement(
+	          'label',
+	          null,
+	          'Display Name',
+	          React.createElement('input', { type: 'text', name: 'username', placeholder: 'J. Doe' })
+	        ),
+	        React.createElement(
+	          'label',
+	          null,
+	          'Email (required, but never shown)',
+	          React.createElement('input', { type: 'text', name: 'email', placeholder: 'you@example.org' })
+	        ),
+	        React.createElement(
+	          'label',
+	          null,
+	          'Password',
+	          React.createElement('input', { type: 'password', name: 'password', placeholder: '********' })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-controls' },
+	          React.createElement(
+	            'button',
+	            { className: 'submit group' },
+	            'Sign up'
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+
+	module.exports = UserForm;
+
+/***/ },
+/* 235 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(217).Store;
+	var AppDispatcher = __webpack_require__(211);
+	var UserConstants = __webpack_require__(236);
+
+	var _users = [];
+	var CHANGE_EVENT = "change";
+
+	var _addUser = function (newUser) {
+	  _users.unshift(newUser);
+	};
+
+	var UsersStore = new Store(AppDispatcher);
+
+	UsersStore.all = function () {
+	  return _users.slice();
+	};
+
+	UsersStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+
+	    case UserConstants.RECEIVE_USERS:
+	      _users = payload.users;
+	      UsersStore.__emitChange();
+	      break;
+
+	    case UserConstants.RECEIVE_USER:
+	      _addUser(payload.user);
+	      UsersStore.__emitChange();
+	      break;
+	  }
+	};
+
+	UsersStore.findUserById = function (id) {
+	  for (var i = 0; i < _users.length; i++) {
+	    if (_users[i].id === id) {
+	      return _users[i];
+	    }
+	  }
+	  return;
+	};
+
+	module.exports = UsersStore;
+
+/***/ },
+/* 236 */
+/***/ function(module, exports) {
+
+	var UserConstants = {
+	  RECEIVE_USERS: "RECEIVE_USERS",
+	  RECEIVE_USER: "RECEIVE_USER"
+	};
+
+	module.exports = UserConstants;
+
+/***/ },
+/* 237 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var UserActions = __webpack_require__(238);
+
+	var UsersApiUtil = {
+	  fetchUsers: function () {
+	    $.ajax({
+	      url: '/api/users',
+	      type: 'GET',
+	      dataType: 'json',
+	      success: function (users) {
+	        UserActions.receiveUsers(users);
+	      }
+	    });
+	  },
+
+	  fetchUser: function (id) {
+	    $.ajax({
+	      url: '/api/users/' + id,
+	      type: 'GET',
+	      dataType: 'json',
+	      success: function (user) {
+	        UserActions.receiveUser(user);
+	      }
+	    });
+	  },
+
+	  createUser: function (attrs, callback) {
+	    $.ajax({
+	      url: '/api/users',
+	      type: 'POST',
+	      dataType: 'json',
+	      data: attrs,
+	      success: function (user) {
+	        UserActions.receiveUser(user);
+	        // Does current_user need to be updated here?
+	        callback && callback();
+	      }
+	    });
+	  }
+	};
+
+	module.exports = UsersApiUtil;
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(211);
+	var UserConstants = __webpack_require__(236);
+
+	var UserActions = {
+	  receiveUsers: function (users) {
+	    AppDispatcher.dispatch({
+	      actionType: UserConstants.RECEIVE_USERS,
+	      users: users
+	    });
+	  },
+
+	  receiveUser: function (user) {
+	    AppDispatcher.dispatch({
+	      actionType: UserConstants.RECEIVE_USER,
+	      user: user
+	    });
+	  }
+	};
+
+	module.exports = UserActions;
+
+/***/ },
+/* 239 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	var SessionsApiUtil = __webpack_require__(209);
+
+	var SessionForm = React.createClass({
+	  displayName: 'SessionForm',
+
+	  mixins: [History],
+	  getInitialState: function () {
+	    return { errors: {} };
+	  },
+
+	  submit: function (e) {
+	    e.preventDefault();
+
+	    var credentials = $(e.currentTarget).serializeJSON();
+	    SessionsApiUtil.login(credentials, function () {
+	      this.history.pushState({}, "/");
+	    }.bind(this), this._renderErrors);
+	  },
+
+	  _renderErrors: function (errors) {
+	    this.setState({ errors: errors });
+	  },
+
+	  login_as_guest: function (e) {
+	    e.preventDefault();
+
+	    var credentials = { email: "guest@fake.com", password: "password" };
+
+	    SessionsApiUtil.login(credentials, function () {
+	      this.history.pushState({}, "/");
+	    }.bind(this));
+	  },
+
+	  render: function () {
+	    var errors;
+
+	    if (this.state.errors.responseJSON === undefined) {
+	      errors = React.createElement('div', null);
+	    } else {
+	      errors = React.createElement(
+	        'div',
+	        { className: 'form-error' },
+	        React.createElement('div', { className: 'message-tip group' }),
+	        this.state.errors.responseJSON[0]
+	      );
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'form-container' },
+	      React.createElement(
+	        'form',
+	        { className: 'users-form', onSubmit: this.submit },
+	        React.createElement(
+	          'label',
+	          null,
+	          'Email',
+	          React.createElement('input', { type: 'text', name: 'email', placeholder: 'you@example.org' })
+	        ),
+	        React.createElement(
+	          'label',
+	          null,
+	          'Password',
+	          React.createElement('input', { type: 'password', name: 'password', placeholder: '********' })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-controls' },
+	          React.createElement(
+	            'a',
+	            { href: '#', onClick: this.login_as_guest, className: 'guest-login group' },
+	            'Log in as guest user'
+	          ),
+	          React.createElement(
+	            'button',
+	            { className: 'submit group' },
+	            'Log in'
+	          )
+	        )
+	      ),
+	      errors
+	    );
+	  }
+	});
+
+	module.exports = SessionForm;
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var QuestionStore = __webpack_require__(241);
+	var QuestionsApiUtil = __webpack_require__(243);
+	var IndexItem = __webpack_require__(245);
+	var Index = React.createClass({
+	  displayName: 'Index',
+
+	  getInitialState: function () {
+	    return { questions: QuestionStore.all() };
+	  },
+
+	  _questionsChanged: function () {
+	    this.setState({ questions: QuestionStore.all() });
+	  },
+
+	  componentDidMount: function () {
+	    this.questionListener = QuestionStore.addListener(this._questionsChanged);
+	    QuestionsApiUtil.fetchQuestions();
+	  },
+
+	  componentWillUnmount: function () {
+	    this.questionListener.remove();
+	  },
+
+	  render: function () {
+	    var questions = this.state.questions.map(function (question, idx) {
+	      return React.createElement(IndexItem, { key: idx, question: question });
+	    });
+	    var _handleClick = function (e) {
+	      e.preventDefault();
+	      $('.sub-header-nav').children('a').removeClass('clicked');
+	      $(e.currentTarget).addClass("clicked");
+	    };
+
+	    return React.createElement(
+	      'div',
+	      { className: 'question-index-wrapper' },
+	      React.createElement(
+	        'div',
+	        { className: 'sub-header' },
+	        React.createElement(
+	          'h2',
+	          { className: 'group' },
+	          'Top Questions'
+	        ),
+	        React.createElement(
+	          'nav',
+	          { className: 'sub-header-nav group' },
+	          React.createElement(
+	            'a',
+	            { href: '#', onClick: _handleClick, className: 'clicked group' },
+	            'interesting'
+	          ),
+	          React.createElement(
+	            'a',
+	            { href: '#', onClick: _handleClick, className: 'group' },
+	            'featured',
+	            React.createElement(
+	              'span',
+	              { className: 'featured-count-tab group' },
+	              '391'
+	            )
+	          ),
+	          React.createElement(
+	            'a',
+	            { href: '#', onClick: _handleClick, className: 'group' },
+	            'hot'
+	          ),
+	          React.createElement(
+	            'a',
+	            { href: '#', onClick: _handleClick, className: 'group' },
+	            'week'
+	          ),
+	          React.createElement(
+	            'a',
+	            { href: '#', onClick: _handleClick, className: 'group' },
+	            'month'
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'question-index group' },
+	        questions
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Index;
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(217).Store;
+	var _questions = {};
+	var QuestionConstants = __webpack_require__(242);
+	var AppDispatcher = __webpack_require__(211);
+
+	var QuestionStore = new Store(AppDispatcher);
+
+	var resetQuestions = function (questions) {
+	  _questions = {};
+	  questions.forEach(function (question) {
+	    _questions[question.id] = question;
+	  });
+	};
+
+	var resetQuestion = function (question) {
+	  _questions[question.id] = question;
+	};
+
+	QuestionStore.all = function () {
+	  var questions = [];
+	  for (var id in _questions) {
+	    questions.push(_questions[id]);
+	  }
+	  return questions;
+	};
+
+	QuestionStore.find = function (id) {
+	  return _questions[id];
+	};
+
+	QuestionStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case QuestionConstants.QUESTIONS_RECEIVED:
+	      resetQuestions(payload.questions);
+	      QuestionStore.__emitChange();
+	      break;
+	    case QuestionConstants.QUESTION_RECEIVED:
+	      resetQuestion(payload.question);
+	      QuestionStore.__emitChange();
+	      break;
+	  }
+	};
+
+	module.exports = QuestionStore;
+
+/***/ },
+/* 242 */
 /***/ function(module, exports) {
 
 	var QuestionConstants = {
@@ -31002,271 +31791,10 @@
 	module.exports = QuestionConstants;
 
 /***/ },
-/* 229 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Dispatcher = __webpack_require__(230).Dispatcher;
-
-	module.exports = new Dispatcher();
-
-/***/ },
-/* 230 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 */
-
-	module.exports.Dispatcher = __webpack_require__(231);
-
-
-/***/ },
-/* 231 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright (c) 2014-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule Dispatcher
-	 * 
-	 * @preventMunge
-	 */
-
-	'use strict';
-
-	exports.__esModule = true;
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	var invariant = __webpack_require__(213);
-
-	var _prefix = 'ID_';
-
-	/**
-	 * Dispatcher is used to broadcast payloads to registered callbacks. This is
-	 * different from generic pub-sub systems in two ways:
-	 *
-	 *   1) Callbacks are not subscribed to particular events. Every payload is
-	 *      dispatched to every registered callback.
-	 *   2) Callbacks can be deferred in whole or part until other callbacks have
-	 *      been executed.
-	 *
-	 * For example, consider this hypothetical flight destination form, which
-	 * selects a default city when a country is selected:
-	 *
-	 *   var flightDispatcher = new Dispatcher();
-	 *
-	 *   // Keeps track of which country is selected
-	 *   var CountryStore = {country: null};
-	 *
-	 *   // Keeps track of which city is selected
-	 *   var CityStore = {city: null};
-	 *
-	 *   // Keeps track of the base flight price of the selected city
-	 *   var FlightPriceStore = {price: null}
-	 *
-	 * When a user changes the selected city, we dispatch the payload:
-	 *
-	 *   flightDispatcher.dispatch({
-	 *     actionType: 'city-update',
-	 *     selectedCity: 'paris'
-	 *   });
-	 *
-	 * This payload is digested by `CityStore`:
-	 *
-	 *   flightDispatcher.register(function(payload) {
-	 *     if (payload.actionType === 'city-update') {
-	 *       CityStore.city = payload.selectedCity;
-	 *     }
-	 *   });
-	 *
-	 * When the user selects a country, we dispatch the payload:
-	 *
-	 *   flightDispatcher.dispatch({
-	 *     actionType: 'country-update',
-	 *     selectedCountry: 'australia'
-	 *   });
-	 *
-	 * This payload is digested by both stores:
-	 *
-	 *   CountryStore.dispatchToken = flightDispatcher.register(function(payload) {
-	 *     if (payload.actionType === 'country-update') {
-	 *       CountryStore.country = payload.selectedCountry;
-	 *     }
-	 *   });
-	 *
-	 * When the callback to update `CountryStore` is registered, we save a reference
-	 * to the returned token. Using this token with `waitFor()`, we can guarantee
-	 * that `CountryStore` is updated before the callback that updates `CityStore`
-	 * needs to query its data.
-	 *
-	 *   CityStore.dispatchToken = flightDispatcher.register(function(payload) {
-	 *     if (payload.actionType === 'country-update') {
-	 *       // `CountryStore.country` may not be updated.
-	 *       flightDispatcher.waitFor([CountryStore.dispatchToken]);
-	 *       // `CountryStore.country` is now guaranteed to be updated.
-	 *
-	 *       // Select the default city for the new country
-	 *       CityStore.city = getDefaultCityForCountry(CountryStore.country);
-	 *     }
-	 *   });
-	 *
-	 * The usage of `waitFor()` can be chained, for example:
-	 *
-	 *   FlightPriceStore.dispatchToken =
-	 *     flightDispatcher.register(function(payload) {
-	 *       switch (payload.actionType) {
-	 *         case 'country-update':
-	 *         case 'city-update':
-	 *           flightDispatcher.waitFor([CityStore.dispatchToken]);
-	 *           FlightPriceStore.price =
-	 *             getFlightPriceStore(CountryStore.country, CityStore.city);
-	 *           break;
-	 *     }
-	 *   });
-	 *
-	 * The `country-update` payload will be guaranteed to invoke the stores'
-	 * registered callbacks in order: `CountryStore`, `CityStore`, then
-	 * `FlightPriceStore`.
-	 */
-
-	var Dispatcher = (function () {
-	  function Dispatcher() {
-	    _classCallCheck(this, Dispatcher);
-
-	    this._callbacks = {};
-	    this._isDispatching = false;
-	    this._isHandled = {};
-	    this._isPending = {};
-	    this._lastID = 1;
-	  }
-
-	  /**
-	   * Registers a callback to be invoked with every dispatched payload. Returns
-	   * a token that can be used with `waitFor()`.
-	   */
-
-	  Dispatcher.prototype.register = function register(callback) {
-	    var id = _prefix + this._lastID++;
-	    this._callbacks[id] = callback;
-	    return id;
-	  };
-
-	  /**
-	   * Removes a callback based on its token.
-	   */
-
-	  Dispatcher.prototype.unregister = function unregister(id) {
-	    !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.unregister(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
-	    delete this._callbacks[id];
-	  };
-
-	  /**
-	   * Waits for the callbacks specified to be invoked before continuing execution
-	   * of the current callback. This method should only be used by a callback in
-	   * response to a dispatched payload.
-	   */
-
-	  Dispatcher.prototype.waitFor = function waitFor(ids) {
-	    !this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Must be invoked while dispatching.') : invariant(false) : undefined;
-	    for (var ii = 0; ii < ids.length; ii++) {
-	      var id = ids[ii];
-	      if (this._isPending[id]) {
-	        !this._isHandled[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Circular dependency detected while ' + 'waiting for `%s`.', id) : invariant(false) : undefined;
-	        continue;
-	      }
-	      !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
-	      this._invokeCallback(id);
-	    }
-	  };
-
-	  /**
-	   * Dispatches a payload to all registered callbacks.
-	   */
-
-	  Dispatcher.prototype.dispatch = function dispatch(payload) {
-	    !!this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.') : invariant(false) : undefined;
-	    this._startDispatching(payload);
-	    try {
-	      for (var id in this._callbacks) {
-	        if (this._isPending[id]) {
-	          continue;
-	        }
-	        this._invokeCallback(id);
-	      }
-	    } finally {
-	      this._stopDispatching();
-	    }
-	  };
-
-	  /**
-	   * Is this Dispatcher currently dispatching.
-	   */
-
-	  Dispatcher.prototype.isDispatching = function isDispatching() {
-	    return this._isDispatching;
-	  };
-
-	  /**
-	   * Call the callback stored with the given id. Also do some internal
-	   * bookkeeping.
-	   *
-	   * @internal
-	   */
-
-	  Dispatcher.prototype._invokeCallback = function _invokeCallback(id) {
-	    this._isPending[id] = true;
-	    this._callbacks[id](this._pendingPayload);
-	    this._isHandled[id] = true;
-	  };
-
-	  /**
-	   * Set up bookkeeping needed when dispatching.
-	   *
-	   * @internal
-	   */
-
-	  Dispatcher.prototype._startDispatching = function _startDispatching(payload) {
-	    for (var id in this._callbacks) {
-	      this._isPending[id] = false;
-	      this._isHandled[id] = false;
-	    }
-	    this._pendingPayload = payload;
-	    this._isDispatching = true;
-	  };
-
-	  /**
-	   * Clear bookkeeping used for dispatching.
-	   *
-	   * @internal
-	   */
-
-	  Dispatcher.prototype._stopDispatching = function _stopDispatching() {
-	    delete this._pendingPayload;
-	    this._isDispatching = false;
-	  };
-
-	  return Dispatcher;
-	})();
-
-	module.exports = Dispatcher;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
-
-/***/ },
-/* 232 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var QuestionActions = __webpack_require__(233);
+	var QuestionActions = __webpack_require__(244);
 
 	var QuestionsApiUtil = {
 
@@ -31292,11 +31820,11 @@
 	module.exports = QuestionsApiUtil;
 
 /***/ },
-/* 233 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var AppDispatcher = __webpack_require__(229);
-	var QuestionConstants = __webpack_require__(228);
+	var AppDispatcher = __webpack_require__(211);
+	var QuestionConstants = __webpack_require__(242);
 
 	var QuestionActions = {
 	  receiveAll: function (questions) {
@@ -31318,7 +31846,7 @@
 	module.exports = QuestionActions;
 
 /***/ },
-/* 234 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -31466,13 +31994,13 @@
 	module.exports = IndexItem;
 
 /***/ },
-/* 235 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(159);
-	var QuestionStore = __webpack_require__(209);
-	var QuestionsApiUtil = __webpack_require__(232);
+	var QuestionStore = __webpack_require__(241);
+	var QuestionsApiUtil = __webpack_require__(243);
 	var QuestionShow = React.createClass({
 	  displayName: 'QuestionShow',
 
@@ -31554,523 +32082,158 @@
 	module.exports = QuestionShow;
 
 /***/ },
-/* 236 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var History = __webpack_require__(159).History;
-	var UsersStore = __webpack_require__(237);
-	var UsersApiUtil = __webpack_require__(239);
+	var SearchResultsStore = __webpack_require__(248);
+	var SearchApiUtil = __webpack_require__(250);
+	var QuestionIndexItem = __webpack_require__(245);
 
-	var UserForm = React.createClass({
-	  displayName: 'UserForm',
-
-	  mixins: [History],
-
-	  submit: function (e) {
-	    e.preventDefault();
-	    var credentials = $(e.currentTarget).serializeJSON();
-	    UsersApiUtil.createUser({ user: credentials }, function () {
-	      this.history.pushState({}, "/");
-	    }.bind(this));
-	  },
-
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'form-container' },
-	      React.createElement(
-	        'form',
-	        { className: 'users-form', onSubmit: this.submit },
-	        React.createElement(
-	          'label',
-	          null,
-	          'Display Name',
-	          React.createElement('input', { type: 'text', name: 'username', placeholder: 'J. Doe' })
-	        ),
-	        React.createElement(
-	          'label',
-	          null,
-	          'Email (required, but never shown)',
-	          React.createElement('input', { type: 'text', name: 'email', placeholder: 'you@example.org' })
-	        ),
-	        React.createElement(
-	          'label',
-	          null,
-	          'Password',
-	          React.createElement('input', { type: 'password', name: 'password', placeholder: '********' })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'form-controls' },
-	          React.createElement(
-	            'button',
-	            { className: 'submit group' },
-	            'Sign up'
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-
-	module.exports = UserForm;
-
-/***/ },
-/* 237 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(210).Store;
-	var AppDispatcher = __webpack_require__(229);
-	var UserConstants = __webpack_require__(238);
-
-	var _users = [];
-	var CHANGE_EVENT = "change";
-
-	var _addUser = function (newUser) {
-	  _users.unshift(newUser);
-	};
-
-	var UsersStore = new Store(AppDispatcher);
-
-	UsersStore.all = function () {
-	  return _users.slice();
-	};
-
-	UsersStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-
-	    case UserConstants.RECEIVE_USERS:
-	      _users = payload.users;
-	      UsersStore.__emitChange();
-	      break;
-
-	    case UserConstants.RECEIVE_USER:
-	      _addUser(payload.user);
-	      UsersStore.__emitChange();
-	      break;
-	  }
-	};
-
-	UsersStore.findUserById = function (id) {
-	  for (var i = 0; i < _users.length; i++) {
-	    if (_users[i].id === id) {
-	      return _users[i];
-	    }
-	  }
-	  return;
-	};
-
-	module.exports = UsersStore;
-
-/***/ },
-/* 238 */
-/***/ function(module, exports) {
-
-	var UserConstants = {
-	  RECEIVE_USERS: "RECEIVE_USERS",
-	  RECEIVE_USER: "RECEIVE_USER"
-	};
-
-	module.exports = UserConstants;
-
-/***/ },
-/* 239 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var UserActions = __webpack_require__(240);
-
-	var UsersApiUtil = {
-	  fetchUsers: function () {
-	    $.ajax({
-	      url: '/api/users',
-	      type: 'GET',
-	      dataType: 'json',
-	      success: function (users) {
-	        UserActions.receiveUsers(users);
-	      }
-	    });
-	  },
-
-	  fetchUser: function (id) {
-	    $.ajax({
-	      url: '/api/users/' + id,
-	      type: 'GET',
-	      dataType: 'json',
-	      success: function (user) {
-	        UserActions.receiveUser(user);
-	      }
-	    });
-	  },
-
-	  createUser: function (attrs, callback) {
-	    $.ajax({
-	      url: '/api/users',
-	      type: 'POST',
-	      dataType: 'json',
-	      data: attrs,
-	      success: function (user) {
-	        UserActions.receiveUser(user);
-	        // Does current_user need to be updated here?
-	        callback && callback();
-	      }
-	    });
-	  }
-	};
-
-	module.exports = UsersApiUtil;
-
-/***/ },
-/* 240 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(229);
-	var UserConstants = __webpack_require__(238);
-
-	var UserActions = {
-	  receiveUsers: function (users) {
-	    AppDispatcher.dispatch({
-	      actionType: UserConstants.RECEIVE_USERS,
-	      users: users
-	    });
-	  },
-
-	  receiveUser: function (user) {
-	    AppDispatcher.dispatch({
-	      actionType: UserConstants.RECEIVE_USER,
-	      user: user
-	    });
-	  }
-	};
-
-	module.exports = UserActions;
-
-/***/ },
-/* 241 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(159).History;
-	var SessionsApiUtil = __webpack_require__(242);
-
-	var SessionForm = React.createClass({
-	  displayName: 'SessionForm',
-
-	  mixins: [History],
-	  getInitialState: function () {
-	    return { errors: {} };
-	  },
-
-	  submit: function (e) {
-	    e.preventDefault();
-
-	    var credentials = $(e.currentTarget).serializeJSON();
-	    SessionsApiUtil.login(credentials, function () {
-	      this.history.pushState({}, "/");
-	    }.bind(this), this._renderErrors);
-	  },
-
-	  _renderErrors: function (errors) {
-	    this.setState({ errors: errors });
-	  },
-
-	  login_as_guest: function (e) {
-	    e.preventDefault();
-
-	    var credentials = { email: "guest@fake.com", password: "password" };
-
-	    SessionsApiUtil.login(credentials, function () {
-	      this.history.pushState({}, "/");
-	    }.bind(this));
-	  },
-
-	  render: function () {
-	    var errors;
-
-	    if (this.state.errors.responseJSON === undefined) {
-	      errors = React.createElement('div', null);
-	    } else {
-	      errors = React.createElement(
-	        'div',
-	        { className: 'form-error' },
-	        React.createElement('div', { className: 'message-tip group' }),
-	        this.state.errors.responseJSON[0]
-	      );
-	    }
-	    return React.createElement(
-	      'div',
-	      { className: 'form-container' },
-	      React.createElement(
-	        'form',
-	        { className: 'users-form', onSubmit: this.submit },
-	        React.createElement(
-	          'label',
-	          null,
-	          'Email',
-	          React.createElement('input', { type: 'text', name: 'email', placeholder: 'you@example.org' })
-	        ),
-	        React.createElement(
-	          'label',
-	          null,
-	          'Password',
-	          React.createElement('input', { type: 'password', name: 'password', placeholder: '********' })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'form-controls' },
-	          React.createElement(
-	            'a',
-	            { href: '#', onClick: this.login_as_guest, className: 'guest-login group' },
-	            'Log in as guest user'
-	          ),
-	          React.createElement(
-	            'button',
-	            { className: 'submit group' },
-	            'Log in'
-	          )
-	        )
-	      ),
-	      errors
-	    );
-	  }
-	});
-
-	module.exports = SessionForm;
-
-/***/ },
-/* 242 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var CurrentUserActions = __webpack_require__(243);
-
-	var SessionsApiUtil = {
-	  login: function (credentials, success, error) {
-	    $.ajax({
-	      url: '/api/session',
-	      type: 'POST',
-	      dataType: 'json',
-	      data: credentials,
-	      success: function (currentUser) {
-
-	        CurrentUserActions.receiveCurrentUser(currentUser);
-	        success && success();
-	      },
-	      error: function (data) {
-	        error && error(data);
-	      }
-	    });
-	  },
-
-	  logout: function () {
-	    $.ajax({
-	      url: '/api/session',
-	      type: 'DELETE',
-	      dataType: 'json',
-	      success: function () {
-	        CurrentUserActions.receiveCurrentUser({});
-	      }
-	    });
-	  },
-
-	  fetchCurrentUser: function (cb) {
-	    $.ajax({
-	      url: '/api/session',
-	      type: 'GET',
-	      dataType: 'json',
-	      success: function (currentUser) {
-
-	        CurrentUserActions.receiveCurrentUser(currentUser);
-	        cb && cb(currentUser);
-	      }
-	    });
-	  }
-	};
-
-	module.exports = SessionsApiUtil;
-
-/***/ },
-/* 243 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(229);
-	var CurrentUserConstants = __webpack_require__(244);
-
-	var CurrentUserActions = {
-
-	  receiveCurrentUser: function (currentUser) {
-	    AppDispatcher.dispatch({
-	      actionType: CurrentUserConstants.RECEIVE_CURRENT_USER,
-	      currentUser: currentUser
-	    });
-	  }
-	};
-
-	module.exports = CurrentUserActions;
-
-/***/ },
-/* 244 */
-/***/ function(module, exports) {
-
-	var CurrentUserConstants = {
-	  RECEIVE_CURRENT_USER: "RECEIVE_CURRENT_USER"
-	};
-
-	module.exports = CurrentUserConstants;
-
-/***/ },
-/* 245 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var SessionsApiUtil = __webpack_require__(242);
-	var CurrentUserStore = __webpack_require__(246);
-
-	var Header = React.createClass({
-	  displayName: 'Header',
-
-	  getInitialState: function () {
-	    return { currentUser: {} };
-	  },
+	var Search = React.createClass({
+	  displayName: 'Search',
 
 	  componentDidMount: function () {
-	    CurrentUserStore.addListener(this._onChange);
-
-	    SessionsApiUtil.fetchCurrentUser();
+	    this.listener = SearchResultsStore.addListener(this._onChange);
 	  },
 
-	  componentWillUnmount: function () {
-	    CurrentUserStore.remove(this._onChange);
+	  getInitialState: function () {
+	    return { page: 1, query: "" };
 	  },
 
 	  _onChange: function () {
-	    this.setState({ currentUser: CurrentUserStore.currentUser() });
+	    this.forceUpdate();
 	  },
 
-	  logout: function () {
-	    SessionsApiUtil.logout();
+	  search: function (e) {
+	    var code = e.keyCode ? e.keyCode : e.which;
+	    if (code === 13) {
+	      var query = e.target.value;
+	      SearchApiUtil.search(query, 1);
+	      this.setState({ page: 1, query: query });
+	    } else {
+	      // do nothing
+	    }
+	  },
+
+	  nextPage: function () {
+	    var nextPage = this.state.page + 1;
+	    SearchApiUtil.search(this.state.query, nextPage);
+
+	    this.setState({ page: nextPage });
+	  },
+
+	  componentWillUnmount: function () {
+	    this.listener.remove();
 	  },
 
 	  render: function () {
-	    if (!CurrentUserStore.userHasBeenFetched()) {
-	      return React.createElement(
-	        'div',
-	        { className: 'topbar' },
-	        React.createElement(
-	          'div',
-	          { className: 'topbar-wrapper' },
-	          React.createElement(
-	            'div',
-	            { className: 'network-items group' },
-	            'QuackExchange'
-	          )
-	        )
-	      );
-	    } else if (CurrentUserStore.isLoggedIn()) {
-	      return React.createElement(
-	        'div',
-	        { className: 'topbar' },
-	        React.createElement(
-	          'div',
-	          { className: 'topbar-wrapper' },
-	          React.createElement(
-	            'div',
-	            { className: 'network-items group' },
-	            'QuackExchange'
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'topbar-links group' },
-	            React.createElement(
-	              'div',
-	              { className: 'links-container' },
-	              React.createElement(
-	                'p',
-	                { className: 'group' },
-	                'Logged in as ',
-	                this.state.currentUser.username
-	              ),
-	              React.createElement(
-	                'button',
-	                { onClick: this.logout, className: 'logout group' },
-	                'Log Out'
-	              )
-	            ),
-	            React.createElement('div', { className: 'search-container' })
-	          )
-	        )
-	      );
-	    } else {
-	      return React.createElement(
-	        'div',
-	        { className: 'topbar' },
-	        React.createElement(
-	          'div',
-	          { className: 'topbar-wrapper' },
-	          React.createElement(
-	            'div',
-	            { className: 'network-items' },
-	            'QuackExchange'
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'topbar-links' },
-	            React.createElement(
-	              'div',
-	              { className: 'links-container' },
-	              React.createElement(
-	                'a',
-	                { href: '#/users/signup' },
-	                'sign up'
-	              ),
-	              React.createElement(
-	                'a',
-	                { href: '#/users/login' },
-	                'log in'
-	              )
-	            ),
-	            React.createElement('div', { className: 'search-container' })
-	          )
-	        )
-	      );
-	    }
+
+	    // var searchResults = SearchResultsStore.all().map(function (searchResult) {
+	    //   if (searchResult._type === "User") {
+	    //     return <UserIndexItem user={searchResult} />;
+	    //   } else {
+	    //     return <QuestionIndexItem question={searchResult} />;
+	    //   }
+	    // });
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement('input', { type: 'text', placeholder: 'Search Q&A', onKeyUp: this.search })
+	    );
 	  }
+
 	});
 
-	module.exports = Header;
+	module.exports = Search;
 
 /***/ },
-/* 246 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Store = __webpack_require__(210).Store;
-	var AppDispatcher = __webpack_require__(229);
-	var CurrentUserConstants = __webpack_require__(244);
+	var Store = __webpack_require__(217).Store;
+	var AppDispatcher = __webpack_require__(211);
+	var SearchConstants = __webpack_require__(249);
 
-	var _currentUser = {};
-	var _currentUserHasBeenFetched = false;
-	var CurrentUserStore = new Store(AppDispatcher);
+	var _searchResults = [];
+	var _meta = {};
 
-	CurrentUserStore.currentUser = function () {
-	  return $.extend({}, _currentUser);
+	var SearchResultsStore = new Store(AppDispatcher);
+
+	SearchResultsStore.all = function () {
+	  return _searchResults.slice();
 	};
 
-	CurrentUserStore.isLoggedIn = function () {
-	  return !!_currentUser.id;
+	SearchResultsStore.meta = function () {
+	  return _meta;
 	};
 
-	CurrentUserStore.userHasBeenFetched = function () {
-	  return _currentUserHasBeenFetched;
-	};
+	SearchResultsStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
 
-	CurrentUserStore.__onDispatch = function (payload) {
-	  if (payload.actionType === CurrentUserConstants.RECEIVE_CURRENT_USER) {
-	    _currentUserHasBeenFetched = true;
-	    _currentUser = payload.currentUser;
-	    CurrentUserStore.__emitChange();
+	    case SearchConstants.RECEIVE_SEARCH_RESULTS:
+	      _searchResults = payload.searchResults;
+	      _meta = payload.meta;
+	      SearchResultsStore.__emitChange();
+	      break;
 	  }
 	};
 
-	module.exports = CurrentUserStore;
+	module.exports = SearchResultsStore;
+
+/***/ },
+/* 249 */
+/***/ function(module, exports) {
+
+	var SearchConstants = {
+	  RECEIVE_SEARCH_RESULTS: "RECEIVE_SEARCH_RESULTS"
+	};
+
+	module.exports = SearchConstants;
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var SearchActions = __webpack_require__(251);
+
+	var SearchApiUtil = {
+
+	  search: function (query) {
+	    $.ajax({
+	      url: '/api/search',
+	      type: 'GET',
+	      dataType: 'json',
+	      data: { query: query },
+	      success: function (data) {
+	        SearchActions.receiveResults(data);
+	      }
+	    });
+	  }
+
+	};
+
+	module.exports = SearchApiUtil;
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var SearchConstants = __webpack_require__(249);
+	var AppDispatcher = __webpack_require__(211);
+
+	var SearchActions = {
+	  receiveResults: function (data) {
+	    AppDispatcher.dispatch({
+	      actionType: SearchConstants.RECEIVE_SEARCH_RESULTS,
+	      searchResults: data.results
+	    });
+	  }
+
+	};
+
+	module.exports = SearchActions;
 
 /***/ }
 /******/ ]);

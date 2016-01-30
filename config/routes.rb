@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     resources :questions, only: [:show, :index, :create, :update, :destroy] do
       resources :question_answers, only: [:index, :show, :create], path: "/answers", as: :answers
     end
-
+    get "search", to: "searches#index"
   end
 
 end

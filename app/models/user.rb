@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+  include PgSearch
+  multisearchable :against => [:username]
+  
   validates :username, :email, :password_digest, :session_token, presence: true
   validates :username, :session_token, uniqueness: true
   validates :password, length: {minimum: 6, allow_nil: true}
@@ -10,7 +13,12 @@ class User < ActiveRecord::Base
   has_many :views, class_name: "QuestionView"
   has_many :viewed_questions, through: :views, source: :question
 
+  
+
   attr_reader :password
+
+
+
 
   def self.find_by_credentials(email, password)
     user = User.find_by_email(email)
