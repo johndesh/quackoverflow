@@ -2,6 +2,7 @@ var React = require('react');
 var History = require('react-router').History;
 var UsersStore = require('../../stores/users_store');
 var UsersApiUtil = require('../../util/users_api_util');
+var SessionsApiUtil = require('../../util/sessions_api_util');
 
 var UserForm = React.createClass({
   mixins: [History],
@@ -10,7 +11,9 @@ var UserForm = React.createClass({
     e.preventDefault();
     var credentials = $(e.currentTarget).serializeJSON();
     UsersApiUtil.createUser({user: credentials}, function () {
-      this.history.pushState({}, "/");
+      SessionsApiUtil.login(credentials, function () {
+        this.history.pushState(null, "/", {});
+      }.bind(this));
     }.bind(this));
   },
 

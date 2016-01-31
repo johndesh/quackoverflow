@@ -24596,7 +24596,6 @@
 	      dataType: 'json',
 	      data: credentials,
 	      success: function (currentUser) {
-
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success();
 	      },
@@ -31469,6 +31468,7 @@
 	var History = __webpack_require__(159).History;
 	var UsersStore = __webpack_require__(235);
 	var UsersApiUtil = __webpack_require__(237);
+	var SessionsApiUtil = __webpack_require__(209);
 
 	var UserForm = React.createClass({
 	  displayName: 'UserForm',
@@ -31479,7 +31479,9 @@
 	    e.preventDefault();
 	    var credentials = $(e.currentTarget).serializeJSON();
 	    UsersApiUtil.createUser({ user: credentials }, function () {
-	      this.history.pushState({}, "/");
+	      SessionsApiUtil.login(credentials, function () {
+	        this.history.pushState(null, "/", {});
+	      }.bind(this));
 	    }.bind(this));
 	  },
 
@@ -31665,6 +31667,7 @@
 	  displayName: 'SessionForm',
 
 	  mixins: [History],
+
 	  getInitialState: function () {
 	    return { errors: {}, returnUri: this.props.location.query.returnUri || "/" };
 	  },
@@ -31677,7 +31680,8 @@
 
 	  submit: function (credentials) {
 	    SessionsApiUtil.login(credentials, function () {
-	      this.history.pushState(null, {}, this.state.returnUri);
+
+	      this.history.pushState(null, this.state.returnUri, {});
 	    }.bind(this), this._renderErrors);
 	  },
 
