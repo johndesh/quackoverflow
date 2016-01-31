@@ -32215,7 +32215,7 @@
 	  html: true,
 	  linkify: false,
 	  typographer: false,
-	  breaks: true,
+	  breaks: false,
 	  highlight: function (str, lang) {
 	    if (lang && hljs.getLanguage(lang)) {
 	      try {
@@ -32230,6 +32230,8 @@
 	    return ''; // use external default escaping
 	  }
 	});
+
+	md.enable("newline");
 
 	var QuestionForm = React.createClass({
 	  displayName: 'QuestionForm',

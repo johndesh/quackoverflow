@@ -7,7 +7,7 @@ var md = require('markdown-it')({
   html: true,
   linkify: false,
   typographer: false,
-  breaks: true,
+  breaks: false,
   highlight: function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
@@ -23,11 +23,13 @@ var md = require('markdown-it')({
   }
 });
 
+md.enable("newline");
+
 var QuestionForm = React.createClass({
   mixins: [LinkedStateMixin, History],
 
   getInitialState: function () {
-    
+
     return { body: "" , _editorHeight: "200px", dragging: false};
   },
 
@@ -76,7 +78,7 @@ var QuestionForm = React.createClass({
 
   rawMarkup: function() {
    var rawMarkup = md.render(this.state.body.toString());
-   
+
    return { __html: rawMarkup };
   },
 
@@ -93,7 +95,7 @@ var QuestionForm = React.createClass({
           <div className="gripple" onMouseDown={this._startResize}></div>
         </div>
           <div className="body-preview markdown-body" onClick={this._handleClick} dangerouslySetInnerHTML={this.rawMarkup()}>
-            
+
           </div>
           <div className="form-submit">
             <button className="submit-button">
