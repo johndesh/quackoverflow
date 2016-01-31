@@ -7,7 +7,7 @@ var QuestionForm = React.createClass({
   mixins: [LinkedStateMixin, History],
 
   getInitialState: function () {
-    return { body: "" };
+    return { body: "" , _editorHeight: "200px", dragging: false};
   },
 
   createQuestion: function (e) {
@@ -33,7 +33,28 @@ var QuestionForm = React.createClass({
     }
   },
 
+  _startResize: function () {
+    $(".body-field").css({"opacity": .25});
+    this.setState({dragging: true})
+    $(document).mousemove(this._resizeEditor);
+    $(document).mouseup(this._endDrag);
+
+  },
+
+  _resizeEditor: function (e) {
+    this.setState({_editorHeight: (e.pageY - 226) + "px"});
+  },
+
+  _endDrag: function (e) {
+    if (this.state.dragging) {
+      $(".body-field").css({"opacity": 1});
+      $(document).unbind('mousemove');
+      this.setState({dragging: false});
+    }
+  },
+
   render: function () {
+
     return (
       <div className="question-form-wrapper group">
         <form className="question-form" id="question-form" onSubmit={this.createQuestion}>
@@ -42,8 +63,8 @@ var QuestionForm = React.createClass({
           <input type="text" name="title" className="title-field" id="form-title" placeholder="What's your programming question? Be specific."/>
         </div>
           <div className="body-editor">
-          <textarea name="body" valueLink={this.linkState("body")} className="body-field"></textarea>
-          <div className="gripple"></div>  
+          <textarea name="body" style={{height: this.state._editorHeight}} valueLink={this.linkState("body")} className="body-field"></textarea>
+          <div className="gripple" onMouseDown={this._startResize}></div>  
         </div>
           <div className="body-preview">
             <p onClick={this._handleClick}>{this.state.body}</p>

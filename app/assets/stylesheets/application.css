@@ -173,17 +173,22 @@ time, mark, audio, video {
   float: left;
 }
 
-.main-nav li {
-
+.main-header-nav li {
+  margin-left: 3.5px;
 }
 
-.main-header-nav nav ul li a {
+.main-header-nav a:hover {
+  background: #f69c55;
+}
+
+.main-header-nav a {
   padding: 4px 10px 5px 10px;
   font-size: 14px;
   text-decoration: none;
   line-height: 1.3em;
   background: #9ea3a9;
-
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   display: block;
   cursor: pointer;
   color: white;
@@ -590,9 +595,14 @@ time, mark, audio, video {
   word-wrap: break-word;
   font-family: 'Menlo';
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid rgb(204, 204, 204);
   color: #444;
   resize: none;
+}
+
+.body-field:focus {
+  border: 1px solid rgb(0, 119, 204);
+  outline: 0;
 }
 
 .gripple {
@@ -601,7 +611,6 @@ time, mark, audio, video {
   background-size: initial;
   background-repeat: no-repeat;
   width: 658px;
-  margin-right: 0;
   margin-top: -4px;
   border: 1px solid rgb(221, 221, 221);
   border-top: none;

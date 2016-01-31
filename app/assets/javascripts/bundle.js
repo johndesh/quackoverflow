@@ -32191,7 +32191,7 @@
 	  mixins: [LinkedStateMixin, History],
 
 	  getInitialState: function () {
-	    return { body: "" };
+	    return { body: "", _editorHeight: "200px", dragging: false };
 	  },
 
 	  createQuestion: function (e) {
@@ -32217,7 +32217,27 @@
 	    }
 	  },
 
+	  _startResize: function () {
+	    $(".body-field").css({ "opacity": .25 });
+	    this.setState({ dragging: true });
+	    $(document).mousemove(this._resizeEditor);
+	    $(document).mouseup(this._endDrag);
+	  },
+
+	  _resizeEditor: function (e) {
+	    this.setState({ _editorHeight: e.pageY - 226 + "px" });
+	  },
+
+	  _endDrag: function (e) {
+	    if (this.state.dragging) {
+	      $(".body-field").css({ "opacity": 1 });
+	      $(document).unbind('mousemove');
+	      this.setState({ dragging: false });
+	    }
+	  },
+
 	  render: function () {
+
 	    return React.createElement(
 	      'div',
 	      { className: 'question-form-wrapper group' },
@@ -32237,8 +32257,8 @@
 	        React.createElement(
 	          'div',
 	          { className: 'body-editor' },
-	          React.createElement('textarea', { name: 'body', valueLink: this.linkState("body"), className: 'body-field' }),
-	          React.createElement('div', { className: 'gripple' })
+	          React.createElement('textarea', { name: 'body', style: { height: this.state._editorHeight }, valueLink: this.linkState("body"), className: 'body-field' }),
+	          React.createElement('div', { className: 'gripple', onMouseDown: this._startResize })
 	        ),
 	        React.createElement(
 	          'div',
