@@ -6,9 +6,8 @@ class Api::QuestionsController < ApplicationController
 
   def show
     @question = Question.includes(:answers, :author, :views).find(params[:id])
-    puts current_user
     if current_user && !current_user.viewed_questions.include?(@question)
-      @question.views.create(user_id: current_user.id)
+      @question.views.create(user_id: current_user.id) unless @question.author == current_user
     end
     @question
   end

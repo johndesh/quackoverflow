@@ -40,6 +40,7 @@ time, mark, audio, video {
 
  body {
    font-family: "Helvetica Neue", Arial;
+   color: #222426;
  }
 .group:after {
    content: "";
@@ -49,6 +50,7 @@ time, mark, audio, video {
  .topbar {
    height: 34px;
    width: 100%;
+   min-width: 1075px;
    display: block;
    background: black;
    position: relative;
@@ -96,14 +98,18 @@ time, mark, audio, video {
    border: 1px solid black;
    padding: 2px 5px 2px 22px;
    width: 188px;
+   color: rgb(135,135,135);
    height: 16px;
+   word-spacing: 0px;
+
    font-size: 13px;
-   box-shadow: rgba(34, 36, 38, 0.0980392) 0px 1px 2px 0px inset;
+   box-shadow: 0 1px 2px rgba(34,36,38,0.1) inset;
    line-height: normal;
    background-image: url(/assets/share-sprite-new-87a5f5cd82547abe85298c6e3b1e84c60306265eaf240b21fecad7aec40c2b98.svg), none;
    background-position: -269px -92px;
    background-repeat: no-repeat;
    font-weight: normal;
+   outline: 0;
    text-shadow: none;
  }
 
@@ -478,4 +484,142 @@ time, mark, audio, video {
   left: -9px;
   border-left: 9px solid transparent;
   border-top: 9px  solid #C04848;
+}
+
+
+/* Question Form */
+
+.question-form-wrapper {
+  width: 665px;
+  float: left;
+}
+
+.question-form {
+
+  font-size: 13px;
+  line-height: 1.3em;
+  display: block;
+}
+
+.form-item-title {
+  
+  display: block;
+  width: 668px;
+  height: 44px;
+
+  padding: 10px 0 15px 0;
+}
+
+.form-item-title label {
+  font-weight: bold;
+  font-size: 13px;
+  width: 40px;
+  margin: auto;
+  
+  padding-right: 14px;
+  padding-bottom: 3px;
+
+}
+
+.title-field {
+  margin: 5px 0;
+  box-shadow: 0 1px 2px rgba(34,36,38,0.1) inset;
+  width: 598px;
+  height: 16px;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid rgb(204, 204, 204);
+}
+
+.title-field:focus {
+  border-color: #0077CC;
+  outline: 0;
+}
+
+.body-editor {
+  width: 660px;
+  margin-top: 10px;
+  margin-bottom: 32px;
+}
+
+.body-field {
+  width: 660px;
+  font-size: 14px;
+  line-height: 1.3em;
+  height: 200px;
+  background-attachment: scroll;
+  background-size: auto;
+  flex-direction: column;
+  white-space: pre-wrap;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  font-family: 'Menlo';
+  padding: 10px;
+  border: 1px solid #ccc;
+  color: #444;
+  resize: none;
+}
+
+.gripple {
+  background-image: url(/assets/sprites-2b991ba5e6bd52e1ca2b29244ee87ecb9651bab57cb0bab1514b21b04069a284.svg), none;;
+  background-position: 279px -366px;
+  background-size: initial;
+  background-repeat: no-repeat;
+  width: 658px;
+  margin-right: 0;
+  margin-top: -4px;
+  border: 1px solid rgb(221, 221, 221);
+  border-top: none;
+  height: 9px;
+  overflow: hidden;
+  cursor: s-resize;
+  background-color: rgb(238, 238, 238);
+}
+
+.body-preview {
+  width: 660px;
+  margin-bottom: 5px;
+  word-wrap: break-word;
+  font-size: 15px;
+  box-sizing: border-box;
+  padding: 10px 0;
+  border-top: 1px dotted #ccc;
+  border-bottom: 1px dotted #ccc;
+}
+
+.body-preview p {
+  margin-bottom: 1em;
+  font-size: 100%;
+  display: block;
+  line-height: 1.3em;
+}
+
+.form-submit {
+  padding: 10px 0 15px 0;
+  display: block;
+
+}
+
+.submit-button {
+  padding: .6em .8em;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+  border: 1px solid #1777b7;
+  border-radius: 3px;
+  font-size: 100%;
+  background: #009afd;
+  line-height: 1;
+  margin: 5px 0;
+
+}
+
+.discard-question {
+  margin-left: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  color: #0077CC;
+  line-height: 1.3em;
+  font-size: 100%;
 }

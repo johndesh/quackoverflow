@@ -55,7 +55,7 @@
 	var SessionForm = __webpack_require__(239);
 	var QuestionsIndex = __webpack_require__(240);
 	var QuestionShow = __webpack_require__(246);
-	var QuestionForm = __webpack_require__(253);
+	var QuestionForm = __webpack_require__(247);
 	var SearchResults = __webpack_require__(252);
 	var App = React.createClass({
 	  displayName: 'App',
@@ -32103,100 +32103,337 @@
 	module.exports = QuestionShow;
 
 /***/ },
-/* 247 */,
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var QuestionsApiUtil = __webpack_require__(243);
+	var LinkedStateMixin = __webpack_require__(248);
+	var History = __webpack_require__(159).History;
+
+	var QuestionForm = React.createClass({
+	  displayName: 'QuestionForm',
+
+	  mixins: [LinkedStateMixin, History],
+
+	  getInitialState: function () {
+	    return { body: "" };
+	  },
+
+	  createQuestion: function (e) {
+	    e.preventDefault();
+
+	    var question = $(e.currentTarget).serializeJSON();
+	    QuestionsApiUtil.createQuestion(question, function (id) {
+	      this.history.pushState(null, "/questions/" + id, {});
+	    }.bind(this));
+	  },
+
+	  _handleClick: function () {
+	    $("body").scrollTop(140);
+	  },
+
+	  _handleDiscard: function () {
+	    var message = "Are you sure you want to discard your draft?";
+
+	    if (confirm(message)) {
+	      this.history.pushState(null, "/", {});
+	    } else {
+	      this._handleClick();
+	    }
+	  },
+
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'question-form-wrapper group' },
+	      React.createElement(
+	        'form',
+	        { className: 'question-form', id: 'question-form', onSubmit: this.createQuestion },
+	        React.createElement(
+	          'div',
+	          { className: 'form-item-title' },
+	          React.createElement(
+	            'label',
+	            { forHTML: 'form-title' },
+	            'Title'
+	          ),
+	          React.createElement('input', { type: 'text', name: 'title', className: 'title-field', id: 'form-title', placeholder: 'What\'s your programming question? Be specific.' })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'body-editor' },
+	          React.createElement('textarea', { name: 'body', valueLink: this.linkState("body"), className: 'body-field' }),
+	          React.createElement('div', { className: 'gripple' })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'body-preview' },
+	          React.createElement(
+	            'p',
+	            { onClick: this._handleClick },
+	            this.state.body
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'form-submit' },
+	          React.createElement(
+	            'button',
+	            { className: 'submit-button' },
+	            'Post Your Question'
+	          ),
+	          React.createElement(
+	            'a',
+	            { onClick: this._handleDiscard, className: 'discard-question' },
+	            'discard'
+	          )
+	        )
+	      )
+	    );
+	  }
+
+	});
+
+	module.exports = QuestionForm;
+
+/***/ },
 /* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Store = __webpack_require__(217).Store;
-	var AppDispatcher = __webpack_require__(211);
-	var SearchConstants = __webpack_require__(249);
-
-	var _searchResults = [];
-	var _meta = {};
-
-	var SearchResultsStore = new Store(AppDispatcher);
-
-	SearchResultsStore.all = function () {
-	  return _searchResults.slice();
-	};
-
-	SearchResultsStore.meta = function () {
-	  return _meta;
-	};
-
-	SearchResultsStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-
-	    case SearchConstants.RECEIVE_SEARCH_RESULTS:
-	      _searchResults = payload.searchResults;
-	      _meta = payload.meta;
-	      SearchResultsStore.__emitChange();
-	      break;
-	  }
-	};
-
-	module.exports = SearchResultsStore;
+	module.exports = __webpack_require__(249);
 
 /***/ },
 /* 249 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	var SearchConstants = {
-	  RECEIVE_SEARCH_RESULTS: "RECEIVE_SEARCH_RESULTS"
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule LinkedStateMixin
+	 * @typechecks static-only
+	 */
+
+	'use strict';
+
+	var ReactLink = __webpack_require__(250);
+	var ReactStateSetters = __webpack_require__(251);
+
+	/**
+	 * A simple mixin around ReactLink.forState().
+	 */
+	var LinkedStateMixin = {
+	  /**
+	   * Create a ReactLink that's linked to part of this component's state. The
+	   * ReactLink will have the current value of this.state[key] and will call
+	   * setState() when a change is requested.
+	   *
+	   * @param {string} key state key to update. Note: you may want to use keyOf()
+	   * if you're using Google Closure Compiler advanced mode.
+	   * @return {ReactLink} ReactLink instance linking to the state.
+	   */
+	  linkState: function (key) {
+	    return new ReactLink(this.state[key], ReactStateSetters.createStateKeySetter(this, key));
+	  }
 	};
 
-	module.exports = SearchConstants;
+	module.exports = LinkedStateMixin;
 
 /***/ },
 /* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var SearchActions = __webpack_require__(251);
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactLink
+	 * @typechecks static-only
+	 */
 
-	var SearchApiUtil = {
+	'use strict';
 
-	  search: function (query) {
-	    $.ajax({
-	      url: '/api/search',
-	      type: 'GET',
-	      dataType: 'json',
-	      data: { query: query },
-	      success: function (data) {
-	        SearchActions.receiveResults(data);
-	      }
-	    });
-	  }
+	/**
+	 * ReactLink encapsulates a common pattern in which a component wants to modify
+	 * a prop received from its parent. ReactLink allows the parent to pass down a
+	 * value coupled with a callback that, when invoked, expresses an intent to
+	 * modify that value. For example:
+	 *
+	 * React.createClass({
+	 *   getInitialState: function() {
+	 *     return {value: ''};
+	 *   },
+	 *   render: function() {
+	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
+	 *     return <input valueLink={valueLink} />;
+	 *   },
+	 *   _handleValueChange: function(newValue) {
+	 *     this.setState({value: newValue});
+	 *   }
+	 * });
+	 *
+	 * We have provided some sugary mixins to make the creation and
+	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
+	 */
 
+	var React = __webpack_require__(2);
+
+	/**
+	 * @param {*} value current value of the link
+	 * @param {function} requestChange callback to request a change
+	 */
+	function ReactLink(value, requestChange) {
+	  this.value = value;
+	  this.requestChange = requestChange;
+	}
+
+	/**
+	 * Creates a PropType that enforces the ReactLink API and optionally checks the
+	 * type of the value being passed inside the link. Example:
+	 *
+	 * MyComponent.propTypes = {
+	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
+	 * }
+	 */
+	function createLinkTypeChecker(linkType) {
+	  var shapes = {
+	    value: typeof linkType === 'undefined' ? React.PropTypes.any.isRequired : linkType.isRequired,
+	    requestChange: React.PropTypes.func.isRequired
+	  };
+	  return React.PropTypes.shape(shapes);
+	}
+
+	ReactLink.PropTypes = {
+	  link: createLinkTypeChecker
 	};
 
-	module.exports = SearchApiUtil;
+	module.exports = ReactLink;
 
 /***/ },
 /* 251 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	var SearchConstants = __webpack_require__(249);
-	var AppDispatcher = __webpack_require__(211);
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactStateSetters
+	 */
 
-	var SearchActions = {
-	  receiveResults: function (data) {
-	    AppDispatcher.dispatch({
-	      actionType: SearchConstants.RECEIVE_SEARCH_RESULTS,
-	      searchResults: data.results
-	    });
+	'use strict';
+
+	var ReactStateSetters = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function (component, funcReturningState) {
+	    return function (a, b, c, d, e, f) {
+	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
+	      if (partialState) {
+	        component.setState(partialState);
+	      }
+	    };
+	  },
+
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function (component, key) {
+	    // Memoize the setters.
+	    var cache = component.__keySetters || (component.__keySetters = {});
+	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
 	  }
-
 	};
 
-	module.exports = SearchActions;
+	function createStateKeySetter(component, key) {
+	  // Partial state is allocated outside of the function closure so it can be
+	  // reused with every call, avoiding memory allocation when this function
+	  // is called.
+	  var partialState = {};
+	  return function stateKeySetter(value) {
+	    partialState[key] = value;
+	    component.setState(partialState);
+	  };
+	}
+
+	ReactStateSetters.Mixin = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateSetter(function(xValue) {
+	   *     return {x: xValue};
+	   *   })(1);
+	   *
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function (funcReturningState) {
+	    return ReactStateSetters.createStateSetter(this, funcReturningState);
+	  },
+
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateKeySetter('x')(1);
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function (key) {
+	    return ReactStateSetters.createStateKeySetter(this, key);
+	  }
+	};
+
+	module.exports = ReactStateSetters;
 
 /***/ },
 /* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SearchResultsStore = __webpack_require__(248);
-	var SearchApiUtil = __webpack_require__(250);
+	var SearchResultsStore = __webpack_require__(253);
+	var SearchApiUtil = __webpack_require__(255);
 	var QuestionIndexItem = __webpack_require__(245);
 
 	var SearchResults = React.createClass({
@@ -32263,54 +32500,88 @@
 /* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var QuestionsApiUtil = __webpack_require__(243);
-	var History = __webpack_require__(159).History;
+	var Store = __webpack_require__(217).Store;
+	var AppDispatcher = __webpack_require__(211);
+	var SearchConstants = __webpack_require__(254);
 
-	var QuestionForm = React.createClass({
-	  displayName: 'QuestionForm',
+	var _searchResults = [];
+	var _meta = {};
 
-	  mixins: [History],
+	var SearchResultsStore = new Store(AppDispatcher);
 
-	  getInitialState: function () {
-	    return { title: "", body: "" };
-	  },
+	SearchResultsStore.all = function () {
+	  return _searchResults.slice();
+	};
 
-	  createQuestion: function (e) {
-	    e.preventDefault();
-	    var question = $(e.currentTarget).serializeJSON();
-	    QuestionsApiUtil.createQuestion(question, function (id) {
-	      this.history.pushState(null, "/questions/" + id, {});
-	    }.bind(this));
-	  },
+	SearchResultsStore.meta = function () {
+	  return _meta;
+	};
 
-	  render: function () {
-	    return React.createElement(
-	      'form',
-	      { className: 'new-question', onSubmit: this.createQuestion },
-	      React.createElement(
-	        'label',
-	        null,
-	        'Title',
-	        React.createElement('input', { type: 'text', name: 'title' })
-	      ),
-	      React.createElement(
-	        'label',
-	        null,
-	        'Question',
-	        React.createElement('textarea', { name: 'body' })
-	      ),
-	      React.createElement(
-	        'button',
-	        null,
-	        'Ask Question'
-	      )
-	    );
+	SearchResultsStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+
+	    case SearchConstants.RECEIVE_SEARCH_RESULTS:
+	      _searchResults = payload.searchResults;
+	      _meta = payload.meta;
+	      SearchResultsStore.__emitChange();
+	      break;
+	  }
+	};
+
+	module.exports = SearchResultsStore;
+
+/***/ },
+/* 254 */
+/***/ function(module, exports) {
+
+	var SearchConstants = {
+	  RECEIVE_SEARCH_RESULTS: "RECEIVE_SEARCH_RESULTS"
+	};
+
+	module.exports = SearchConstants;
+
+/***/ },
+/* 255 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var SearchActions = __webpack_require__(256);
+
+	var SearchApiUtil = {
+
+	  search: function (query) {
+	    $.ajax({
+	      url: '/api/search',
+	      type: 'GET',
+	      dataType: 'json',
+	      data: { query: query },
+	      success: function (data) {
+	        SearchActions.receiveResults(data);
+	      }
+	    });
 	  }
 
-	});
+	};
 
-	module.exports = QuestionForm;
+	module.exports = SearchApiUtil;
+
+/***/ },
+/* 256 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var SearchConstants = __webpack_require__(254);
+	var AppDispatcher = __webpack_require__(211);
+
+	var SearchActions = {
+	  receiveResults: function (data) {
+	    AppDispatcher.dispatch({
+	      actionType: SearchConstants.RECEIVE_SEARCH_RESULTS,
+	      searchResults: data.results
+	    });
+	  }
+
+	};
+
+	module.exports = SearchActions;
 
 /***/ }
 /******/ ]);

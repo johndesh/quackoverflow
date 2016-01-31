@@ -17,7 +17,7 @@ var QuestionsApiUtil = {
   createQuestion: function(data, callback){
     $.post('api/questions', { question: data }, function(question) {
       QuestionActions.receiveSingleQuestion(question);
-      callback && callback(question.id)
+      callback && callback(question.id);
     });
   },
 };
