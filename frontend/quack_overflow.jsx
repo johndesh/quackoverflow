@@ -6,6 +6,8 @@ var Route = ReactRouter.Route;
 var IndexRoute = ReactRouter.IndexRoute;
 var Header = require('./components/header');
 var UserForm = require('./components/users/user_form');
+var CurrentUserStore = require('./stores/current_user_store');
+var SessionsApiUtil = require('./util/sessions_api_util');
 var SessionForm = require('./components/sessions/new');
 var QuestionsIndex = require('./components/questions/index');
 var QuestionShow = require('./components/questions/question_show');
@@ -47,17 +49,34 @@ var App = React.createClass({
   }
 });
 
+
 var routes = (
   <Route path="/" component={App} >
     <IndexRoute component={QuestionsIndex}/>
     <Route path="search" component={SearchResults}/>
-    <Route path="questions/ask" component={QuestionForm}/>
+    <Route path="questions/ask" component={QuestionForm} onEnter={_ensureLoggedIn}/>
     <Route path="questions/:questionId" component={QuestionShow}/>
     <Route path="users/login" component={ SessionForm }/>
     <Route path="users/signup" component={ UserForm } />
 
   </Route>
 );
+
+function _ensureLoggedIn(nextState, replace, callback) {
+  
+  if (CurrentUserStore.userHasBeenFetched()) {
+    _redirectIfNotLoggedIn();
+  } else {
+    SessionsApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
+  }
+  
+  function _redirectIfNotLoggedIn() {
+    if (!CurrentUserStore.isLoggedIn()) {
+      replace({}, "/users/login", {returnUri: "questions/ask"});
+    }
+    callback(); 
+  }
+};
 
 
   ReactDOM.render(

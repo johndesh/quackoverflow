@@ -18,13 +18,14 @@ var SessionsApiUtil = {
     });
   },
 
-  logout: function () {
+  logout: function (cb) {
     $.ajax({
       url: '/api/session',
       type: 'DELETE',
       dataType: 'json',
       success: function () {
         CurrentUserActions.receiveCurrentUser({});
+        cb && cb();
       }
     });
   },

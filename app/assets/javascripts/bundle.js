@@ -52,6 +52,8 @@
 	var IndexRoute = ReactRouter.IndexRoute;
 	var Header = __webpack_require__(208);
 	var UserForm = __webpack_require__(234);
+	var CurrentUserStore = __webpack_require__(216);
+	var SessionsApiUtil = __webpack_require__(209);
 	var SessionForm = __webpack_require__(239);
 	var QuestionsIndex = __webpack_require__(240);
 	var QuestionShow = __webpack_require__(246);
@@ -166,11 +168,27 @@
 	  { path: '/', component: App },
 	  React.createElement(IndexRoute, { component: QuestionsIndex }),
 	  React.createElement(Route, { path: 'search', component: SearchResults }),
-	  React.createElement(Route, { path: 'questions/ask', component: QuestionForm }),
+	  React.createElement(Route, { path: 'questions/ask', component: QuestionForm, onEnter: _ensureLoggedIn }),
 	  React.createElement(Route, { path: 'questions/:questionId', component: QuestionShow }),
 	  React.createElement(Route, { path: 'users/login', component: SessionForm }),
 	  React.createElement(Route, { path: 'users/signup', component: UserForm })
 	);
+
+	function _ensureLoggedIn(nextState, replace, callback) {
+
+	  if (CurrentUserStore.userHasBeenFetched()) {
+	    _redirectIfNotLoggedIn();
+	  } else {
+	    SessionsApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
+	  }
+
+	  function _redirectIfNotLoggedIn() {
+	    if (!CurrentUserStore.isLoggedIn()) {
+	      replace({}, "/users/login", { returnUri: "questions/ask" });
+	    }
+	    callback();
+	  }
+	};
 
 	ReactDOM.render(React.createElement(
 	  Router,
@@ -24453,7 +24471,9 @@
 	  },
 
 	  logout: function () {
-	    SessionsApiUtil.logout();
+	    SessionsApiUtil.logout(function () {
+	      this.history.pushState(null, '#', {});
+	    }.bind(this));
 	  },
 
 	  search: function (e) {
@@ -24586,13 +24606,14 @@
 	    });
 	  },
 
-	  logout: function () {
+	  logout: function (cb) {
 	    $.ajax({
 	      url: '/api/session',
 	      type: 'DELETE',
 	      dataType: 'json',
 	      success: function () {
 	        CurrentUserActions.receiveCurrentUser({});
+	        cb && cb();
 	      }
 	    });
 	  },
@@ -31648,12 +31669,17 @@
 	    return { errors: {} };
 	  },
 
-	  submit: function (e) {
+	  login: function (e) {
 	    e.preventDefault();
-
 	    var credentials = $(e.currentTarget).serializeJSON();
+	    this.submit(credentials);
+	  },
+
+	  submit: function (credentials) {
+
+	    var returnUri = this.props.location.query.returnUri || "/";
 	    SessionsApiUtil.login(credentials, function () {
-	      this.history.pushState({}, "/");
+	      this.history.pushState({}, returnUri);
 	    }.bind(this), this._renderErrors);
 	  },
 
@@ -31666,9 +31692,7 @@
 
 	    var credentials = { email: "guest@fake.com", password: "password" };
 
-	    SessionsApiUtil.login(credentials, function () {
-	      this.history.pushState({}, "/");
-	    }.bind(this));
+	    this.submit(credentials);
 	  },
 
 	  render: function () {

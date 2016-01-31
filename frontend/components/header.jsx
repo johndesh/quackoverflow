@@ -25,7 +25,9 @@ var Header = React.createClass({
   },
 
   logout: function() {
-    SessionsApiUtil.logout();
+    SessionsApiUtil.logout(function () {
+      this.history.pushState(null, '#', {});
+    }.bind(this));
   },
 
   search: function (e) {

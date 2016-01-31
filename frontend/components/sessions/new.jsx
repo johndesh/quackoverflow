@@ -8,12 +8,17 @@ var SessionForm = React.createClass({
     return {errors: {}};
   },
 
-  submit: function (e) {
+  login: function (e) {
     e.preventDefault();
-
     var credentials = $(e.currentTarget).serializeJSON();
+    this.submit(credentials);
+  },
+
+  submit: function (credentials) {
+    
+    var returnUri = this.props.location.query.returnUri || "/";
     SessionsApiUtil.login(credentials, function () {
-      this.history.pushState({}, "/");
+      this.history.pushState({}, returnUri);
     }.bind(this), this._renderErrors);
   },
 
@@ -26,9 +31,7 @@ var SessionForm = React.createClass({
 
     var credentials = { email: "guest@fake.com", password: "password" };
 
-    SessionsApiUtil.login(credentials, function () {
-      this.history.pushState({}, "/");
-    }.bind(this));
+    this.submit(credentials);
   },
 
   render: function () {
