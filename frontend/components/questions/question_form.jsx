@@ -25,7 +25,7 @@ var QuestionForm = React.createClass({
 
   _handleDiscard: function () {
     var message = "Are you sure you want to discard your draft?";
-    
+
     if (confirm(message)) {
       this.history.pushState(null, "#", {});
     } else {
@@ -34,7 +34,7 @@ var QuestionForm = React.createClass({
   },
 
   _startResize: function () {
-    $(".body-field").css({"opacity": .25});
+    $(".body-field").css({"opacity": 0.25});
     this.setState({dragging: true})
     $(document).mousemove(this._resizeEditor);
     $(document).mouseup(this._endDrag);
@@ -64,7 +64,7 @@ var QuestionForm = React.createClass({
         </div>
           <div className="body-editor">
           <textarea name="body" style={{height: this.state._editorHeight}} valueLink={this.linkState("body")} className="body-field"></textarea>
-          <div className="gripple" onMouseDown={this._startResize}></div>  
+          <div className="gripple" onMouseDown={this._startResize}></div>
         </div>
           <div className="body-preview">
             <p onClick={this._handleClick}>{this.state.body}</p>

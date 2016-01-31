@@ -28,7 +28,6 @@ var SearchResults = React.createClass({
 
   search: function (query) {
       SearchApiUtil.search(query);
-    
   },
 
   nextPage: function () {
