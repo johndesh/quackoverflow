@@ -42,7 +42,7 @@ var SessionForm = React.createClass({
     }
     return (
       <div className="form-container">
-        <form className="users-form" onSubmit={this.submit}>
+        <form className="users-form" onSubmit={this.login}>
 
           <label>
             Email

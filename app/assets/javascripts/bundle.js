@@ -31711,7 +31711,7 @@
 	      { className: 'form-container' },
 	      React.createElement(
 	        'form',
-	        { className: 'users-form', onSubmit: this.submit },
+	        { className: 'users-form', onSubmit: this.login },
 	        React.createElement(
 	          'label',
 	          null,
