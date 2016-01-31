@@ -16,7 +16,7 @@ var SessionForm = React.createClass({
 
   submit: function (credentials) {
     SessionsApiUtil.login(credentials, function () {
-      this.history.pushState({}, this.state.returnUri);
+      this.history.pushState(null, {}, this.state.returnUri);
     }.bind(this), this._renderErrors);
   },
 
