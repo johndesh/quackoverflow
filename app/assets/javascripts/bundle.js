@@ -73,8 +73,82 @@
 	          { className: 'main-header-logo group' },
 	          React.createElement(
 	            'a',
-	            { href: '/' },
+	            { href: '#' },
 	            'Quack Overflow'
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'main-header-nav group' },
+	          React.createElement(
+	            'nav',
+	            { className: 'main-nav group' },
+	            React.createElement(
+	              'ul',
+	              null,
+	              React.createElement(
+	                'li',
+	                { className: 'group' },
+	                React.createElement(
+	                  'a',
+	                  null,
+	                  'Questions'
+	                )
+	              ),
+	              React.createElement(
+	                'li',
+	                { className: 'group' },
+	                React.createElement(
+	                  'a',
+	                  null,
+	                  'Jobs'
+	                )
+	              ),
+	              React.createElement(
+	                'li',
+	                { className: 'group' },
+	                React.createElement(
+	                  'a',
+	                  null,
+	                  'Tags'
+	                )
+	              ),
+	              React.createElement(
+	                'li',
+	                { className: 'group' },
+	                React.createElement(
+	                  'a',
+	                  null,
+	                  'Users'
+	                )
+	              ),
+	              React.createElement(
+	                'li',
+	                { className: 'group' },
+	                React.createElement(
+	                  'a',
+	                  null,
+	                  'Badges'
+	                )
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            'nav',
+	            { className: 'ask-question-nav group' },
+	            React.createElement(
+	              'ul',
+	              null,
+	              React.createElement(
+	                'li',
+	                null,
+	                React.createElement(
+	                  'a',
+	                  { href: '#/questions/ask' },
+	                  'Ask Question'
+	                )
+	              )
+	            )
 	          )
 	        )
 	      ),
@@ -32137,7 +32211,7 @@
 	    var message = "Are you sure you want to discard your draft?";
 
 	    if (confirm(message)) {
-	      this.history.pushState(null, "/", {});
+	      this.history.pushState(null, "#", {});
 	    } else {
 	      this._handleClick();
 	    }

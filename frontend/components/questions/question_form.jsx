@@ -27,7 +27,7 @@ var QuestionForm = React.createClass({
     var message = "Are you sure you want to discard your draft?";
     
     if (confirm(message)) {
-      this.history.pushState(null, "/", {});
+      this.history.pushState(null, "#", {});
     } else {
       this._handleClick();
     }

@@ -158,6 +158,41 @@ time, mark, audio, video {
   background-repeat: no-repeat;
 }
 
+.main-header-nav {
+  float: right;
+  position: relative;
+  top: 38px;
+  /*right: 15px;*/
+}
+
+.main-header-nav ul {
+  list-style: none;
+}
+
+.main-nav, .main-nav li{
+  float: left;
+}
+
+.main-nav li {
+
+}
+
+.main-header-nav nav ul li a {
+  padding: 4px 10px 5px 10px;
+  font-size: 14px;
+  text-decoration: none;
+  line-height: 1.3em;
+  background: #9ea3a9;
+
+  display: block;
+  cursor: pointer;
+  color: white;
+
+}
+
+.ask-question-nav {
+  float: right;
+}
 
  .sub-header {
    margin-bottom: 0;
