@@ -12,6 +12,7 @@
  *
  *= require_tree .
  *= require_self
+ *= require github-markdown
  */
  html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -542,7 +543,7 @@ time, mark, audio, video {
 }
 
 .form-item-title {
-  
+
   display: block;
   width: 668px;
   height: 44px;
@@ -555,7 +556,7 @@ time, mark, audio, video {
   font-size: 13px;
   width: 40px;
   margin: auto;
-  
+
   padding-right: 14px;
   padding-bottom: 3px;
 

@@ -2,11 +2,32 @@ var React = require('react');
 var QuestionsApiUtil = require('../../util/questions_api_util');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var History = require('react-router').History;
+var hljs = require('highlight.js');
+var md = require('markdown-it')({
+  html: true,
+  linkify: false,
+  typographer: false,
+  breaks: true,
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(lang, str).value;
+      } catch (__) {}
+    } else {
+      try {
+        return hljs.highlightAuto(str).value;
+      } catch (__) {}
+    }
+
+    return ''; // use external default escaping
+  }
+});
 
 var QuestionForm = React.createClass({
   mixins: [LinkedStateMixin, History],
 
   getInitialState: function () {
+    
     return { body: "" , _editorHeight: "200px", dragging: false};
   },
 
@@ -53,8 +74,13 @@ var QuestionForm = React.createClass({
     }
   },
 
-  render: function () {
+  rawMarkup: function() {
+   var rawMarkup = md.render(this.state.body.toString());
+   
+   return { __html: rawMarkup };
+  },
 
+  render: function () {
     return (
       <div className="question-form-wrapper group">
         <form className="question-form" id="question-form" onSubmit={this.createQuestion}>
@@ -66,8 +92,8 @@ var QuestionForm = React.createClass({
           <textarea name="body" style={{height: this.state._editorHeight}} valueLink={this.linkState("body")} className="body-field"></textarea>
           <div className="gripple" onMouseDown={this._startResize}></div>
         </div>
-          <div className="body-preview">
-            <p onClick={this._handleClick}>{this.state.body}</p>
+          <div className="body-preview markdown-body" onClick={this._handleClick} dangerouslySetInnerHTML={this.rawMarkup()}>
+            
           </div>
           <div className="form-submit">
             <button className="submit-button">
