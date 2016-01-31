@@ -5,7 +5,7 @@ var SessionsApiUtil = require('./../../util/sessions_api_util');
 var SessionForm = React.createClass({
   mixins: [History],
   getInitialState: function () {
-    return {errors: {}};
+    return {errors: {}, returnUri: (this.props.location.query.returnUri || "/") };
   },
 
   login: function (e) {
@@ -15,10 +15,8 @@ var SessionForm = React.createClass({
   },
 
   submit: function (credentials) {
-    
-    var returnUri = this.props.location.query.returnUri || "/";
     SessionsApiUtil.login(credentials, function () {
-      this.history.pushState({}, returnUri);
+      this.history.pushState({}, this.state.returnUri);
     }.bind(this), this._renderErrors);
   },
 

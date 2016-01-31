@@ -31666,7 +31666,7 @@
 
 	  mixins: [History],
 	  getInitialState: function () {
-	    return { errors: {} };
+	    return { errors: {}, returnUri: this.props.location.query.returnUri || "/" };
 	  },
 
 	  login: function (e) {
@@ -31676,10 +31676,8 @@
 	  },
 
 	  submit: function (credentials) {
-
-	    var returnUri = this.props.location.query.returnUri || "/";
 	    SessionsApiUtil.login(credentials, function () {
-	      this.history.pushState({}, returnUri);
+	      this.history.pushState({}, this.state.returnUri);
 	    }.bind(this), this._renderErrors);
 	  },
 
