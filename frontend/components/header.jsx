@@ -12,8 +12,9 @@ var Header = React.createClass({
 
   componentDidMount: function () {
     CurrentUserStore.addListener(this._onChange);
-
-    SessionsApiUtil.fetchCurrentUser();
+    if (!CurrentUserStore.userHasBeenFetched()) {
+      SessionsApiUtil.fetchCurrentUser();
+    }
   },
 
   componentWillUnmount: function () {
@@ -34,6 +35,7 @@ var Header = React.createClass({
     var code = e.keyCode ? e.keyCode : e.which;
     if (code === 13) {
       var query = e.target.value;
+      $(e.target).val("");
       this.history.pushState(null, '/search', {query: query});
     } else {
       // do nothing...
