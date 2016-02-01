@@ -27,7 +27,7 @@ var App = React.createClass({
               </nav>
               <nav className="ask-question-nav group">
                 <ul>
-                  <li><a href="#/questions/ask">Ask Question</a></li>
+                  <li><a onClick={this.toggleNavButton} href="#/questions/ask">Ask Question</a></li>
                 </ul>
               </nav>
             </div>
