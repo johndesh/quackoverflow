@@ -32186,15 +32186,11 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'question-wrapper' },
+	        { className: 'question-wrapper markdown-body' },
 	        React.createElement(
 	          'div',
 	          { className: 'question' },
-	          React.createElement(
-	            'p',
-	            null,
-	            this.state.question.body
-	          )
+	          React.createElement('p', { dangerouslySetInnerHTML: { __html: this.state.question.body } })
 	        ),
 	        answers
 	      )
@@ -32249,6 +32245,7 @@
 	    e.preventDefault();
 
 	    var question = $(e.currentTarget).serializeJSON();
+	    question.body = md.render(this.state.body.toString());
 	    QuestionsApiUtil.createQuestion(question, function (id) {
 	      this.history.pushState(null, "/questions/" + id, {});
 	    }.bind(this));

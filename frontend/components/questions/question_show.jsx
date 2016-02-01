@@ -53,9 +53,9 @@ var QuestionShow = React.createClass({
           <Link to={linkTo} className="question-title group">{this.state.question.title}</Link>
         </h2>
       </div>
-      <div className="question-wrapper">
+      <div className="question-wrapper markdown-body">
         <div className="question">
-          <p>{this.state.question.body}</p>
+          <p dangerouslySetInnerHTML={{__html: this.state.question.body}}></p>
         </div>
       {answers}
        </div>

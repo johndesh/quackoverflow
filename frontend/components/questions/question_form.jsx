@@ -37,6 +37,7 @@ var QuestionForm = React.createClass({
     e.preventDefault();
 
     var question = $(e.currentTarget).serializeJSON();
+    question.body = md.render(this.state.body.toString())
     QuestionsApiUtil.createQuestion(question, function (id) {
       this.history.pushState(null, "/questions/" + id, {});
     }.bind(this));

@@ -291,6 +291,10 @@ time, mark, audio, video {
 
 
  .question-index-wrapper {
+   width: 100%;
+ }
+
+ .question-wrapper {
    width: 728px;
  }
 
