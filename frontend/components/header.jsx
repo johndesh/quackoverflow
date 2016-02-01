@@ -42,6 +42,11 @@ var Header = React.createClass({
     }
   },
 
+  showAccount: function () {
+    var userId = this.state.currentUser.id;
+    this.history.pushState(null, '/users/' + userId, {});
+  },
+
   render: function () {
     if (!CurrentUserStore.userHasBeenFetched()) {
       return(
@@ -58,8 +63,11 @@ var Header = React.createClass({
             <div className="network-items group">QuackExchange</div>
             <div className="topbar-links group">
               <div className="links-container group">
-                <div className="topbar-user-info group">
-                  <img src={ this.state.currentUser.avatar } />
+                <div className="topbar-user-info group" onClick={this.showAccount}>
+                  <div className="avatar-wrapper">
+                    <img src={ this.state.currentUser.avatar } title={ this.state.currentUser.username } />
+                  </div>
+                  <span className="reputation">1</span>
                 </div>
                 <button onClick={ this.logout } className="logout group">Log Out</button>
               </div>

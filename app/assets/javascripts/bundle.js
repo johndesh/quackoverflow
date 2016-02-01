@@ -31467,12 +31467,7 @@
 	          React.createElement(
 	            'a',
 	            { href: '#', onClick: _handleClick, className: 'group' },
-	            'new users',
-	            React.createElement(
-	              'span',
-	              { className: 'featured-count-tab group' },
-	              '391'
-	            )
+	            'new users'
 	          ),
 	          React.createElement(
 	            'a',
@@ -58203,6 +58198,11 @@
 	    }
 	  },
 
+	  showAccount: function () {
+	    var userId = this.state.currentUser.id;
+	    this.history.pushState(null, '/users/' + userId, {});
+	  },
+
 	  render: function () {
 	    if (!CurrentUserStore.userHasBeenFetched()) {
 	      return React.createElement(
@@ -58238,8 +58238,17 @@
 	              { className: 'links-container group' },
 	              React.createElement(
 	                'div',
-	                { className: 'topbar-user-info group' },
-	                React.createElement('img', { src: this.state.currentUser.avatar })
+	                { className: 'topbar-user-info group', onClick: this.showAccount },
+	                React.createElement(
+	                  'div',
+	                  { className: 'avatar-wrapper' },
+	                  React.createElement('img', { src: this.state.currentUser.avatar, title: this.state.currentUser.username })
+	                ),
+	                React.createElement(
+	                  'span',
+	                  { className: 'reputation' },
+	                  '1'
+	                )
 	              ),
 	              React.createElement(
 	                'button',

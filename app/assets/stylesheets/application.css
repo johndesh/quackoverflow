@@ -53,7 +53,7 @@ time, mark, audio, video {
    width: 100%;
    min-width: 1075px;
    display: block;
-   background: black;
+   background: #222426;
    position: relative;
  }
 
@@ -498,8 +498,20 @@ time, mark, audio, video {
 
 .topbar-user-info {
   float: left;
-  margin: auto;
-  padding: 0 10px 0 0;
+
+  padding: 0 5px 0 5px;
+  height: 100%;
+  cursor: pointer;
+}
+
+.topbar-user-info:hover {
+  background-color: #444;
+}
+
+.avatar-wrapper {
+  display: inline-block;
+  width: 35px;
+  height: 100%;
 }
 
 .topbar-user-info img {
@@ -507,6 +519,19 @@ time, mark, audio, video {
   height: 24px;
   padding: 4px;
   margin-top: 1px;
+}
+
+.topbar-user-info .reputation {
+  float: right;
+  color: #e0e0e0;
+  margin: 0;
+  vertical-align: top;
+  display: inline-block;
+  font-size: 13px;
+  line-height: 1;
+  padding-top: 10px;
+  padding-right: 5px;
+
 }
 
 .logout {
@@ -690,6 +715,10 @@ time, mark, audio, video {
 .user-item {
   width: 25%;
   float: left;
+}
+
+.user-item:nth-child(4n) {
+  float: right;
 }
 .user-info {
   overflow: hidden;

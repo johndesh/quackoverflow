@@ -40,8 +40,7 @@ var UserIndex = React.createClass({
           <h2 className="group">Users</h2>
           <nav className="sub-header-nav group">
             <a href="#" onClick={_handleClick} className="clicked group">reputation</a>
-            <a href="#" onClick={_handleClick} className="group">new users
-              <span className="featured-count-tab group">391</span></a>
+            <a href="#" onClick={_handleClick} className="group">new users</a>
             <a href="#" onClick={_handleClick} className="group">voters</a>
             <a href="#" onClick={_handleClick} className="group">editors</a>
             <a href="#" onClick={_handleClick} className="group">moderators</a>
