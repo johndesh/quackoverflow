@@ -50,7 +50,6 @@
 	var Router = ReactRouter.Router;
 	var Route = ReactRouter.Route;
 	var IndexRoute = ReactRouter.IndexRoute;
-	var Header = __webpack_require__(208);
 	var UserForm = __webpack_require__(234);
 	var CurrentUserStore = __webpack_require__(216);
 	var SessionsApiUtil = __webpack_require__(209);
@@ -59,123 +58,9 @@
 	var QuestionShow = __webpack_require__(246);
 	var QuestionForm = __webpack_require__(247);
 	var SearchResults = __webpack_require__(469);
-	var App = React.createClass({
-	  displayName: 'App',
-
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(Header, null),
-	      React.createElement(
-	        'header',
-	        { className: 'main-header' },
-	        React.createElement(
-	          'div',
-	          { className: 'main-header-logo group' },
-	          React.createElement(
-	            'a',
-	            { href: '#' },
-	            'Quack Overflow'
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'main-header-nav group' },
-	          React.createElement(
-	            'nav',
-	            { className: 'main-nav group' },
-	            React.createElement(
-	              'ul',
-	              null,
-	              React.createElement(
-	                'li',
-	                { className: 'group' },
-	                React.createElement(
-	                  'a',
-	                  null,
-	                  'Questions'
-	                )
-	              ),
-	              React.createElement(
-	                'li',
-	                { className: 'group' },
-	                React.createElement(
-	                  'a',
-	                  null,
-	                  'Jobs'
-	                )
-	              ),
-	              React.createElement(
-	                'li',
-	                { className: 'group' },
-	                React.createElement(
-	                  'a',
-	                  null,
-	                  'Tags'
-	                )
-	              ),
-	              React.createElement(
-	                'li',
-	                { className: 'group' },
-	                React.createElement(
-	                  'a',
-	                  null,
-	                  'Users'
-	                )
-	              ),
-	              React.createElement(
-	                'li',
-	                { className: 'group' },
-	                React.createElement(
-	                  'a',
-	                  null,
-	                  'Badges'
-	                )
-	              )
-	            )
-	          ),
-	          React.createElement(
-	            'nav',
-	            { className: 'ask-question-nav group' },
-	            React.createElement(
-	              'ul',
-	              null,
-	              React.createElement(
-	                'li',
-	                null,
-	                React.createElement(
-	                  'a',
-	                  { href: '#/questions/ask' },
-	                  'Ask Question'
-	                )
-	              )
-	            )
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'main' },
-	        this.props.children
-	      )
-	    );
-	  }
-	});
-
-	var routes = React.createElement(
-	  Route,
-	  { path: '/', component: App },
-	  React.createElement(IndexRoute, { component: QuestionsIndex }),
-	  React.createElement(Route, { path: 'search', component: SearchResults }),
-	  React.createElement(Route, { path: 'questions/ask', component: QuestionForm, onEnter: _ensureLoggedIn }),
-	  React.createElement(Route, { path: 'questions/:questionId', component: QuestionShow }),
-	  React.createElement(Route, { path: 'users/login', component: SessionForm }),
-	  React.createElement(Route, { path: 'users/signup', component: UserForm })
-	);
+	var App = __webpack_require__(474);
 
 	function _ensureLoggedIn(nextState, replace, callback) {
-
 	  if (CurrentUserStore.userHasBeenFetched()) {
 	    _redirectIfNotLoggedIn();
 	  } else {
@@ -188,7 +73,18 @@
 	    }
 	    callback();
 	  }
-	};
+	}
+
+	var routes = React.createElement(
+	  Route,
+	  { path: '/', component: App },
+	  React.createElement(IndexRoute, { component: QuestionsIndex }),
+	  React.createElement(Route, { path: 'search', component: SearchResults }),
+	  React.createElement(Route, { path: 'questions/ask', component: QuestionForm, onEnter: _ensureLoggedIn }),
+	  React.createElement(Route, { path: 'questions/:questionId', component: QuestionShow }),
+	  React.createElement(Route, { path: 'users/login', component: SessionForm }),
+	  React.createElement(Route, { path: 'users/signup', component: UserForm })
+	);
 
 	ReactDOM.render(React.createElement(
 	  Router,
@@ -32211,8 +32107,8 @@
 	var hljs = __webpack_require__(252);
 	var md = __webpack_require__(400)({
 	  html: true,
-	  linkify: false,
-	  typographer: false,
+	  linkify: true,
+	  typographer: true,
 	  breaks: false,
 	  highlight: function (str, lang) {
 	    if (lang && hljs.getLanguage(lang)) {
@@ -58097,6 +57993,119 @@
 	};
 
 	module.exports = SearchActions;
+
+/***/ },
+/* 474 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Header = __webpack_require__(208);
+
+	var App = React.createClass({
+	  displayName: 'App',
+
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(Header, null),
+	      React.createElement(
+	        'header',
+	        { className: 'main-header' },
+	        React.createElement(
+	          'div',
+	          { className: 'main-header-logo group' },
+	          React.createElement(
+	            'a',
+	            { href: '#' },
+	            'Quack Overflow'
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'main-header-nav group' },
+	          React.createElement(
+	            'nav',
+	            { className: 'main-nav group' },
+	            React.createElement(
+	              'ul',
+	              null,
+	              React.createElement(
+	                'li',
+	                { className: 'group' },
+	                React.createElement(
+	                  'a',
+	                  null,
+	                  'Questions'
+	                )
+	              ),
+	              React.createElement(
+	                'li',
+	                { className: 'group' },
+	                React.createElement(
+	                  'a',
+	                  null,
+	                  'Jobs'
+	                )
+	              ),
+	              React.createElement(
+	                'li',
+	                { className: 'group' },
+	                React.createElement(
+	                  'a',
+	                  null,
+	                  'Tags'
+	                )
+	              ),
+	              React.createElement(
+	                'li',
+	                { className: 'group' },
+	                React.createElement(
+	                  'a',
+	                  null,
+	                  'Users'
+	                )
+	              ),
+	              React.createElement(
+	                'li',
+	                { className: 'group' },
+	                React.createElement(
+	                  'a',
+	                  null,
+	                  'Badges'
+	                )
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            'nav',
+	            { className: 'ask-question-nav group' },
+	            React.createElement(
+	              'ul',
+	              null,
+	              React.createElement(
+	                'li',
+	                null,
+	                React.createElement(
+	                  'a',
+	                  { href: '#/questions/ask' },
+	                  'Ask Question'
+	                )
+	              )
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'main' },
+	        this.props.children
+	      )
+	    );
+	  }
+	});
+
+	module.exports = App;
 
 /***/ }
 /******/ ]);
