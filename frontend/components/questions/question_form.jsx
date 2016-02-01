@@ -5,8 +5,8 @@ var History = require('react-router').History;
 var hljs = require('highlight.js');
 var md = require('markdown-it')({
   html: true,
-  linkify: false,
-  typographer: false,
+  linkify: true,
+  typographer: true,
   breaks: false,
   highlight: function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {
