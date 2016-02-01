@@ -5,7 +5,7 @@ class Api::QuestionsController < ApplicationController
   end
 
   def show
-    @question = Question.includes(:answers, :author, :views).find(params[:id])
+    @question = Question.includes({:answers => :author}, :author, :views).find(params[:id])
     if current_user && !current_user.viewed_questions.include?(@question)
       @question.views.create(user_id: current_user.id) unless @question.author == current_user
     end
