@@ -75,13 +75,13 @@ time, mark, audio, video {
  }
 
  .topbar-links {
-   width: 440px;
+
    height: 100%;
    float: right;
 
  }
  .links-container {
-   width: 150px;
+
    height: 100%;
    float: left;
  }
@@ -99,10 +99,9 @@ time, mark, audio, video {
    border: 1px solid black;
    padding: 2px 5px 2px 22px;
    width: 188px;
-   color: rgb(135,135,135);
+   color: #444;
    height: 16px;
    word-spacing: 0px;
-
    font-size: 13px;
    box-shadow: 0 1px 2px rgba(34,36,38,0.1) inset;
    line-height: normal;
@@ -113,6 +112,12 @@ time, mark, audio, video {
    outline: 0;
    text-shadow: none;
  }
+
+::-webkit-input-placeholder {
+   font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+   color: #ccc;
+ }
+
 
  .links-container a {
    text-decoration: none;
@@ -490,13 +495,19 @@ time, mark, audio, video {
   font-size: 13px;
 }
 
-.links-container p {
-  color: white;
+.topbar-user-info {
   float: left;
-  font-size: 11px;
-  margin-top: 11px;
+  margin: auto;
   padding: 0 10px 0 0;
 }
+
+.topbar-user-info img {
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  margin-top: 1px;
+}
+
 .logout {
   float: left;
   display: block;
@@ -691,9 +702,13 @@ time, mark, audio, video {
 .user-avatar-thumb {
   float: left;
   width: 48px;
+  height: 48px;
+
 }
 .user-avatar-thumb img {
+  border-radius: 2px;
 
+  width: 48px;
   height: 48px;
 }
 

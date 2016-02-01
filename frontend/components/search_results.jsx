@@ -18,7 +18,7 @@ var SearchResults = React.createClass({
 
   componentWillReceiveProps: function (newProps) {
 
-    this.search(newProps.location.query.query)
+    this.search(newProps.location.query.query);
   },
 
   _onChange: function() {

@@ -1,2 +1,2 @@
 json.extract! @user, :id, :username, :email
-json.avatar @user.avatar.url()
+json.avatar image_path(@user.avatar.url())

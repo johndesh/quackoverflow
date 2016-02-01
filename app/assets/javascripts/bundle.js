@@ -58237,10 +58237,9 @@
 	              'div',
 	              { className: 'links-container group' },
 	              React.createElement(
-	                'p',
-	                { className: 'group' },
-	                'Logged in as ',
-	                this.state.currentUser.username
+	                'div',
+	                { className: 'topbar-user-info group' },
+	                React.createElement('img', { src: this.state.currentUser.avatar })
 	              ),
 	              React.createElement(
 	                'button',

@@ -58,7 +58,9 @@ var Header = React.createClass({
             <div className="network-items group">QuackExchange</div>
             <div className="topbar-links group">
               <div className="links-container group">
-                <p className="group">Logged in as { this.state.currentUser.username }</p>
+                <div className="topbar-user-info group">
+                  <img src={ this.state.currentUser.avatar } />
+                </div>
                 <button onClick={ this.logout } className="logout group">Log Out</button>
               </div>
               <div className="search-container group">
