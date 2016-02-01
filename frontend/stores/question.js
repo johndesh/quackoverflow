@@ -19,7 +19,7 @@ var resetQuestion = function (question) {
 QuestionStore.all = function () {
   var questions = [];
   for (var id in _questions) {
-    questions.push(_questions[id]);
+    questions.unshift(_questions[id]);
   }
   return questions;
 };

@@ -1,7 +1,7 @@
 class Api::QuestionsController < ApplicationController
 
   def index
-    @questions = Question.includes({:answers => :author}, :author, :views).order(updated_at: :desc).all
+    @questions = Question.order(updated_at: :desc).includes({:answers => :author}, :author, :views).all
   end
 
   def show
