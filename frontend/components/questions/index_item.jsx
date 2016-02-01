@@ -9,18 +9,21 @@ var IndexItem = React.createClass({
     this.history.pushState(null, '/questions/' + this.props.question.id, {});
   },
 
-  render: function () {
+  showUser: function (user) {
+    this.history.pushState(null, '/users/' + user.id, {});
+  },
 
+  render: function () {
     var question = this.props.question;
     var timeAgo;
     if (question.answers.length > 0) {
       var answered = question.answers[question.answers.length - 1].answered;
       var author = question.answers[question.answers.length - 1].author;
-      timeAgo = <div className="question-details group"><span className="question-details-time">answered {answered} ago </span><span className="question-details-author">{author.username}</span></div>;
+      timeAgo = <div className="question-details group"><span className="question-details-time" onClick={this.showQuestion}>answered {answered} ago </span><span className="question-details-author" onClick={this.showUser.bind(this, author)}>{author.username}</span></div>;
     } else if (question.modified !== question.asked) {
-      timeAgo = <div className="question-details group"><span className="question-details-time">modified {question.modified} ago </span><span className="question-details-author">{question.author.username}</span></div>;
+      timeAgo = <div className="question-details group"><span className="question-details-time" onClick={this.showQuestion}>modified {question.modified} ago </span><span className="question-details-author" onClick={this.showUser.bind(this, question.author)}>{question.author.username}</span></div>;
     } else {
-      timeAgo = <div className="question-details group"><span className="question-details-time">asked {question.asked} ago </span><span className="question-details-author">{question.author.username}</span></div>;
+      timeAgo = <div className="question-details group"><span className="question-details-time" onClick={this.showQuestion}>asked {question.asked} ago </span><span className="question-details-author" onClick={this.showUser.bind(this, question.author)}>{question.author.username}</span></div>;
     }
     var answersKlass = "question-stat-count answers group";
     answersKlass += (question.answers.length > 0) ? " answered" : "";

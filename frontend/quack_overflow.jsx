@@ -6,6 +6,7 @@ var Route = ReactRouter.Route;
 var IndexRoute = ReactRouter.IndexRoute;
 var UserForm = require('./components/users/user_form');
 var UserIndex = require('./components/users/index');
+var UserShow = require('./components/users/user_show');
 var CurrentUserStore = require('./stores/current_user_store');
 var SessionsApiUtil = require('./util/sessions_api_util');
 var SessionForm = require('./components/sessions/new');
@@ -40,6 +41,7 @@ var routes = (
     <Route path="users/login" component={ SessionForm }/>
     <Route path="users/signup" component={ UserForm } />
     <Route path="users/" component={ UserIndex } />
+    <Route path="users/:userId" component={ UserShow }/>
 
   </Route>
 );

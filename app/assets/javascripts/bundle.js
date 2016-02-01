@@ -52,6 +52,7 @@
 	var IndexRoute = ReactRouter.IndexRoute;
 	var UserForm = __webpack_require__(208);
 	var UserIndex = __webpack_require__(237);
+	var UserShow = __webpack_require__(477);
 	var CurrentUserStore = __webpack_require__(239);
 	var SessionsApiUtil = __webpack_require__(234);
 	var SessionForm = __webpack_require__(240);
@@ -85,7 +86,8 @@
 	  React.createElement(Route, { path: 'questions/:questionId', component: QuestionShow }),
 	  React.createElement(Route, { path: 'users/login', component: SessionForm }),
 	  React.createElement(Route, { path: 'users/signup', component: UserForm }),
-	  React.createElement(Route, { path: 'users/', component: UserIndex })
+	  React.createElement(Route, { path: 'users/', component: UserIndex }),
+	  React.createElement(Route, { path: 'users/:userId', component: UserShow })
 	);
 
 	ReactDOM.render(React.createElement(
@@ -31916,8 +31918,11 @@
 	    this.history.pushState(null, '/questions/' + this.props.question.id, {});
 	  },
 
-	  render: function () {
+	  showUser: function (user) {
+	    this.history.pushState(null, '/users/' + user.id, {});
+	  },
 
+	  render: function () {
 	    var question = this.props.question;
 	    var timeAgo;
 	    if (question.answers.length > 0) {
@@ -31928,14 +31933,14 @@
 	        { className: 'question-details group' },
 	        React.createElement(
 	          'span',
-	          { className: 'question-details-time' },
+	          { className: 'question-details-time', onClick: this.showQuestion },
 	          'answered ',
 	          answered,
 	          ' ago '
 	        ),
 	        React.createElement(
 	          'span',
-	          { className: 'question-details-author' },
+	          { className: 'question-details-author', onClick: this.showUser.bind(this, author) },
 	          author.username
 	        )
 	      );
@@ -31945,14 +31950,14 @@
 	        { className: 'question-details group' },
 	        React.createElement(
 	          'span',
-	          { className: 'question-details-time' },
+	          { className: 'question-details-time', onClick: this.showQuestion },
 	          'modified ',
 	          question.modified,
 	          ' ago '
 	        ),
 	        React.createElement(
 	          'span',
-	          { className: 'question-details-author' },
+	          { className: 'question-details-author', onClick: this.showUser.bind(this, question.author) },
 	          question.author.username
 	        )
 	      );
@@ -31962,14 +31967,14 @@
 	        { className: 'question-details group' },
 	        React.createElement(
 	          'span',
-	          { className: 'question-details-time' },
+	          { className: 'question-details-time', onClick: this.showQuestion },
 	          'asked ',
 	          question.asked,
 	          ' ago '
 	        ),
 	        React.createElement(
 	          'span',
-	          { className: 'question-details-author' },
+	          { className: 'question-details-author', onClick: this.showUser.bind(this, question.author) },
 	          question.author.username
 	        )
 	      );
@@ -58306,6 +58311,65 @@
 	});
 
 	module.exports = Header;
+
+/***/ },
+/* 477 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var UsersStore = __webpack_require__(209);
+	var UsersApiUtil = __webpack_require__(232);
+
+	var UserShow = React.createClass({
+	  displayName: 'UserShow',
+
+	  getStateFromStore: function () {
+
+	    return { user: UsersStore.find(parseInt(this.props.params.userId)) };
+	  },
+
+	  _onChange: function () {
+
+	    this.setState(this.getStateFromStore());
+	  },
+
+	  getInitialState: function () {
+	    return this.getStateFromStore();
+	  },
+
+	  componentWillReceiveProps: function (newProps) {
+
+	    UsersApiUtil.fetchUser(parseInt(newProps.params.userId));
+	  },
+
+	  componentDidMount: function () {
+	    this.userListener = UsersStore.addListener(this._onChange);
+	    UsersApiUtil.fetchUser(parseInt(this.props.params.userId));
+	  },
+
+	  componentWillUnmount: function () {
+	    this.userListener.remove();
+	  },
+
+	  render: function () {
+	    if (this.state.user === undefined) {
+	      return React.createElement('div', null);
+	    }
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h1',
+	        null,
+	        this.state.user.username
+	      ),
+	      React.createElement('img', { src: this.state.user.avatar })
+	    );
+	  }
+	});
+
+	module.exports = UserShow;
 
 /***/ }
 /******/ ]);
