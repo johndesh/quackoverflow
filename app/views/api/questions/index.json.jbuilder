@@ -2,7 +2,10 @@ json.array! @questions do |question|
   json.id question.id
   json.title question.title
   json.body question.body
-  json.author question.author, :username
+  json.author do
+    json.username question.author.username
+    json.avatar question.author.avatar.url()
+  end
   json.asked time_ago_in_words(question.created_at)
   json.modified time_ago_in_words(question.updated_at)
   json.answers question.answers do |answer|

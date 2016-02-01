@@ -672,3 +672,50 @@ time, mark, audio, video {
   line-height: 1.3em;
   font-size: 100%;
 }
+
+
+/* Users Index */
+.user-item {
+  width: 25%;
+  float: left;
+}
+.user-info {
+  overflow: hidden;
+  margin-bottom: 1.2em;
+  box-sizing: border-box;
+  color: #52575c;
+  padding: 5px 6px 7px 7px;
+  width: 100%;
+
+}
+.user-avatar-thumb {
+  float: left;
+  width: 48px;
+}
+.user-avatar-thumb img {
+
+  height: 48px;
+}
+
+.user-details {
+  float: left;
+  width: calc(100% - 64px);
+  margin-left: 9px;
+}
+
+.user-details a {
+  color: #0077cc;
+  font-size: 14px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.user-details a:hover {
+  color: #3af;
+}
+
+.user-location {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 12px;
+}

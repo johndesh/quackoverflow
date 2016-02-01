@@ -18,7 +18,7 @@ var App = React.createClass({
                   <li className="group"><a>Questions</a></li>
                   <li className="group"><a>Jobs</a></li>
                   <li className="group"><a>Tags</a></li>
-                  <li className="group"><a>Users</a></li>
+                  <li className="group"><a href="#/users/">Users</a></li>
                   <li className="group"><a>Badges</a></li>
                 </ul>
               </nav>

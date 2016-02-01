@@ -5,6 +5,7 @@ var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var IndexRoute = ReactRouter.IndexRoute;
 var UserForm = require('./components/users/user_form');
+var UserIndex = require('./components/users/index');
 var CurrentUserStore = require('./stores/current_user_store');
 var SessionsApiUtil = require('./util/sessions_api_util');
 var SessionForm = require('./components/sessions/new');
@@ -38,6 +39,7 @@ var routes = (
     <Route path="questions/:questionId" component={QuestionShow}/>
     <Route path="users/login" component={ SessionForm }/>
     <Route path="users/signup" component={ UserForm } />
+    <Route path="users/" component={ UserIndex } />
 
   </Route>
 );

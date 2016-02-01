@@ -4,5 +4,8 @@ json.answers question.answers do |answer|
   json.author answer.author, :username
   json.answered time_ago_in_words(answer.created_at)
 end
-json.author question.author, :username
+json.author do
+  json.username question.author.username
+  json.avatar question.author.avatar.url()
+end
 json.views question.views.size

@@ -8,6 +8,7 @@ var UsersApiUtil = {
       dataType: 'json',
       success: function (users) {
         UserActions.receiveUsers(users);
+
       }
     });
   },

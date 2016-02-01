@@ -2,24 +2,35 @@ var Store = require('flux/utils').Store;
 var AppDispatcher = require('../dispatcher/dispatcher');
 var UserConstants = require('../constants/user_constants');
 
-var _users = [];
+var _users = {};
 var CHANGE_EVENT = "change";
 
 var _addUser = function (newUser) {
-  _users.unshift(newUser);
+  _users[newUser.id] = newUser;
+};
+
+var resetUsers = function (users) {
+  _users = {};
+  
+  users.forEach(function (user) {
+    _users[user.id] = user;
+  });
 };
 
 var UsersStore = new Store(AppDispatcher);
 
 UsersStore.all = function () {
-  return _users.slice();
+  var users = [];
+  for (var id in _users) {
+    users.push(_users[id]);
+  }
+  return users;
 };
-
 UsersStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
 
     case UserConstants.RECEIVE_USERS:
-      _users = payload.users;
+      resetUsers(payload.users);
       UsersStore.__emitChange();
       break;
 
@@ -30,13 +41,8 @@ UsersStore.__onDispatch = function (payload) {
   }
 };
 
-UsersStore.findUserById = function (id) {
-  for (var i = 0; i < _users.length; i++) {
-    if (_users[i].id === id) {
-      return _users[i];
-    }
-  }
-  return;
+UsersStore.find = function (id) {
+  return _users[id];
 };
 
 module.exports = UsersStore;
