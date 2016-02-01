@@ -34,11 +34,11 @@ function _ensureLoggedIn(nextState, replace, callback) {
 var routes = (
   <Route path="/" component={App} >
 
-    <IndexRoute component={QuestionsIndex}/>
-    <Route path="search" component={SearchResults}/>
-    <Route path="questions/ask" component={QuestionForm} onEnter={_ensureLoggedIn}/>
-    <Route path="questions/:questionId" component={QuestionShow}/>
-    <Route path="users/login" component={ SessionForm }/>
+    <IndexRoute component={QuestionsIndex} />
+    <Route path="search" component={SearchResults} />
+    <Route path="questions/ask" component={QuestionForm} onEnter={_ensureLoggedIn} />
+    <Route path="questions/:questionId" component={QuestionShow} />
+    <Route path="users/login" component={ SessionForm } />
     <Route path="users/signup" component={ UserForm } />
     <Route path="users/" component={ UserIndex } />
     <Route path="users/:userId" component={ UserShow }/>

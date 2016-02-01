@@ -184,7 +184,7 @@ time, mark, audio, video {
   margin-left: 3.5px;
 }
 
-.main-header-nav a:hover {
+.main-header-nav a:hover, .main-header-nav a.clicked {
   background: #f69c55;
 }
 

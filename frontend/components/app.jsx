@@ -2,6 +2,11 @@ var React = require('react');
 var Header = require('./header');
 
 var App = React.createClass({
+  toggleNavButton: function (e) {
+    $(".main-header-nav a").removeClass("clicked");
+    $(e.currentTarget).addClass("clicked");
+  },
+
   render: function(){
     return (
       <div>
@@ -15,11 +20,9 @@ var App = React.createClass({
             <div className="main-header-nav group">
               <nav className="main-nav group">
                 <ul>
-                  <li className="group"><a>Questions</a></li>
-                  <li className="group"><a>Jobs</a></li>
-                  <li className="group"><a>Tags</a></li>
-                  <li className="group"><a href="#/users/">Users</a></li>
-                  <li className="group"><a>Badges</a></li>
+                  <li className="group"><a onClick={this.toggleNavButton}>Questions</a></li>
+                  <li className="group"><a onClick={this.toggleNavButton}>Tags</a></li>
+                  <li className="group"><a onClick={this.toggleNavButton} href="#/users/">Users</a></li>
                 </ul>
               </nav>
               <nav className="ask-question-nav group">
