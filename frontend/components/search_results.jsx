@@ -11,18 +11,15 @@ var SearchResults = React.createClass({
   },
 
   getInitialState: function () {
-
     var query = this.props.location.query;
     return query;
   },
 
   componentWillReceiveProps: function (newProps) {
-
     this.search(newProps.location.query.query);
   },
 
   _onChange: function() {
-
     this.forceUpdate();
   },
 
@@ -33,7 +30,6 @@ var SearchResults = React.createClass({
   nextPage: function () {
     var nextPage = this.state.page + 1;
     SearchApiUtil.search(this.state.query, nextPage);
-
     this.setState({page: nextPage});
   },
 
@@ -42,7 +38,6 @@ var SearchResults = React.createClass({
   },
 
   render: function() {
-
     var searchResults = SearchResultsStore.all().map(function (searchResult, idx) {
         return <QuestionIndexItem question={searchResult} key={idx}/>;
     });

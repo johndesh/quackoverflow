@@ -1,20 +1,20 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var ReactRouter = require('react-router');
-var Router = ReactRouter.Router;
-var Route = ReactRouter.Route;
-var IndexRoute = ReactRouter.IndexRoute;
-var UserForm = require('./components/users/user_form');
-var UserIndex = require('./components/users/index');
-var UserShow = require('./components/users/user_show');
-var CurrentUserStore = require('./stores/current_user_store');
-var SessionsApiUtil = require('./util/sessions_api_util');
-var SessionForm = require('./components/sessions/new');
-var QuestionsIndex = require('./components/questions/index');
-var QuestionShow = require('./components/questions/question_show');
-var QuestionForm = require('./components/questions/question_form');
-var SearchResults = require('./components/search_results.jsx');
-var App = require('./components/app');
+var React = require('react'),
+    ReactDOM = require('react-dom'),
+    ReactRouter = require('react-router'),
+    Router = ReactRouter.Router,
+    Route = ReactRouter.Route,
+    IndexRoute = ReactRouter.IndexRoute;
+var UserForm = require('./components/users/user_form'),
+    UserIndex = require('./components/users/index'),
+    UserShow = require('./components/users/user_show'),
+    CurrentUserStore = require('./stores/current_user_store'),
+    SessionsApiUtil = require('./util/sessions_api_util'),
+    SessionForm = require('./components/sessions/new'),
+    QuestionsIndex = require('./components/questions/index'),
+    QuestionShow = require('./components/questions/question_show'),
+    QuestionForm = require('./components/questions/question_form'),
+    SearchResults = require('./components/search_results.jsx'),
+    App = require('./components/app');
 
 function _ensureLoggedIn(nextState, replace, callback) {
   if (CurrentUserStore.userHasBeenFetched()) {
@@ -37,6 +37,7 @@ var routes = (
     <IndexRoute component={QuestionsIndex} />
     <Route path="search" component={SearchResults} />
     <Route path="questions/ask" component={QuestionForm} onEnter={_ensureLoggedIn} />
+    <Route path="questions/" component={QuestionsIndex} />
     <Route path="questions/:questionId" component={QuestionShow} />
     <Route path="users/login" component={ SessionForm } />
     <Route path="users/signup" component={ UserForm } />
