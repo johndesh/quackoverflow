@@ -58257,7 +58257,9 @@
 	  },
 
 	  render: function () {
+	    var linksHtml;
 	    if (!CurrentUserStore.userHasBeenFetched()) {
+
 	      return React.createElement(
 	        'div',
 	        { className: 'topbar' },
@@ -58272,89 +58274,71 @@
 	        )
 	      );
 	    } else if (CurrentUserStore.isLoggedIn()) {
-	      return React.createElement(
+
+	      linksHtml = React.createElement(
 	        'div',
-	        { className: 'topbar' },
+	        { className: 'links-container group' },
 	        React.createElement(
 	          'div',
-	          { className: 'topbar-wrapper' },
+	          { className: 'topbar-user-info group', onClick: this.showAccount },
 	          React.createElement(
 	            'div',
-	            { className: 'network-items group' },
-	            'QuackExchange'
+	            { className: 'avatar-wrapper' },
+	            React.createElement('img', { src: this.state.currentUser.avatar, title: this.state.currentUser.username })
 	          ),
 	          React.createElement(
-	            'div',
-	            { className: 'topbar-links group' },
-	            React.createElement(
-	              'div',
-	              { className: 'links-container group' },
-	              React.createElement(
-	                'div',
-	                { className: 'topbar-user-info group', onClick: this.showAccount },
-	                React.createElement(
-	                  'div',
-	                  { className: 'avatar-wrapper' },
-	                  React.createElement('img', { src: this.state.currentUser.avatar, title: this.state.currentUser.username })
-	                ),
-	                React.createElement(
-	                  'span',
-	                  { className: 'reputation' },
-	                  '1'
-	                )
-	              ),
-	              React.createElement(
-	                'button',
-	                { onClick: this.logout, className: 'logout group' },
-	                'Log Out'
-	              )
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'search-container group' },
-	              React.createElement('input', { type: 'text', placeholder: 'Search Q&A', onKeyUp: this.search })
-	            )
+	            'span',
+	            { className: 'reputation' },
+	            '1'
 	          )
+	        ),
+	        React.createElement(
+	          'button',
+	          { onClick: this.logout, className: 'logout group' },
+	          'Log Out'
 	        )
 	      );
 	    } else {
-	      return React.createElement(
+
+	      linksHtml = React.createElement(
 	        'div',
-	        { className: 'topbar' },
+	        { className: 'links-container group' },
 	        React.createElement(
-	          'div',
-	          { className: 'topbar-wrapper' },
-	          React.createElement(
-	            'div',
-	            { className: 'network-items group' },
-	            'QuackExchange'
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'topbar-links group' },
-	            React.createElement(
-	              'div',
-	              { className: 'links-container group' },
-	              React.createElement(
-	                'a',
-	                { href: '#/users/signup' },
-	                'sign up'
-	              ),
-	              React.createElement(
-	                'a',
-	                { href: '#/users/login' },
-	                'log in'
-	              )
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'search-container group' },
-	              React.createElement('input', { type: 'text', placeholder: 'Search Q&A', onKeyUp: this.search })
-	            )
-	          )
+	          'a',
+	          { href: '#/users/signup' },
+	          'sign up'
+	        ),
+	        React.createElement(
+	          'a',
+	          { href: '#/users/login' },
+	          'log in'
 	        )
 	      );
 	    }
+
+	    return React.createElement(
+	      'div',
+	      { className: 'topbar' },
+	      React.createElement(
+	        'div',
+	        { className: 'topbar-wrapper' },
+	        React.createElement(
+	          'div',
+	          { className: 'network-items group' },
+	          'QuackExchange'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'topbar-links group' },
+	          linksHtml,
+	          React.createElement(
+	            'div',
+	            { className: 'search-container group' },
+	            React.createElement('input', { type: 'text', placeholder: 'Search Q&A', onKeyUp: this.search })
+	          )
+	        )
+	      )
+	    );
 	  }
 	});
 

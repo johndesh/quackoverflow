@@ -48,7 +48,9 @@ var Topbar = React.createClass({
   },
 
   render: function () {
+    var linksHtml;
     if (!CurrentUserStore.userHasBeenFetched()) {
+
       return(
         <div className="topbar">
           <div className="topbar-wrapper">
@@ -56,38 +58,34 @@ var Topbar = React.createClass({
           </div>
         </div>
         );
+        
     } else if (CurrentUserStore.isLoggedIn()) {
-      return (
-        <div className="topbar">
-          <div className="topbar-wrapper">
-            <div className="network-items group">QuackExchange</div>
-            <div className="topbar-links group">
-              <div className="links-container group">
-                <div className="topbar-user-info group" onClick={this.showAccount}>
-                  <div className="avatar-wrapper">
-                    <img src={ this.state.currentUser.avatar } title={ this.state.currentUser.username } />
-                  </div>
-                  <span className="reputation">1</span>
-                </div>
-                <button onClick={ this.logout } className="logout group">Log Out</button>
-              </div>
-              <div className="search-container group">
-                <input type="text" placeholder="Search Q&A" onKeyUp={ this.search } />
-              </div>
-          </div>
-        </div>
-      </div>
-      );
+
+      linksHtml = <div className="links-container group">
+                        <div className="topbar-user-info group" onClick={this.showAccount}>
+                          <div className="avatar-wrapper">
+                            <img src={ this.state.currentUser.avatar } title={ this.state.currentUser.username } />
+                          </div>
+                          <span className="reputation">1</span>
+                        </div>
+                        <button onClick={ this.logout } className="logout group">Log Out</button>
+                      </div>;
+
     } else {
-      return (
+
+      linksHtml = <div className="links-container group">
+                    <a href="#/users/signup">sign up</a>
+                    <a href="#/users/login">log in</a>
+                  </div>;
+
+    }
+
+    return (
         <div className="topbar">
           <div className="topbar-wrapper">
             <div className="network-items group">QuackExchange</div>
             <div className="topbar-links group">
-              <div className="links-container group">
-                <a href="#/users/signup">sign up</a>
-                <a href="#/users/login">log in</a>
-              </div>
+              {linksHtml}
               <div className="search-container group">
                 <input type="text" placeholder="Search Q&A" onKeyUp={ this.search } />
               </div>
@@ -95,7 +93,6 @@ var Topbar = React.createClass({
           </div>
         </div>
       );
-    }
   }
 });
 
