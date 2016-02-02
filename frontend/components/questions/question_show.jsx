@@ -2,6 +2,7 @@ var React = require('react');
 var ReactRouter = require('react-router');
 var QuestionStore = require('../../stores/question');
 var QuestionsApiUtil = require('../../util/questions_api_util');
+var QuestionAnswersForm = require('./question_answers_form');
 var QuestionShow = React.createClass({
 
   getStateFromStore: function () {
@@ -39,7 +40,7 @@ var QuestionShow = React.createClass({
     if (this.state.question.answers) {
       answers = this.state.question.answers.map(function (answer, idx){
         return(
-          <li className="answer" key={idx}>{answer.body}</li>
+          <div className="answer" key={idx}><p dangerouslySetInnerHTML={{__html: answer.body}}></p></div>
         );
       });
     } else {
@@ -59,6 +60,7 @@ var QuestionShow = React.createClass({
         </div>
       {answers}
        </div>
+       <QuestionAnswersForm questionId={this.props.params.questionId} />
      </div>
     );
   }

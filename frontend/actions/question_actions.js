@@ -15,7 +15,6 @@ var QuestionActions = {
   		question: question
   	});
   }
-
 };
 
 module.exports = QuestionActions;

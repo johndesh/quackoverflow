@@ -12,8 +12,9 @@ class Api::QuestionAnswersController < ApplicationController
     @answer.author_id ||= current_user.id
 
     @answer.save
+    @question = @answer.question
 
-    render json: @answer
+    render json: @question
   end
 
   def update
