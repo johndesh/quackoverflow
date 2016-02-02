@@ -48,39 +48,54 @@ var Topbar = React.createClass({
   },
 
   render: function () {
-    var linksWrap;
-    var linksHtml;
-    var topbarHtml = <div className="topbar">
-                      <div className="topbar-wrapper">
-                        <div className="network-items group">QuackExchange</div>
-                          {linksWrap}
-                        <div className="search-container group">
-                          <input type="text" placeholder="Search Q&A" onKeyUp={ this.search } />
-                        </div>
-                      </div>
-                    </div>;
-
-    if (CurrentUserStore.userHasBeenFetched()) {
-      linksWrap = <div className="topbar-links group">
-                        <div className="links-container group">
-                          {linksHtml}
-                        </div>
-                      </div>;
-      if (CurrentUserStore.isLoggedIn()) {
-        linksHtml =
-        <div className="topbar-user-info group" onClick={this.showAccount}>
-          <div className="avatar-wrapper">
-            <img src={ this.state.currentUser.avatar } title={ this.state.currentUser.username } />
+    if (!CurrentUserStore.userHasBeenFetched()) {
+      return(
+        <div className="topbar">
+          <div className="topbar-wrapper">
+            <div className="network-items group">QuackExchange</div>
           </div>
-          <span className="reputation">1</span>
         </div>
-        <button onClick={ this.logout } className="logout group">Log Out</button>;
-      } else {
-        linksHtml = <a href="#/users/signup">sign up</a>
-        <a href="#/users/login">log in</a>;
-      }
+        );
+    } else if (CurrentUserStore.isLoggedIn()) {
+      return (
+        <div className="topbar">
+          <div className="topbar-wrapper">
+            <div className="network-items group">QuackExchange</div>
+            <div className="topbar-links group">
+              <div className="links-container group">
+                <div className="topbar-user-info group" onClick={this.showAccount}>
+                  <div className="avatar-wrapper">
+                    <img src={ this.state.currentUser.avatar } title={ this.state.currentUser.username } />
+                  </div>
+                  <span className="reputation">1</span>
+                </div>
+                <button onClick={ this.logout } className="logout group">Log Out</button>
+              </div>
+              <div className="search-container group">
+                <input type="text" placeholder="Search Q&A" onKeyUp={ this.search } />
+              </div>
+          </div>
+        </div>
+      </div>
+      );
+    } else {
+      return (
+        <div className="topbar">
+          <div className="topbar-wrapper">
+            <div className="network-items group">QuackExchange</div>
+            <div className="topbar-links group">
+              <div className="links-container group">
+                <a href="#/users/signup">sign up</a>
+                <a href="#/users/login">log in</a>
+              </div>
+              <div className="search-container group">
+                <input type="text" placeholder="Search Q&A" onKeyUp={ this.search } />
+              </div>
+            </div>
+          </div>
+        </div>
+      );
     }
-    return topbarHtml;
   }
 });
 

@@ -1,5 +1,5 @@
 var React = require('react');
-var Topbar = require('./header');
+var Topbar = require('./topbar');
 
 var App = React.createClass({
 
