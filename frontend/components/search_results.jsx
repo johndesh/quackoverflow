@@ -12,7 +12,7 @@ var SearchResults = React.createClass({
 
   getInitialState: function () {
     var query = this.props.location.query;
-    return {query, loading: false};
+    return {query: query.query, loading: false};
   },
 
   componentWillReceiveProps: function (newProps) {

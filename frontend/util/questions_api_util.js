@@ -20,7 +20,7 @@ var QuestionsApiUtil = {
       QuestionActions.receiveSingleQuestion(question);
       callback && callback(question.id);
     });
-  },
+  }
 };
 
 module.exports = QuestionsApiUtil;
