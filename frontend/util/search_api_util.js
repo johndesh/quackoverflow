@@ -2,7 +2,7 @@ var SearchActions = require('../actions/search_actions');
 
 var SearchApiUtil = {
 
-  search: function (query) {
+  search: function (query, callback) {
     $.ajax({
       url: '/api/search',
       type: 'GET',
@@ -10,6 +10,7 @@ var SearchApiUtil = {
       data: {query: query},
       success: function (data) {
         SearchActions.receiveResults(data);
+        callback && callback();
       }
     });
   }

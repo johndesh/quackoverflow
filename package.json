@@ -21,6 +21,7 @@
     "react-addons-linked-state-mixin": "^0.14.2",
     "react-dom": "^0.14.2",
     "react-router": "1.0.2",
+    "react-spinkit": "^1.1.4",
     "webpack": "^1.12.4"
   },
   "devDependencies": {},

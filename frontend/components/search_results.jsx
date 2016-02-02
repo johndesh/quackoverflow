@@ -2,7 +2,7 @@ var React = require('react');
 var SearchResultsStore = require('../stores/search_results_store');
 var SearchApiUtil = require('../util/search_api_util');
 var QuestionIndexItem = require('./questions/index_item');
-
+var Spinner = require('react-spinkit');
 var SearchResults = React.createClass({
 
   componentDidMount: function() {
@@ -12,7 +12,7 @@ var SearchResults = React.createClass({
 
   getInitialState: function () {
     var query = this.props.location.query;
-    return query;
+    return {query, loading: false};
   },
 
   componentWillReceiveProps: function (newProps) {
@@ -24,7 +24,10 @@ var SearchResults = React.createClass({
   },
 
   search: function (query) {
-      SearchApiUtil.search(query);
+    this.setState({loading: true});
+    SearchApiUtil.search(query, function () {
+      this.setState({loading: false});
+    }.bind(this));
   },
 
   nextPage: function () {
@@ -45,7 +48,7 @@ var SearchResults = React.createClass({
     return (
       <div>
         <ul>
-          {searchResults}
+          {this.state.loading ? <Spinner spinnerName='three-bounce' /> : searchResults}
         </ul>
       </div>
     );

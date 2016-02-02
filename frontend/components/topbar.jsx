@@ -35,8 +35,8 @@ var Topbar = React.createClass({
     var code = e.keyCode ? e.keyCode : e.which;
     if (code === 13) {
       var query = e.target.value;
-      $(e.target).val("");
       this.history.pushState(null, '/search', {query: query});
+      $(e.target).val("");
     } else {
       // do nothing...
     }
@@ -58,7 +58,7 @@ var Topbar = React.createClass({
           </div>
         </div>
         );
-        
+
     } else if (CurrentUserStore.isLoggedIn()) {
 
       linksHtml = <div className="links-container group">
