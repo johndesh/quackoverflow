@@ -20,7 +20,8 @@ var md = require('markdown-it')({
     return ''; // use external default escaping
   }
 });
-
+var emoji = require('markdown-it-emoji');
+md.use(emoji);
 md.enable("newline");
 
 var MarkdownEditor = React.createClass({
