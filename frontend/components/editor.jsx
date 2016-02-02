@@ -44,21 +44,23 @@ var MarkdownEditor = React.createClass({
     }
   },
 
-  _startResize: function () {
+  _startResize: function (e) {
     $(".body-field").css({"opacity": 0.25});
-    this.setState({dragging: true})
+    this.setState({dragging: true, startY: e.pageY })
     $(document).mousemove(this._resizeEditor);
     $(document).mouseup(this._endDrag);
   },
 
   _resizeEditor: function (e) {
-    this.setState({_editorHeight: (e.pageY - 226) + "px"});
+    var newHeight = $('.body-field').outerHeight() + (e.pageY - this.state.startY);
+    this.setState({_editorHeight: newHeight + "px", startY: e.pageY});
   },
 
   _endDrag: function (e) {
     if (this.state.dragging) {
       $(".body-field").css({"opacity": 1});
       $(document).unbind('mousemove');
+      $(document).unbind('mouseup');
       this.setState({dragging: false});
     }
   },
