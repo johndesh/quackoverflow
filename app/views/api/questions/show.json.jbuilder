@@ -3,7 +3,7 @@ json.extract! @question, :id, :title, :body, :created_at
 json.answers @question.answers do |answer|
   json.body answer.body
   json.author do
-    json.id answer.author.id
+    json.id answer.author_id
     json.username answer.author.username
     json.avatar answer.author.avatar.url()
   end

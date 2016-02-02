@@ -26,6 +26,9 @@ var QuestionAnswersForm = React.createClass({
     return (
       <div className="question-form-wrapper group">
         <div className="question-form" id="question-form">
+          <div className="new-answer-header">
+            Your Answer
+          </div>
           <MarkdownEditor
             onChange={this.handleChange}
             submit={this.createAnswer}
