@@ -2,7 +2,7 @@ var React = require('react');
 var SearchResultsStore = require('../stores/search_results_store');
 var SearchApiUtil = require('../util/search_api_util');
 var QuestionIndexItem = require('./questions/index_item');
-var Spinner = require('react-spinkit');
+var Spinner = require('./spinner');
 var SearchResults = React.createClass({
 
   componentDidMount: function() {
