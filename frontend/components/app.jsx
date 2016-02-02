@@ -7,7 +7,6 @@ var App = React.createClass({
     var pathKlass = "." + this.props.location.pathname.replace(/\//g, '-');
     $("a").removeClass("clicked");
     $("a").filter( $(pathKlass) ).addClass("clicked");
-
   },
 
   toggleNavButton: function (e) {
