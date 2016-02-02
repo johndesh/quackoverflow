@@ -52,8 +52,7 @@ var SearchResults = React.createClass({
         </ul>
       </div>
     );
-  },
-
+  }
 
 });
 

@@ -2,9 +2,10 @@ var QuestionActions = require('../actions/question_actions');
 
 var QuestionsApiUtil = {
 
-  fetchQuestions: function(){
+  fetchQuestions: function(callback){
     $.get('api/questions', function(questions){
       QuestionActions.receiveAll(questions);
+      callback && callback();
     });
   },
 

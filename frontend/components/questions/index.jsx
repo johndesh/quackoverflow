@@ -13,6 +13,7 @@ var Index = React.createClass({
 
   componentDidMount: function () {
     this.questionListener = QuestionStore.addListener(this._questionsChanged);
+
     QuestionsApiUtil.fetchQuestions();
   },
 

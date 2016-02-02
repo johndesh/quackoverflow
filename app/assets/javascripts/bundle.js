@@ -31772,6 +31772,7 @@
 
 	  componentDidMount: function () {
 	    this.questionListener = QuestionStore.addListener(this._questionsChanged);
+
 	    QuestionsApiUtil.fetchQuestions();
 	  },
 
@@ -31914,9 +31915,10 @@
 
 	var QuestionsApiUtil = {
 
-	  fetchQuestions: function () {
+	  fetchQuestions: function (callback) {
 	    $.get('api/questions', function (questions) {
 	      QuestionActions.receiveAll(questions);
+	      callback && callback();
 	    });
 	  },
 
