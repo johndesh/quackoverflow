@@ -5,4 +5,8 @@ class Api::SearchesController < ApplicationController
 			.multisearch(params[:query]).includes(:searchable)
 	end
 
+	def user
+		@search_results = User.search_users(params[:query])
+	end
+
 end

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       resources :question_answers, only: [:index, :show, :create], path: "/answers", as: :answers
     end
     get "search", to: "searches#index"
+    get "search/users", to: "searches#user"
   end
 
 end

@@ -31415,8 +31415,9 @@
 	var React = __webpack_require__(1);
 	var UsersStore = __webpack_require__(209);
 	var UsersApiUtil = __webpack_require__(232);
+	var SearchApiUtil = __webpack_require__(472);
 	var UserIndexItem = __webpack_require__(238);
-
+	var SearchResultsStore = __webpack_require__(470);
 	var UserIndex = React.createClass({
 	  displayName: 'UserIndex',
 
@@ -31428,13 +31429,28 @@
 	    this.setState({ users: UsersStore.all() });
 	  },
 
+	  _usersFiltered: function () {
+	    this.setState({ users: SearchResultsStore.all() });
+	  },
+
 	  componentDidMount: function () {
 	    this.userListener = UsersStore.addListener(this._usersChanged);
+	    this.userSearchListener = SearchResultsStore.addListener(this._usersFiltered);
 	    UsersApiUtil.fetchUsers();
 	  },
 
 	  componentWillUnmount: function () {
 	    this.userListener.remove();
+	    this.userSearchListener.remove();
+	  },
+
+	  searchUsers: function (e) {
+	    var query = e.target.value;
+	    if (query.length === 0) {
+	      UsersApiUtil.fetchUsers();
+	    } else {
+	      SearchApiUtil.searchUsers(query);
+	    }
 	  },
 
 	  render: function () {
@@ -31465,17 +31481,12 @@
 	          React.createElement(
 	            'a',
 	            { href: '#', onClick: _handleClick, className: 'clicked group' },
-	            'reputation'
+	            'all'
 	          ),
 	          React.createElement(
 	            'a',
 	            { href: '#', onClick: _handleClick, className: 'group' },
 	            'new users'
-	          ),
-	          React.createElement(
-	            'a',
-	            { href: '#', onClick: _handleClick, className: 'group' },
-	            'voters'
 	          ),
 	          React.createElement(
 	            'a',
@@ -31496,7 +31507,7 @@
 	          'label',
 	          null,
 	          'Type to find users:',
-	          React.createElement('input', { className: 'user-search-input', ontype: 'text' })
+	          React.createElement('input', { className: 'user-search-input', type: 'text', onKeyUp: this.searchUsers })
 	        )
 	      ),
 	      React.createElement(
@@ -57953,6 +57964,19 @@
 	  search: function (query, callback) {
 	    $.ajax({
 	      url: '/api/search',
+	      type: 'GET',
+	      dataType: 'json',
+	      data: { query: query },
+	      success: function (data) {
+	        SearchActions.receiveResults(data);
+	        callback && callback();
+	      }
+	    });
+	  },
+
+	  searchUsers: function (query, callback) {
+	    $.ajax({
+	      url: '/api/search/users',
 	      type: 'GET',
 	      dataType: 'json',
 	      data: { query: query },
