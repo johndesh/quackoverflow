@@ -1,15 +1,13 @@
 var React = require('react');
 var UsersStore = require('../../stores/users_store');
 var UsersApiUtil = require('../../util/users_api_util');
-
+var CurrentUserStore = require('../../stores/current_user_store');
 var UserShow = React.createClass({
   getStateFromStore: function () {
-
     return { user: UsersStore.find(parseInt(this.props.params.userId)) };
   },
 
   _onChange: function () {
-
     this.setState(this.getStateFromStore());
   },
 
@@ -18,7 +16,6 @@ var UserShow = React.createClass({
   },
 
   componentWillReceiveProps: function (newProps) {
-
     UsersApiUtil.fetchUser(parseInt(newProps.params.userId));
   },
 
@@ -33,11 +30,26 @@ var UserShow = React.createClass({
 
   render: function () {
     if(this.state.user === undefined) { return <div></div>; }
-
+    var editLink;
+    if (CurrentUserStore.currentUser().id === this.state.user.id) {
+      editLink = <a>click here to edit</a>
+    }
     return (
-      <div>
-        <h1>{this.state.user.username}</h1>
-        <img src={this.state.user.avatar} />
+      <div className="user-info">
+        <div className="user-info-sidebar">
+          <div className="avatar-large">
+            <img src={this.state.user.avatar} />
+          </div>
+        </div>
+        <div className="user-info-main">
+          <div className="user-main-details">
+            <h2>{this.state.user.username}</h2>
+            {editLink}
+          </div>
+          <div className="user-main-stats">
+
+          </div>
+        </div>
       </div>
     );
   }

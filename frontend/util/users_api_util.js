@@ -1,5 +1,5 @@
 var UserActions = require('../actions/user_actions');
-
+var CurrentUserActions = require('../actions/current_user_actions');
 var UsersApiUtil = {
   fetchUsers: function () {
     $.ajax({
@@ -32,7 +32,23 @@ var UsersApiUtil = {
       data: attrs,
       success: function (user) {
         UserActions.receiveUser(user);
-        // Does current_user need to be updated here?
+        callback && callback();
+      }
+    });
+  },
+
+  updateUser: function (formData, userId, callback) {
+    
+    $.ajax({
+      url: '/api/users/' + userId,
+      type: 'PATCH',
+      processData: false,
+      contentType: false,
+      dataType: 'json',
+      data: formData,
+      success: function (user) {
+        UserActions.receiveUser(user);
+        CurrentUserActions.receiveCurrentUser(user);
         callback && callback();
       }
     });

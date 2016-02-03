@@ -14,8 +14,12 @@
 /log/*
 !/log/.keep
 /tmp
+.byebug_history
+
 
 /node_modules
+
+
 
 # Ignore application configuration
 /config/application.yml

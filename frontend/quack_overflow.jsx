@@ -7,6 +7,7 @@ var React = require('react'),
 var UserForm = require('./components/users/user_form'),
     UserIndex = require('./components/users/index'),
     UserShow = require('./components/users/user_show'),
+    EditUserForm = require('./components/users/edit_form'),
     CurrentUserStore = require('./stores/current_user_store'),
     SessionsApiUtil = require('./util/sessions_api_util'),
     SessionForm = require('./components/sessions/new'),
@@ -42,7 +43,8 @@ var routes = (
     <Route path="users/login" component={ SessionForm } />
     <Route path="users/signup" component={ UserForm } />
     <Route path="users/" component={ UserIndex } />
-    <Route path="users/:userId" component={ UserShow }/>
+    <Route path="users/:userId" component={ UserShow } />
+    <Route path="users/:userId/edit" component={ EditUserForm } />
 
   </Route>
 );
