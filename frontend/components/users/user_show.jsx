@@ -1,8 +1,11 @@
 var React = require('react');
 var UsersStore = require('../../stores/users_store');
 var UsersApiUtil = require('../../util/users_api_util');
+var History = require('react-router').History;
 var CurrentUserStore = require('../../stores/current_user_store');
 var UserShow = React.createClass({
+  mixins: [History],
+
   getStateFromStore: function () {
     return { user: UsersStore.find(parseInt(this.props.params.userId)) };
   },
@@ -28,11 +31,17 @@ var UserShow = React.createClass({
     this.userListener.remove();
   },
 
+  editUser: function(e) {
+    e.preventDefault();
+    this.history.pushState({user: this.state.user}, this.state.user.username + "/edit", {})
+  },
+
+
   render: function () {
     if(this.state.user === undefined) { return <div></div>; }
     var editLink;
     if (CurrentUserStore.currentUser().id === this.state.user.id) {
-      editLink = <a>click here to edit</a>
+      editLink = <a onClick={this.editUser}>click here to edit</a>
     }
     return (
       <div className="user-info">

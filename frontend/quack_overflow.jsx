@@ -3,11 +3,14 @@ var React = require('react'),
     ReactRouter = require('react-router'),
     Router = ReactRouter.Router,
     Route = ReactRouter.Route,
+    Redirect = ReactRouter.Redirect,
     IndexRoute = ReactRouter.IndexRoute;
 var UserForm = require('./components/users/user_form'),
     UserIndex = require('./components/users/index'),
     UserShow = require('./components/users/user_show'),
     EditUserForm = require('./components/users/edit_form'),
+    UserStore = require('./stores/users_store'),
+    UsersApiUtil = require('./util/users_api_util'),
     CurrentUserStore = require('./stores/current_user_store'),
     SessionsApiUtil = require('./util/sessions_api_util'),
     SessionForm = require('./components/sessions/new'),
@@ -26,9 +29,25 @@ function _ensureLoggedIn(nextState, replace, callback) {
 
   function _redirectIfNotLoggedIn() {
     if (!CurrentUserStore.isLoggedIn()) {
-      replace({}, "/users/login", {returnUri: "questions/ask"});
+      replace({}, "/users/login", {returnUri: nextState.location.pathname});
     }
     callback();
+
+  }
+}
+
+function _getUser(nextState, replace, callback) {
+
+  var user = UserStore.find(parseInt(nextState.params.userId));
+  if (user !== undefined) {
+    _replaceUrl(user);
+  } else {
+    UsersApiUtil.fetchUser(parseInt(nextState.params.userId), _replaceUrl);
+  }
+
+  function _replaceUrl (user) {
+    callback(replace({user: user}, "/users/" + user.id + "/" + user.username));
+
   }
 }
 
@@ -38,18 +57,20 @@ var routes = (
     <IndexRoute component={QuestionsIndex} />
     <Route path="search" component={SearchResults} />
     <Route path="questions/ask" component={QuestionForm} onEnter={_ensureLoggedIn} />
-    <Route path="questions/" component={QuestionsIndex} />
+    <Route path="questions" component={QuestionsIndex} />
     <Route path="questions/:questionId" component={QuestionShow} />
     <Route path="users/login" component={ SessionForm } />
     <Route path="users/signup" component={ UserForm } />
-    <Route path="users/" component={ UserIndex } />
-    <Route path="users/:userId" component={ UserShow } />
-    <Route path="users/:userId/edit" component={ EditUserForm } />
+    <Route path="users" component={ UserIndex } />
+    <Route path="users/:userId" onEnter={_getUser} />
+    <Route path="users/:userId/:username" component={ UserShow } />
+    <Route path="/:username/edit" component={ EditUserForm } onEnter={_ensureLoggedIn} />
+    <Redirect from="user/edit" to="/:username/edit" />
 
   </Route>
 );
 
   ReactDOM.render(
-    <Router history={ReactRouter.broswerHistory}>{routes}</Router>,
+    <Router history={ReactRouter.createBroswerHistory}>{routes}</Router>,
     document.getElementById('content')
   );

@@ -1,25 +1,26 @@
 var UserActions = require('../actions/user_actions');
 var CurrentUserActions = require('../actions/current_user_actions');
 var UsersApiUtil = {
-  fetchUsers: function () {
+  fetchUsers: function (cb) {
     $.ajax({
       url: '/api/users',
       type: 'GET',
       dataType: 'json',
       success: function (users) {
         UserActions.receiveUsers(users);
-
+        cb && cb();
       }
     });
   },
 
-  fetchUser: function (id) {
+  fetchUser: function (id, cb) {
     $.ajax({
       url: '/api/users/' + id,
       type: 'GET',
       dataType: 'json',
       success: function (user) {
         UserActions.receiveUser(user);
+        cb && cb(user);
       }
     });
   },
@@ -38,7 +39,7 @@ var UsersApiUtil = {
   },
 
   updateUser: function (formData, userId, callback) {
-    
+
     $.ajax({
       url: '/api/users/' + userId,
       type: 'PATCH',

@@ -49,13 +49,16 @@
 	    ReactRouter = __webpack_require__(159),
 	    Router = ReactRouter.Router,
 	    Route = ReactRouter.Route,
+	    Redirect = ReactRouter.Redirect,
 	    IndexRoute = ReactRouter.IndexRoute;
 	var UserForm = __webpack_require__(208),
 	    UserIndex = __webpack_require__(237),
 	    UserShow = __webpack_require__(243),
 	    EditUserForm = __webpack_require__(245),
+	    UserStore = __webpack_require__(209),
+	    UsersApiUtil = __webpack_require__(232),
 	    CurrentUserStore = __webpack_require__(244),
-	    SessionsApiUtil = __webpack_require__(234),
+	    SessionsApiUtil = __webpack_require__(236),
 	    SessionForm = __webpack_require__(246),
 	    QuestionsIndex = __webpack_require__(247),
 	    QuestionShow = __webpack_require__(253),
@@ -72,9 +75,23 @@
 
 	  function _redirectIfNotLoggedIn() {
 	    if (!CurrentUserStore.isLoggedIn()) {
-	      replace({}, "/users/login", { returnUri: "questions/ask" });
+	      replace({}, "/users/login", { returnUri: nextState.location.pathname });
 	    }
 	    callback();
+	  }
+	}
+
+	function _getUser(nextState, replace, callback) {
+
+	  var user = UserStore.find(parseInt(nextState.params.userId));
+	  if (user !== undefined) {
+	    _replaceUrl(user);
+	  } else {
+	    UsersApiUtil.fetchUser(parseInt(nextState.params.userId), _replaceUrl);
+	  }
+
+	  function _replaceUrl(user) {
+	    callback(replace({ user: user }, "/users/" + user.id + "/" + user.username));
 	  }
 	}
 
@@ -84,18 +101,20 @@
 	  React.createElement(IndexRoute, { component: QuestionsIndex }),
 	  React.createElement(Route, { path: 'search', component: SearchResults }),
 	  React.createElement(Route, { path: 'questions/ask', component: QuestionForm, onEnter: _ensureLoggedIn }),
-	  React.createElement(Route, { path: 'questions/', component: QuestionsIndex }),
+	  React.createElement(Route, { path: 'questions', component: QuestionsIndex }),
 	  React.createElement(Route, { path: 'questions/:questionId', component: QuestionShow }),
 	  React.createElement(Route, { path: 'users/login', component: SessionForm }),
 	  React.createElement(Route, { path: 'users/signup', component: UserForm }),
-	  React.createElement(Route, { path: 'users/', component: UserIndex }),
-	  React.createElement(Route, { path: 'users/:userId', component: UserShow }),
-	  React.createElement(Route, { path: 'users/:userId/edit', component: EditUserForm })
+	  React.createElement(Route, { path: 'users', component: UserIndex }),
+	  React.createElement(Route, { path: 'users/:userId', onEnter: _getUser }),
+	  React.createElement(Route, { path: 'users/:userId/:username', component: UserShow }),
+	  React.createElement(Route, { path: '/:username/edit', component: EditUserForm, onEnter: _ensureLoggedIn }),
+	  React.createElement(Redirect, { from: 'user/edit', to: '/:username/edit' })
 	);
 
 	ReactDOM.render(React.createElement(
 	  Router,
-	  { history: ReactRouter.broswerHistory },
+	  { history: ReactRouter.createBroswerHistory },
 	  routes
 	), document.getElementById('content'));
 
@@ -24349,7 +24368,7 @@
 	var History = __webpack_require__(159).History;
 	var UsersStore = __webpack_require__(209);
 	var UsersApiUtil = __webpack_require__(232);
-	var SessionsApiUtil = __webpack_require__(234);
+	var SessionsApiUtil = __webpack_require__(236);
 
 	var UserForm = React.createClass({
 	  displayName: 'UserForm',
@@ -24439,6 +24458,7 @@
 	  }
 	  return users;
 	};
+
 	UsersStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 
@@ -31240,26 +31260,28 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var UserActions = __webpack_require__(233);
-	var CurrentUserActions = __webpack_require__(235);
+	var CurrentUserActions = __webpack_require__(234);
 	var UsersApiUtil = {
-	  fetchUsers: function () {
+	  fetchUsers: function (cb) {
 	    $.ajax({
 	      url: '/api/users',
 	      type: 'GET',
 	      dataType: 'json',
 	      success: function (users) {
 	        UserActions.receiveUsers(users);
+	        cb && cb();
 	      }
 	    });
 	  },
 
-	  fetchUser: function (id) {
+	  fetchUser: function (id, cb) {
 	    $.ajax({
 	      url: '/api/users/' + id,
 	      type: 'GET',
 	      dataType: 'json',
 	      success: function (user) {
 	        UserActions.receiveUser(user);
+	        cb && cb(user);
 	      }
 	    });
 	  },
@@ -31326,7 +31348,36 @@
 /* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var CurrentUserActions = __webpack_require__(235);
+	var AppDispatcher = __webpack_require__(228);
+	var CurrentUserConstants = __webpack_require__(235);
+
+	var CurrentUserActions = {
+
+	  receiveCurrentUser: function (currentUser) {
+	    AppDispatcher.dispatch({
+	      actionType: CurrentUserConstants.RECEIVE_CURRENT_USER,
+	      currentUser: currentUser
+	    });
+	  }
+	};
+
+	module.exports = CurrentUserActions;
+
+/***/ },
+/* 235 */
+/***/ function(module, exports) {
+
+	var CurrentUserConstants = {
+	  RECEIVE_CURRENT_USER: "RECEIVE_CURRENT_USER"
+	};
+
+	module.exports = CurrentUserConstants;
+
+/***/ },
+/* 236 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var CurrentUserActions = __webpack_require__(234);
 
 	var SessionsApiUtil = {
 	  login: function (credentials, success, error) {
@@ -31372,35 +31423,6 @@
 	};
 
 	module.exports = SessionsApiUtil;
-
-/***/ },
-/* 235 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(228);
-	var CurrentUserConstants = __webpack_require__(236);
-
-	var CurrentUserActions = {
-
-	  receiveCurrentUser: function (currentUser) {
-	    AppDispatcher.dispatch({
-	      actionType: CurrentUserConstants.RECEIVE_CURRENT_USER,
-	      currentUser: currentUser
-	    });
-	  }
-	};
-
-	module.exports = CurrentUserActions;
-
-/***/ },
-/* 236 */
-/***/ function(module, exports) {
-
-	var CurrentUserConstants = {
-	  RECEIVE_CURRENT_USER: "RECEIVE_CURRENT_USER"
-	};
-
-	module.exports = CurrentUserConstants;
 
 /***/ },
 /* 237 */
@@ -31694,9 +31716,12 @@
 	var React = __webpack_require__(1);
 	var UsersStore = __webpack_require__(209);
 	var UsersApiUtil = __webpack_require__(232);
+	var History = __webpack_require__(159).History;
 	var CurrentUserStore = __webpack_require__(244);
 	var UserShow = React.createClass({
 	  displayName: 'UserShow',
+
+	  mixins: [History],
 
 	  getStateFromStore: function () {
 	    return { user: UsersStore.find(parseInt(this.props.params.userId)) };
@@ -31723,6 +31748,11 @@
 	    this.userListener.remove();
 	  },
 
+	  editUser: function (e) {
+	    e.preventDefault();
+	    this.history.pushState({ user: this.state.user }, this.state.user.username + "/edit", {});
+	  },
+
 	  render: function () {
 	    if (this.state.user === undefined) {
 	      return React.createElement('div', null);
@@ -31731,7 +31761,7 @@
 	    if (CurrentUserStore.currentUser().id === this.state.user.id) {
 	      editLink = React.createElement(
 	        'a',
-	        null,
+	        { onClick: this.editUser },
 	        'click here to edit'
 	      );
 	    }
@@ -31774,7 +31804,7 @@
 
 	var Store = __webpack_require__(210).Store;
 	var AppDispatcher = __webpack_require__(228);
-	var CurrentUserConstants = __webpack_require__(236);
+	var CurrentUserConstants = __webpack_require__(235);
 
 	var _currentUser = {};
 	var _currentUserHasBeenFetched = false;
@@ -31808,34 +31838,51 @@
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var UsersStore = __webpack_require__(209);
+	var CurrentUserStore = __webpack_require__(244);
 	var UsersApiUtil = __webpack_require__(232);
-	var SessionsApiUtil = __webpack_require__(234);
+	var SessionsApiUtil = __webpack_require__(236);
 
 	var EditUserForm = React.createClass({
 	  displayName: 'EditUserForm',
 
 	  mixins: [History],
 	  getStateFromStore: function () {
-	    return UsersStore.find(parseInt(this.props.params.userId));
+	    return CurrentUserStore.currentUser();
 	  },
 
 	  _onChange: function () {
 	    this.setState(this.getStateFromStore());
+	    this.history.replaceState({ user: this.state.user }, this.state.user.username + "/edit", {});
 	  },
 
 	  getInitialState: function () {
+	    var user;
+	    if (this.props.location.state) {
+	      user = this.props.location.state.user;
+	    } else {
+	      user = this.getStateFromStore();
+	    }
 
-	    return { user: this.getStateFromStore(), avatarFile: null, avatarUrl: "" };
+	    return { user: user, avatarFile: null, avatarUrl: "" };
 	  },
 
 	  componentWillReceiveProps: function (newProps) {
-	    UsersApiUtil.fetchUser(parseInt(newProps.params.userId));
+
+	    if (newProps.location.state) {
+	      this.setState({ user: newProps.location.state.user });
+	    } else {
+	      SessionsApiUtil.fetchCurrentUser();
+	    }
 	  },
 
 	  componentDidMount: function () {
-	    UsersApiUtil.fetchUser(parseInt(this.props.params.userId));
-	    this.userListener = UsersStore.addListener(this._onChange);
+	    this.userListener = CurrentUserStore.addListener(this._onChange);
+	    if (this.props.location.state) {
+	      this.setState({ user: this.props.location.state.user });
+	      this.history.replaceState({ user: this.state.user }, this.state.user.username + "/edit", {});
+	    } else {
+	      SessionsApiUtil.fetchCurrentUser();
+	    }
 	  },
 	  componentWillUnmount: function () {
 	    this.userListener.remove();
@@ -31870,7 +31917,7 @@
 	    }.bind(this));
 	  },
 	  render: function () {
-	    if (this.state.user === undefined) {
+	    if (!CurrentUserStore.userHasBeenFetched()) {
 	      return React.createElement('div', null);
 	    }
 	    return React.createElement(
@@ -31926,7 +31973,7 @@
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var SessionsApiUtil = __webpack_require__(234);
+	var SessionsApiUtil = __webpack_require__(236);
 
 	var SessionForm = React.createClass({
 	  displayName: 'SessionForm',
@@ -59518,7 +59565,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SessionsApiUtil = __webpack_require__(234);
+	var SessionsApiUtil = __webpack_require__(236);
 	var CurrentUserStore = __webpack_require__(244);
 	var History = __webpack_require__(159).History;
 
@@ -59565,7 +59612,7 @@
 
 	  showAccount: function () {
 	    var userId = this.state.currentUser.id;
-	    this.history.pushState(null, '/users/' + userId, {});
+	    this.history.pushState({ user: this.state.currentUser }, '/users/' + userId, {});
 	  },
 
 	  render: function () {

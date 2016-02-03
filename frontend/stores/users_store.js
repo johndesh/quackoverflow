@@ -11,7 +11,7 @@ var _addUser = function (newUser) {
 
 var resetUsers = function (users) {
   _users = {};
-  
+
   users.forEach(function (user) {
     _users[user.id] = user;
   });
@@ -26,6 +26,7 @@ UsersStore.all = function () {
   }
   return users;
 };
+
 UsersStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
 

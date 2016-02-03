@@ -44,7 +44,7 @@ var Topbar = React.createClass({
 
   showAccount: function () {
     var userId = this.state.currentUser.id;
-    this.history.pushState(null, '/users/' + userId, {});
+    this.history.pushState({user: this.state.currentUser}, '/users/' + userId, {});
   },
 
   render: function () {

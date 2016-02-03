@@ -1,31 +1,48 @@
 var React = require('react');
 var History = require('react-router').History;
-var UsersStore = require('../../stores/users_store');
+var CurrentUserStore = require('../../stores/current_user_store');
 var UsersApiUtil = require('../../util/users_api_util');
 var SessionsApiUtil = require('../../util/sessions_api_util');
 
 var EditUserForm = React.createClass({
   mixins: [History],
   getStateFromStore: function () {
-    return UsersStore.find(parseInt(this.props.params.userId));
+    return CurrentUserStore.currentUser();
   },
 
   _onChange: function () {
     this.setState(this.getStateFromStore());
+    this.history.replaceState({user: this.state.user}, this.state.user.username + "/edit", {});
   },
 
   getInitialState: function () {
+    var user;
+    if (this.props.location.state) {
+      user = this.props.location.state.user;
+    } else {
+      user =  this.getStateFromStore();
+    }
 
-    return { user: this.getStateFromStore(), avatarFile: null, avatarUrl: "" };
+    return { user: user, avatarFile: null, avatarUrl: "" };
   },
 
   componentWillReceiveProps: function (newProps) {
-    UsersApiUtil.fetchUser(parseInt(newProps.params.userId));
+
+    if (newProps.location.state) {
+      this.setState({user: newProps.location.state.user});
+    } else {
+      SessionsApiUtil.fetchCurrentUser();
+    }
   },
 
   componentDidMount: function () {
-    UsersApiUtil.fetchUser(parseInt(this.props.params.userId));
-    this.userListener = UsersStore.addListener(this._onChange);
+    this.userListener = CurrentUserStore.addListener(this._onChange);
+    if (this.props.location.state) {
+      this.setState({user: this.props.location.state.user});
+      this.history.replaceState({user: this.state.user}, this.state.user.username + "/edit", {});
+    } else {
+      SessionsApiUtil.fetchCurrentUser();
+    }
   },
   componentWillUnmount: function () {
     this.userListener.remove();
@@ -60,7 +77,7 @@ var EditUserForm = React.createClass({
     }.bind(this));
   },
   render: function () {
-    if(this.state.user === undefined) { return <div></div>; }
+    if(!CurrentUserStore.userHasBeenFetched()) { return <div></div>; }
     return (
       <div className="form-container">
         <form className="users-form" onSubmit={ this.submit }>
