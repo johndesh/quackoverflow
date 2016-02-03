@@ -27,7 +27,7 @@ var Topbar = React.createClass({
 
   logout: function() {
     SessionsApiUtil.logout(function () {
-      this.history.pushState(null, '#', {});
+      this.history.pushState(null, '/', {});
     }.bind(this));
   },
 
@@ -45,6 +45,11 @@ var Topbar = React.createClass({
   showAccount: function () {
     var userId = this.state.currentUser.id;
     this.history.pushState({user: this.state.currentUser}, '/users/' + userId, {});
+  },
+
+  _handleClick: function (e) {
+    e.preventDefault();
+    this.history.pushState({}, e.target.name, {});
   },
 
   render: function () {
@@ -74,8 +79,8 @@ var Topbar = React.createClass({
     } else {
 
       linksHtml = <div className="links-container group">
-                    <a href="#/users/signup">sign up</a>
-                    <a href="#/users/login">log in</a>
+                    <a onClick={this._handleClick} name="/users/signup">sign up</a>
+                    <a onClick={this._handleClick} name="/users/login">log in</a>
                   </div>;
 
     }

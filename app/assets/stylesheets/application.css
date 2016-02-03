@@ -39,6 +39,10 @@ time, mark, audio, video {
    vertical-align: baseline;
 }
 
+ a {
+   cursor: pointer;
+ }
+
  body {
    font-family: "Helvetica Neue", Arial;
    color: #222426;

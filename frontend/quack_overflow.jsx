@@ -2,6 +2,7 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     ReactRouter = require('react-router'),
     Router = ReactRouter.Router,
+    createBrowserHistory = require('history/lib/createBrowserHistory'),
     Route = ReactRouter.Route,
     Redirect = ReactRouter.Redirect,
     IndexRoute = ReactRouter.IndexRoute;
@@ -71,6 +72,6 @@ var routes = (
 );
 
   ReactDOM.render(
-    <Router history={ReactRouter.createBroswerHistory}>{routes}</Router>,
+    <Router history={createBrowserHistory()}>{routes}</Router>,
     document.getElementById('content')
   );
