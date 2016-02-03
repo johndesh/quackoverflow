@@ -7,6 +7,13 @@ var SearchActions = {
       actionType: SearchConstants.RECEIVE_SEARCH_RESULTS,
       searchResults: data.results
     });
+  },
+
+  receiveUserResults: function (data) {
+    AppDispatcher.dispatch({
+      actionType: SearchConstants.RECEIVE_USER_SEARCH_RESULTS,
+      searchResults: data.results
+    });
   }
 
 };

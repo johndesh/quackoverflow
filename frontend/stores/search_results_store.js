@@ -3,12 +3,17 @@ var AppDispatcher = require('../dispatcher/dispatcher');
 var SearchConstants = require('../constants/search_constants');
 
 var _searchResults = [];
+var _userResults = [];
 var _meta = {};
 
 var SearchResultsStore = new Store(AppDispatcher);
 
 SearchResultsStore.all = function () {
   return _searchResults.slice();
+};
+
+SearchResultsStore.allUsers = function () {
+  return _userResults.slice();
 };
 
 SearchResultsStore.meta = function () {
@@ -23,6 +28,10 @@ SearchResultsStore.__onDispatch = function (payload) {
       _meta = payload.meta;
       SearchResultsStore.__emitChange();
       break;
+
+    case SearchConstants.RECEIVE_USER_SEARCH_RESULTS:
+      _userResults = payload.searchResults;
+      SearchResultsStore.__emitChange();
   }
 };
 

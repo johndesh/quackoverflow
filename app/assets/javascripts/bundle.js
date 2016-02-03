@@ -31430,7 +31430,7 @@
 	  },
 
 	  _usersFiltered: function () {
-	    this.setState({ users: SearchResultsStore.all() });
+	    this.setState({ users: SearchResultsStore.allUsers() });
 	  },
 
 	  componentDidMount: function () {
@@ -31446,6 +31446,7 @@
 
 	  searchUsers: function (e) {
 	    var query = e.target.value;
+
 	    if (query.length === 0) {
 	      UsersApiUtil.fetchUsers();
 	    } else {
@@ -31549,7 +31550,7 @@
 	      dataType: 'json',
 	      data: { query: query },
 	      success: function (data) {
-	        SearchActions.receiveResults(data);
+	        SearchActions.receiveUserResults(data);
 	        callback && callback();
 	      }
 	    });
@@ -31572,6 +31573,13 @@
 	      actionType: SearchConstants.RECEIVE_SEARCH_RESULTS,
 	      searchResults: data.results
 	    });
+	  },
+
+	  receiveUserResults: function (data) {
+	    AppDispatcher.dispatch({
+	      actionType: SearchConstants.RECEIVE_USER_SEARCH_RESULTS,
+	      searchResults: data.results
+	    });
 	  }
 
 	};
@@ -31583,7 +31591,8 @@
 /***/ function(module, exports) {
 
 	var SearchConstants = {
-	  RECEIVE_SEARCH_RESULTS: "RECEIVE_SEARCH_RESULTS"
+	  RECEIVE_SEARCH_RESULTS: "RECEIVE_SEARCH_RESULTS",
+	  RECEIVE_USER_SEARCH_RESULTS: "RECEIVE_USER_SEARCH_RESULTS"
 	};
 
 	module.exports = SearchConstants;
@@ -31650,12 +31659,17 @@
 	var SearchConstants = __webpack_require__(240);
 
 	var _searchResults = [];
+	var _userResults = [];
 	var _meta = {};
 
 	var SearchResultsStore = new Store(AppDispatcher);
 
 	SearchResultsStore.all = function () {
 	  return _searchResults.slice();
+	};
+
+	SearchResultsStore.allUsers = function () {
+	  return _userResults.slice();
 	};
 
 	SearchResultsStore.meta = function () {
@@ -31670,6 +31684,10 @@
 	      _meta = payload.meta;
 	      SearchResultsStore.__emitChange();
 	      break;
+
+	    case SearchConstants.RECEIVE_USER_SEARCH_RESULTS:
+	      _userResults = payload.searchResults;
+	      SearchResultsStore.__emitChange();
 	  }
 	};
 

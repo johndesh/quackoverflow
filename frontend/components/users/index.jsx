@@ -14,7 +14,7 @@ var UserIndex = React.createClass({
   },
 
   _usersFiltered: function () {
-    this.setState({users: SearchResultsStore.all()});
+    this.setState({users: SearchResultsStore.allUsers()});
   },
 
   componentDidMount: function () {
@@ -30,6 +30,7 @@ var UserIndex = React.createClass({
 
   searchUsers: function(e) {
     var query = e.target.value;
+
     if (query.length === 0) {
       UsersApiUtil.fetchUsers();
     } else {

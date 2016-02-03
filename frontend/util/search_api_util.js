@@ -22,7 +22,7 @@ var SearchApiUtil = {
       dataType: 'json',
       data: {query: query},
       success: function (data) {
-        SearchActions.receiveResults(data);
+        SearchActions.receiveUserResults(data);
         callback && callback();
       }
     });
