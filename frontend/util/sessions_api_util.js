@@ -35,7 +35,6 @@ var SessionsApiUtil = {
       type: 'GET',
       dataType: 'json',
       success: function (currentUser) {
-
         CurrentUserActions.receiveCurrentUser(currentUser);
         cb && cb(currentUser);
       }

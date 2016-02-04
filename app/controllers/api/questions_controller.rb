@@ -16,13 +16,18 @@ class Api::QuestionsController < ApplicationController
     @question = Question.new(question_params)
     @question.author_id = current_user.id
 
-    @question.save
-
-    render json: @question
+    if @question.save
+      render 'api/questions/show'
+    else
+      render json: {errors: @question.errors.full_messages}
+    end
   end
 
   def update
+    @question = Question.find(params[:id])
+    @question.update(question_params)
 
+    render 'api/questions/show'
   end
 
 

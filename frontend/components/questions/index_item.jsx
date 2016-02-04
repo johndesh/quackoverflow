@@ -21,7 +21,7 @@ var IndexItem = React.createClass({
     var question = this.props.question;
 
     var timeAgo;
-    if (question.answers.length > 0) {
+    if (question.answers && question.answers.length > 0) {
       var answered = question.answers[question.answers.length - 1].answered;
       var author = question.answers[question.answers.length - 1].author;
       timeAgo = <div className="question-details group"><span className="question-details-time" onClick={this.showQuestion.bind(this, question)}>answered {answered} ago </span><span className="question-details-author" onClick={this.showUser.bind(this, author)}>{author.username}</span></div>;
@@ -41,8 +41,8 @@ var IndexItem = React.createClass({
             <div className="stat-label">votes</div>
           </div>
           <div className={answersKlass}>
-            <div className="stat-count">{question.answers.length}</div>
-            <div className="stat-label">answer{question.answers.length === 1 ? "" : "s"}</div>
+            <div className="stat-count">{question === undefined ? "0" : question.answers.length}</div>
+            <div className="stat-label">answer{question.answers && question.answers.length === 1 ? "" : "s"}</div>
           </div>
           <div className="question-stat-count views group">
             <div className="stat-count">{question.views | 0}</div>

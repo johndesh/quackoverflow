@@ -63,10 +63,10 @@ var EditUserForm = React.createClass({
   _validate: function (creds) {
     var isValid = true;
     if (creds.newpassword !== creds.password) {
-      this.setState({_errors: ['passwords must match']});
+      this._renderErrors(['passwords must match']);
       isValid = false;
     } else if (creds.password.length > 0 && creds.password.length < 6) {
-      this.setState({_errors: ['passwords must be at least 6 characters']});
+      this._renderErrors(['passwords must be at least 6 characters']);
       isValid = false;
     } else {
       return isValid;
@@ -81,34 +81,45 @@ var EditUserForm = React.createClass({
     this.history.pushState(null, '/users/' + user.id + '/' + user.username, {});
   },
 
+  _assembleFormData: function (credentials) {
+    var formData = new FormData();
+
+    for (var key in credentials) {
+      if (key === "newpassword") { continue; }
+
+      if (!!credentials[key]) {
+        formData.append("user[" + key + "]", credentials[key]);
+      }
+    }
+
+    if (this.state.avatarFile) {
+      formData.append("user[avatar]", this.state.avatarFile);
+    }
+
+    return formData;
+  },
+
+  _handleResponse: function (resp) {
+
+      if (resp.errors && resp.errors.length > 0) {
+        this._renderErrors(resp.errors);
+      } else {
+        this._userDidUpdate(resp);
+      }
+  },
 
   submit: function (e) {
     e.preventDefault();
+    var userId = this.state.user.id
 
     var credentials = $(e.currentTarget).serializeJSON();
     if (this._validate(credentials)) {
-      var formData = new FormData();
-      var userId = this.state.user.id
-      for (var key in credentials) {
-        if (key === "newpassword") {
-          continue;
-        }
-        if (!!credentials[key]) {
-          formData.append("user[" + key + "]", credentials[key]);
-        }
-      }
-      if (this.state.avatarFile) {
-        formData.append("user[avatar]", this.state.avatarFile);
-      }
-      UsersApiUtil.updateUser(formData, userId, function (user) {
-        if (user.errors.length > 0) {
-          this.setState({_errors: user.errors});
-        } else {
-          this._userDidUpdate(user);
-        }
-      }.bind(this));
-  }
+      var formData = this._assembleFormData(credentials);
+
+      UsersApiUtil.updateUser(formData, userId, this._handleResponse);
+    }
   },
+
   render: function () {
     if(!CurrentUserStore.userHasBeenFetched()) { return <div></div>; }
     var errors;

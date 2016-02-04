@@ -32,7 +32,9 @@ var UsersApiUtil = {
       dataType: 'json',
       data: attrs,
       success: function (user) {
-        UserActions.receiveUser(user);
+        if (!user.errors) {
+          UserActions.receiveUser(user);
+        }
         callback && callback();
       }
     });
@@ -48,8 +50,10 @@ var UsersApiUtil = {
       dataType: 'json',
       data: formData,
       success: function (user) {
-        UserActions.receiveUser(user);
-        CurrentUserActions.receiveCurrentUser(user);
+        if (!user.errors) {
+          UserActions.receiveUser(user);
+          CurrentUserActions.receiveCurrentUser(user);
+        }
         cb && cb(user);
       }
     });

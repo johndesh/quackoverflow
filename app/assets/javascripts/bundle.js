@@ -31455,7 +31455,9 @@
 	      dataType: 'json',
 	      data: attrs,
 	      success: function (user) {
-	        UserActions.receiveUser(user);
+	        if (!user.errors) {
+	          UserActions.receiveUser(user);
+	        }
 	        callback && callback();
 	      }
 	    });
@@ -31471,8 +31473,10 @@
 	      dataType: 'json',
 	      data: formData,
 	      success: function (user) {
-	        UserActions.receiveUser(user);
-	        CurrentUserActions.receiveCurrentUser(user);
+	        if (!user.errors) {
+	          UserActions.receiveUser(user);
+	          CurrentUserActions.receiveCurrentUser(user);
+	        }
 	        cb && cb(user);
 	      }
 	    });
@@ -31576,7 +31580,6 @@
 	      type: 'GET',
 	      dataType: 'json',
 	      success: function (currentUser) {
-
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        cb && cb(currentUser);
 	      }
@@ -32069,10 +32072,10 @@
 	  _validate: function (creds) {
 	    var isValid = true;
 	    if (creds.newpassword !== creds.password) {
-	      this.setState({ _errors: ['passwords must match'] });
+	      this._renderErrors(['passwords must match']);
 	      isValid = false;
 	    } else if (creds.password.length > 0 && creds.password.length < 6) {
-	      this.setState({ _errors: ['passwords must be at least 6 characters'] });
+	      this._renderErrors(['passwords must be at least 6 characters']);
 	      isValid = false;
 	    } else {
 	      return isValid;
@@ -32087,33 +32090,47 @@
 	    this.history.pushState(null, '/users/' + user.id + '/' + user.username, {});
 	  },
 
+	  _assembleFormData: function (credentials) {
+	    var formData = new FormData();
+
+	    for (var key in credentials) {
+	      if (key === "newpassword") {
+	        continue;
+	      }
+
+	      if (!!credentials[key]) {
+	        formData.append("user[" + key + "]", credentials[key]);
+	      }
+	    }
+
+	    if (this.state.avatarFile) {
+	      formData.append("user[avatar]", this.state.avatarFile);
+	    }
+
+	    return formData;
+	  },
+
+	  _handleResponse: function (resp) {
+
+	    if (resp.errors && resp.errors.length > 0) {
+	      this._renderErrors(resp.errors);
+	    } else {
+	      this._userDidUpdate(resp);
+	    }
+	  },
+
 	  submit: function (e) {
 	    e.preventDefault();
+	    var userId = this.state.user.id;
 
 	    var credentials = $(e.currentTarget).serializeJSON();
 	    if (this._validate(credentials)) {
-	      var formData = new FormData();
-	      var userId = this.state.user.id;
-	      for (var key in credentials) {
-	        if (key === "newpassword") {
-	          continue;
-	        }
-	        if (!!credentials[key]) {
-	          formData.append("user[" + key + "]", credentials[key]);
-	        }
-	      }
-	      if (this.state.avatarFile) {
-	        formData.append("user[avatar]", this.state.avatarFile);
-	      }
-	      UsersApiUtil.updateUser(formData, userId, function (user) {
-	        if (user.errors.length > 0) {
-	          this.setState({ _errors: user.errors });
-	        } else {
-	          this._userDidUpdate(user);
-	        }
-	      }.bind(this));
+	      var formData = this._assembleFormData(credentials);
+
+	      UsersApiUtil.updateUser(formData, userId, this._handleResponse);
 	    }
 	  },
+
 	  render: function () {
 	    if (!CurrentUserStore.userHasBeenFetched()) {
 	      return React.createElement('div', null);
@@ -32464,7 +32481,6 @@
 	  },
 
 	  fetchSingleQuestion: function (id) {
-
 	    $.get('/api/questions/' + id, function (question) {
 	      QuestionActions.receiveSingleQuestion(question);
 	    });
@@ -32472,14 +32488,18 @@
 
 	  createQuestion: function (data, callback) {
 	    $.post('/api/questions', { question: data }, function (question) {
-	      QuestionActions.receiveSingleQuestion(question);
-	      callback && callback(question.id);
+	      if (!question.errors) {
+	        QuestionActions.receiveSingleQuestion(question);
+	      }
+	      callback && callback(question);
 	    });
 	  },
 
 	  createAnswer: function (answer, callback) {
 	    $.post('/api/questions/' + answer.question_id + '/answers', { question_answer: answer }, function (question) {
-	      QuestionActions.receiveSingleQuestion(question);
+	      if (!question.errors) {
+	        QuestionActions.receiveSingleQuestion(question);
+	      }
 	      callback && callback(question.id);
 	    });
 	  }
@@ -32540,7 +32560,7 @@
 	    var question = this.props.question;
 
 	    var timeAgo;
-	    if (question.answers.length > 0) {
+	    if (question.answers && question.answers.length > 0) {
 	      var answered = question.answers[question.answers.length - 1].answered;
 	      var author = question.answers[question.answers.length - 1].author;
 	      timeAgo = React.createElement(
@@ -32623,13 +32643,13 @@
 	          React.createElement(
 	            'div',
 	            { className: 'stat-count' },
-	            question.answers.length
+	            question === undefined ? "0" : question.answers.length
 	          ),
 	          React.createElement(
 	            'div',
 	            { className: 'stat-label' },
 	            'answer',
-	            question.answers.length === 1 ? "" : "s"
+	            question.answers && question.answers.length === 1 ? "" : "s"
 	          )
 	        ),
 	        React.createElement(
@@ -59501,15 +59521,25 @@
 	  mixins: [History],
 
 	  getInitialState: function () {
-	    return { body: "" };
+	    return { body: "", _errors: null };
+	  },
+
+	  _handleResponse: function (data) {
+	    if (data.errors) {
+	      this._renderErrors(data.errors);
+	    } else {
+	      this.history.pushState(null, "/questions/" + data.id, {});
+	    }
+	  },
+
+	  _renderErrors: function (errors) {
+	    this.setState({ _errors: errors });
 	  },
 
 	  createQuestion: function (parsedBody) {
 	    var title = $('#question-title').val();
 	    var question = { title: title, body: parsedBody };
-	    QuestionsApiUtil.createQuestion(question, function (id) {
-	      this.history.pushState(null, "/questions/" + id, {});
-	    }.bind(this));
+	    QuestionsApiUtil.createQuestion(question, this._handleResponse);
 	  },
 
 	  handleChange: function (e) {
@@ -59517,9 +59547,22 @@
 	  },
 
 	  render: function () {
+	    var errors;
+	    if (this.state._errors == undefined) {
+	      errors = React.createElement('div', null);
+	    } else {
+	      errors = React.createElement(
+	        'div',
+	        { className: 'form-error' },
+	        React.createElement('div', { className: 'message-tip group' }),
+	        this.state._errors[0]
+	      );
+	    }
+
 	    return React.createElement(
 	      'div',
 	      { className: 'question-form-wrapper group' },
+	      errors,
 	      React.createElement(
 	        'div',
 	        { className: 'question-form', id: 'question-form' },
