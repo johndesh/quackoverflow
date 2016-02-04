@@ -55,8 +55,8 @@
 	var UserForm = __webpack_require__(209),
 	    UserIndex = __webpack_require__(238),
 	    UserShow = __webpack_require__(244),
-	    EditUserForm = __webpack_require__(245),
-	    CurrentUserStore = __webpack_require__(246),
+	    EditUserForm = __webpack_require__(246),
+	    CurrentUserStore = __webpack_require__(245),
 	    SessionsApiUtil = __webpack_require__(237),
 	    SessionForm = __webpack_require__(247),
 	    QuestionsIndex = __webpack_require__(248),
@@ -31461,7 +31461,7 @@
 	    });
 	  },
 
-	  updateUser: function (formData, userId, callback) {
+	  updateUser: function (formData, userId, cb) {
 
 	    $.ajax({
 	      url: '/api/users/' + userId,
@@ -31473,7 +31473,7 @@
 	      success: function (user) {
 	        UserActions.receiveUser(user);
 	        CurrentUserActions.receiveCurrentUser(user);
-	        callback && callback();
+	        cb && cb(user);
 	      }
 	    });
 	  }
@@ -31880,7 +31880,7 @@
 	var UsersApiUtil = __webpack_require__(233);
 	var History = __webpack_require__(159).History;
 	var Navigation = __webpack_require__(159).Navigation;
-	var CurrentUserStore = __webpack_require__(246);
+	var CurrentUserStore = __webpack_require__(245);
 	var UserShow = React.createClass({
 	  displayName: 'UserShow',
 
@@ -31969,9 +31969,43 @@
 /* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var Store = __webpack_require__(211).Store;
+	var AppDispatcher = __webpack_require__(229);
+	var CurrentUserConstants = __webpack_require__(236);
+
+	var _currentUser = {};
+	var _currentUserHasBeenFetched = false;
+	var CurrentUserStore = new Store(AppDispatcher);
+
+	CurrentUserStore.currentUser = function () {
+	  return $.extend({}, _currentUser);
+	};
+
+	CurrentUserStore.isLoggedIn = function () {
+	  return !!_currentUser.id;
+	};
+
+	CurrentUserStore.userHasBeenFetched = function () {
+	  return _currentUserHasBeenFetched;
+	};
+
+	CurrentUserStore.__onDispatch = function (payload) {
+	  if (payload.actionType === CurrentUserConstants.RECEIVE_CURRENT_USER) {
+	    _currentUserHasBeenFetched = true;
+	    _currentUser = payload.currentUser;
+	    CurrentUserStore.__emitChange();
+	  }
+	};
+
+	module.exports = CurrentUserStore;
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var CurrentUserStore = __webpack_require__(246);
+	var CurrentUserStore = __webpack_require__(245);
 	var UsersApiUtil = __webpack_require__(233);
 	var SessionsApiUtil = __webpack_require__(237);
 
@@ -31996,7 +32030,7 @@
 	      user = this.getStateFromStore();
 	    }
 
-	    return { user: user, avatarFile: null, avatarUrl: "" };
+	    return { user: user, avatarFile: null, avatarUrl: "", _errors: null };
 	  },
 
 	  componentWillReceiveProps: function (newProps) {
@@ -32032,22 +32066,68 @@
 	      }
 	  },
 
+	  _validate: function (creds) {
+	    var isValid = true;
+	    if (creds.newpassword !== creds.password) {
+	      this.setState({ _errors: ['passwords must match'] });
+	      isValid = false;
+	    } else if (creds.password.length > 0 && creds.password.length < 6) {
+	      this.setState({ _errors: ['passwords must be at least 6 characters'] });
+	      isValid = false;
+	    } else {
+	      return isValid;
+	    }
+	  },
+
+	  _renderErrors: function (errors) {
+	    this.setState({ _errors: errors });
+	  },
+
+	  _userDidUpdate: function (user) {
+	    this.history.pushState(null, '/users/' + user.id + '/' + user.username, {});
+	  },
+
 	  submit: function (e) {
 	    e.preventDefault();
+
 	    var credentials = $(e.currentTarget).serializeJSON();
-	    var userId = this.state.user.id;
-	    var formData = new FormData();
-	    formData.append("user[username]", credentials.username);
-	    formData.append("user[email]", credentials.email);
-	    formData.append("user[password]", credentials.password);
-	    formData.append("user[avatar]", this.state.avatarFile);
-	    UsersApiUtil.updateUser(formData, userId, function (user) {
-	      this.history.pushState(null, '/users/' + userId, {});
-	    }.bind(this));
+	    if (this._validate(credentials)) {
+	      var formData = new FormData();
+	      var userId = this.state.user.id;
+	      for (var key in credentials) {
+	        if (key === "newpassword") {
+	          continue;
+	        }
+	        if (!!credentials[key]) {
+	          formData.append("user[" + key + "]", credentials[key]);
+	        }
+	      }
+	      if (this.state.avatarFile) {
+	        formData.append("user[avatar]", this.state.avatarFile);
+	      }
+	      UsersApiUtil.updateUser(formData, userId, function (user) {
+	        if (user.errors.length > 0) {
+	          this.setState({ _errors: user.errors });
+	        } else {
+	          this._userDidUpdate(user);
+	        }
+	      }.bind(this));
+	    }
 	  },
 	  render: function () {
 	    if (!CurrentUserStore.userHasBeenFetched()) {
 	      return React.createElement('div', null);
+	    }
+	    var errors;
+	    if (this.state._errors == undefined) {
+	      errors = React.createElement('div', null);
+	    } else {
+	      errors = React.createElement(
+	        'div',
+	        { className: 'form-error' },
+	        React.createElement('div', { className: 'message-tip group' }),
+	        this.state._errors[0]
+	      );
 	    }
 	    return React.createElement(
 	      'div',
@@ -32067,10 +32147,23 @@
 	          'Email (required, but never shown)',
 	          React.createElement('input', { type: 'text', name: 'email', defaultValue: this.state.user.email })
 	        ),
+	        errors,
 	        React.createElement(
 	          'label',
 	          null,
-	          'Password',
+	          'Old Password',
+	          React.createElement('input', { type: 'password', name: 'oldpassword', placeholder: '********' })
+	        ),
+	        React.createElement(
+	          'label',
+	          null,
+	          'New Password',
+	          React.createElement('input', { type: 'password', name: 'newpassword', placeholder: '********' })
+	        ),
+	        React.createElement(
+	          'label',
+	          null,
+	          'Confirm New Password',
 	          React.createElement('input', { type: 'password', name: 'password', placeholder: '********' })
 	        ),
 	        React.createElement(
@@ -32095,40 +32188,6 @@
 	});
 
 	module.exports = EditUserForm;
-
-/***/ },
-/* 246 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(211).Store;
-	var AppDispatcher = __webpack_require__(229);
-	var CurrentUserConstants = __webpack_require__(236);
-
-	var _currentUser = {};
-	var _currentUserHasBeenFetched = false;
-	var CurrentUserStore = new Store(AppDispatcher);
-
-	CurrentUserStore.currentUser = function () {
-	  return $.extend({}, _currentUser);
-	};
-
-	CurrentUserStore.isLoggedIn = function () {
-	  return !!_currentUser.id;
-	};
-
-	CurrentUserStore.userHasBeenFetched = function () {
-	  return _currentUserHasBeenFetched;
-	};
-
-	CurrentUserStore.__onDispatch = function (payload) {
-	  if (payload.actionType === CurrentUserConstants.RECEIVE_CURRENT_USER) {
-	    _currentUserHasBeenFetched = true;
-	    _currentUser = payload.currentUser;
-	    CurrentUserStore.__emitChange();
-	  }
-	};
-
-	module.exports = CurrentUserStore;
 
 /***/ },
 /* 247 */
@@ -59749,7 +59808,7 @@
 
 	var React = __webpack_require__(1);
 	var SessionsApiUtil = __webpack_require__(237);
-	var CurrentUserStore = __webpack_require__(246);
+	var CurrentUserStore = __webpack_require__(245);
 	var History = __webpack_require__(159).History;
 
 	var Topbar = React.createClass({

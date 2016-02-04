@@ -38,7 +38,7 @@ var UsersApiUtil = {
     });
   },
 
-  updateUser: function (formData, userId, callback) {
+  updateUser: function (formData, userId, cb) {
 
     $.ajax({
       url: '/api/users/' + userId,
@@ -50,7 +50,7 @@ var UsersApiUtil = {
       success: function (user) {
         UserActions.receiveUser(user);
         CurrentUserActions.receiveCurrentUser(user);
-        callback && callback();
+        cb && cb(user);
       }
     });
   }

@@ -20,10 +20,12 @@ class Api::UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-
-    @user.update!(user_params)
-
-    render 'api/users/show'
+    if @user.is_password?(params[:user][:oldpassword])
+      @user.update(user_params)
+      render 'api/users/show'
+    else
+      render json: {errors: ["Invalid password"]}
+    end
   end
 
   private

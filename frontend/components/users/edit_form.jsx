@@ -23,7 +23,7 @@ var EditUserForm = React.createClass({
       user =  this.getStateFromStore();
     }
 
-    return { user: user, avatarFile: null, avatarUrl: "" };
+    return { user: user, avatarFile: null, avatarUrl: "", _errors: null };
   },
 
   componentWillReceiveProps: function (newProps) {
@@ -60,21 +60,63 @@ var EditUserForm = React.createClass({
     }
   },
 
+  _validate: function (creds) {
+    var isValid = true;
+    if (creds.newpassword !== creds.password) {
+      this.setState({_errors: ['passwords must match']});
+      isValid = false;
+    } else if (creds.password.length > 0 && creds.password.length < 6) {
+      this.setState({_errors: ['passwords must be at least 6 characters']});
+      isValid = false;
+    } else {
+      return isValid;
+    }
+  },
+
+  _renderErrors: function (errors) {
+    this.setState({_errors: errors});
+  },
+
+  _userDidUpdate: function (user) {
+    this.history.pushState(null, '/users/' + user.id + '/' + user.username, {});
+  },
+
+
   submit: function (e) {
     e.preventDefault();
+
     var credentials = $(e.currentTarget).serializeJSON();
-    var userId = this.state.user.id
-    var formData = new FormData();
-    formData.append("user[username]", credentials.username);
-    formData.append("user[email]", credentials.email);
-    formData.append("user[password]", credentials.password);
-    formData.append("user[avatar]", this.state.avatarFile);
-    UsersApiUtil.updateUser(formData, userId, function (user) {
-      this.history.pushState(null, '/users/' + userId, {});
-    }.bind(this));
+    if (this._validate(credentials)) {
+      var formData = new FormData();
+      var userId = this.state.user.id
+      for (var key in credentials) {
+        if (key === "newpassword") {
+          continue;
+        }
+        if (!!credentials[key]) {
+          formData.append("user[" + key + "]", credentials[key]);
+        }
+      }
+      if (this.state.avatarFile) {
+        formData.append("user[avatar]", this.state.avatarFile);
+      }
+      UsersApiUtil.updateUser(formData, userId, function (user) {
+        if (user.errors.length > 0) {
+          this.setState({_errors: user.errors});
+        } else {
+          this._userDidUpdate(user);
+        }
+      }.bind(this));
+  }
   },
   render: function () {
     if(!CurrentUserStore.userHasBeenFetched()) { return <div></div>; }
+    var errors;
+    if (this.state._errors == undefined) {
+      errors = <div></div>;
+    } else {
+      errors = <div className="form-error"><div className="message-tip group"></div>{this.state._errors[0]}</div>;
+    }
     return (
       <div className="form-container">
         <form className="users-form" onSubmit={ this.submit }>
@@ -90,9 +132,19 @@ var EditUserForm = React.createClass({
 
             <input type="text" name="email" defaultValue={ this.state.user.email } />
           </label>
-
+          {errors}
           <label>
-            Password
+            Old Password
+
+            <input type="password" name="oldpassword" placeholder="********"/>
+          </label>
+          <label>
+            New Password
+
+            <input type="password" name="newpassword" placeholder="********"/>
+          </label>
+          <label>
+            Confirm New Password
 
             <input type="password" name="password" placeholder="********"/>
           </label>
