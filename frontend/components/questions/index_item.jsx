@@ -6,20 +6,25 @@ var IndexItem = React.createClass({
   mixins: [History],
 
   showQuestion: function () {
-    this.history.pushState(null, '/questions/' + this.props.question.id, {});
+    var question = this.props.question;
+    this.history.pushState(null, '/questions/' + question.id, {});
   },
 
   showUser: function (user) {
-    this.history.pushState(null, '/users/' + user.id, {});
+    this.history.pushState('/users/' + user.id, {});
   },
 
   render: function () {
+    if (this.props.question === undefined) {
+      return <div></div>;
+    }
     var question = this.props.question;
+
     var timeAgo;
     if (question.answers.length > 0) {
       var answered = question.answers[question.answers.length - 1].answered;
       var author = question.answers[question.answers.length - 1].author;
-      timeAgo = <div className="question-details group"><span className="question-details-time" onClick={this.showQuestion}>answered {answered} ago </span><span className="question-details-author" onClick={this.showUser.bind(this, author)}>{author.username}</span></div>;
+      timeAgo = <div className="question-details group"><span className="question-details-time" onClick={this.showQuestion.bind(this, question)}>answered {answered} ago </span><span className="question-details-author" onClick={this.showUser.bind(this, author)}>{author.username}</span></div>;
     } else if (question.modified !== question.asked) {
       timeAgo = <div className="question-details group"><span className="question-details-time" onClick={this.showQuestion}>modified {question.modified} ago </span><span className="question-details-author" onClick={this.showUser.bind(this, question.author)}>{question.author.username}</span></div>;
     } else {

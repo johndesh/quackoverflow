@@ -1,10 +1,12 @@
 var React = require('react');
 var ReactRouter = require('react-router');
+var History = require('react-router').History;
 var QuestionStore = require('../../stores/question');
 var QuestionsApiUtil = require('../../util/questions_api_util');
 var QuestionAnswersForm = require('./question_answers_form');
 var QuestionAnswer = require('./question_answer');
 var QuestionShow = React.createClass({
+  mixins: [History],
 
   getStateFromStore: function () {
     return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };

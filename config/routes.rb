@@ -11,6 +11,6 @@ Rails.application.routes.draw do
     get "search/users", to: "searches#user"
   end
 
-  get '*foo' => 'static_pages#root'
+  get '*path' => 'static_pages#root'
 
 end

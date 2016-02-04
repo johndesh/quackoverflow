@@ -1,8 +1,11 @@
 var React = require('react');
 var QuestionStore = require('../../stores/question');
+var History = require('react-router').History;
 var QuestionsApiUtil = require('../../util/questions_api_util');
 var IndexItem = require('./index_item');
 var Index = React.createClass({
+  mixins: [History],
+
   getInitialState: function () {
     return {questions: QuestionStore.all()};
   },
@@ -10,6 +13,10 @@ var Index = React.createClass({
   _questionsChanged: function () {
     this.setState({questions: QuestionStore.all()});
   },
+
+  componentDidUpdate: function () {
+  },
+
 
   componentDidMount: function () {
     this.questionListener = QuestionStore.addListener(this._questionsChanged);
@@ -22,9 +29,12 @@ var Index = React.createClass({
   },
 
   render: function () {
+    if (this.state.questions === undefined) {
+      return <div></div>;
+    }
     var questions = this.state.questions.map(function (question, idx) {
       return (
-        <IndexItem key={idx} question={question}/>
+        <IndexItem key={idx} question={question} />
       );
     });
     var _handleClick = function(e) {
