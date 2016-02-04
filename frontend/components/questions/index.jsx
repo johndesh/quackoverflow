@@ -28,6 +28,18 @@ var Index = React.createClass({
     this.questionListener.remove();
   },
 
+  _applyFilter: function (filter) {
+    QuestionsApiUtil.fetchQuestions(null, filter);
+  },
+
+  _handleClick: function(e) {
+    e.preventDefault();
+    console.log($(e.target).data('filter'));
+    this._applyFilter($(e.target).data('filter'));
+    $('.sub-header-nav').children('a').removeClass('clicked');
+    $(e.currentTarget).addClass("clicked");
+  },
+
   render: function () {
     if (this.state.questions === undefined) {
       return <div></div>;
@@ -37,11 +49,7 @@ var Index = React.createClass({
         <IndexItem key={idx} question={question} />
       );
     });
-    var _handleClick = function(e) {
-      e.preventDefault();
-      $('.sub-header-nav').children('a').removeClass('clicked');
-      $(e.currentTarget).addClass("clicked");
-    };
+
 
 
     return (
@@ -49,12 +57,9 @@ var Index = React.createClass({
         <div className="sub-header">
           <h2 className="group">Top Questions</h2>
           <nav className="sub-header-nav group">
-            <a href="#" onClick={_handleClick} className="clicked group">interesting</a>
-            <a href="#" onClick={_handleClick} className="group">featured
-              <span className="featured-count-tab group">391</span></a>
-            <a href="#" onClick={_handleClick} className="group">hot</a>
-            <a href="#" onClick={_handleClick} className="group">week</a>
-            <a href="#" onClick={_handleClick} className="group">month</a>
+            <a data-filter="" onClick={this._handleClick} className="clicked group">new</a>
+            <a data-filter="views" onClick={this._handleClick} className="group">interesting</a>
+            <a data-filter="votes" onClick={this._handleClick} className="group">hot</a>
           </nav>
         </div>
         <div className="question-index group">

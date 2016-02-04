@@ -7,6 +7,9 @@ class Question < ActiveRecord::Base
   belongs_to :author, class_name: "User"
   has_many :answers, class_name: "QuestionAnswer"
   has_many :views, class_name: "QuestionView"
+
+
+
   has_many :viewers, through: :views, source: :user
 
 end

@@ -32335,6 +32335,18 @@
 	    this.questionListener.remove();
 	  },
 
+	  _applyFilter: function (filter) {
+	    QuestionsApiUtil.fetchQuestions(null, filter);
+	  },
+
+	  _handleClick: function (e) {
+	    e.preventDefault();
+	    console.log($(e.target).data('filter'));
+	    this._applyFilter($(e.target).data('filter'));
+	    $('.sub-header-nav').children('a').removeClass('clicked');
+	    $(e.currentTarget).addClass("clicked");
+	  },
+
 	  render: function () {
 	    if (this.state.questions === undefined) {
 	      return React.createElement('div', null);
@@ -32342,11 +32354,6 @@
 	    var questions = this.state.questions.map(function (question, idx) {
 	      return React.createElement(IndexItem, { key: idx, question: question });
 	    });
-	    var _handleClick = function (e) {
-	      e.preventDefault();
-	      $('.sub-header-nav').children('a').removeClass('clicked');
-	      $(e.currentTarget).addClass("clicked");
-	    };
 
 	    return React.createElement(
 	      'div',
@@ -32364,33 +32371,18 @@
 	          { className: 'sub-header-nav group' },
 	          React.createElement(
 	            'a',
-	            { href: '#', onClick: _handleClick, className: 'clicked group' },
+	            { 'data-filter': '', onClick: this._handleClick, className: 'clicked group' },
+	            'new'
+	          ),
+	          React.createElement(
+	            'a',
+	            { 'data-filter': 'views', onClick: this._handleClick, className: 'group' },
 	            'interesting'
 	          ),
 	          React.createElement(
 	            'a',
-	            { href: '#', onClick: _handleClick, className: 'group' },
-	            'featured',
-	            React.createElement(
-	              'span',
-	              { className: 'featured-count-tab group' },
-	              '391'
-	            )
-	          ),
-	          React.createElement(
-	            'a',
-	            { href: '#', onClick: _handleClick, className: 'group' },
+	            { 'data-filter': 'votes', onClick: this._handleClick, className: 'group' },
 	            'hot'
-	          ),
-	          React.createElement(
-	            'a',
-	            { href: '#', onClick: _handleClick, className: 'group' },
-	            'week'
-	          ),
-	          React.createElement(
-	            'a',
-	            { href: '#', onClick: _handleClick, className: 'group' },
-	            'month'
 	          )
 	        )
 	      ),
@@ -32473,8 +32465,8 @@
 
 	var QuestionsApiUtil = {
 
-	  fetchQuestions: function (callback) {
-	    $.get('/api/questions', function (questions) {
+	  fetchQuestions: function (callback, filter) {
+	    $.get('/api/questions', { filter: filter }, function (questions) {
 	      QuestionActions.receiveAll(questions);
 	      callback && callback();
 	    });

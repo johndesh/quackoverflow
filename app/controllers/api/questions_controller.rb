@@ -1,7 +1,20 @@
 class Api::QuestionsController < ApplicationController
 
   def index
-    @questions = Question.order(updated_at: :desc).includes({:answers => :author}, :author, :views).all
+    questions = Question.all
+    if !filter || filter == ''
+      questions = questions.includes(:views).order(created_at: :desc)
+    else
+      questions =
+        questions.
+          select("questions.*, count(question_#{filter}.id) AS #{filter}_count").
+          joins(filter.to_sym).
+          group('questions.id, question_views.id, question_answers.id, users.id, authors_questions.id').
+          includes(filter.to_sym).
+          order("#{filter}_count DESC")
+    end
+    @questions = questions.includes({:answers => :author}, :author)
+    render 'api/questions/index'
   end
 
   def show
@@ -38,5 +51,9 @@ class Api::QuestionsController < ApplicationController
   private
     def question_params
       params.require(:question).permit(:title, :body)
+    end
+
+    def filter
+      params[:filter]
     end
 end
