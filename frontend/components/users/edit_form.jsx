@@ -12,7 +12,7 @@ var EditUserForm = React.createClass({
 
   _onChange: function () {
     this.setState(this.getStateFromStore());
-    this.history.replaceState({user: this.state.user}, this.state.user.username + "/edit", {});
+    // this.history.replaceState({user: this.state.user}, this.state.user.username + "/edit", {});
   },
 
   getInitialState: function () {
@@ -37,12 +37,9 @@ var EditUserForm = React.createClass({
 
   componentDidMount: function () {
     this.userListener = CurrentUserStore.addListener(this._onChange);
-    if (this.props.location.state) {
-      this.setState({user: this.props.location.state.user});
-      this.history.replaceState({user: this.state.user}, this.state.user.username + "/edit", {});
-    } else {
+
       SessionsApiUtil.fetchCurrentUser();
-    }
+
   },
   componentWillUnmount: function () {
     this.userListener.remove();

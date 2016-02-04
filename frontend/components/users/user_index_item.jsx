@@ -5,7 +5,7 @@ var UserIndexItem = React.createClass({
   mixins: [History],
 
   showUser: function () {
-    this.history.pushState(null, "/users/" + this.props.user.id, {});
+    this.history.pushState({}, "/users/" + this.props.user.id + "/" + this.props.user.username);
   },
 
   render: function () {

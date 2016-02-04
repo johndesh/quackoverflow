@@ -11,12 +11,6 @@ var App = React.createClass({
     $("a").filter( $(pathKlass) ).addClass("clicked");
   },
 
-
-  toggleNavButton: function (e) {
-    $(".main-header-nav a").removeClass("clicked");
-    $(e.currentTarget).addClass("clicked");
-  },
-
   _handleClick: function (e) {
     e.preventDefault();
     this.history.pushState({}, e.target.name, {});
@@ -35,9 +29,9 @@ var App = React.createClass({
             <div className="main-header-nav group">
               <nav className="main-nav group">
                 <ul>
-                  <li className="group"><a name="/questions" onClick={this._handleClick} className="-questions-">Questions</a></li>
+                  <li className="group"><a name="/questions" onClick={this._handleClick} className="-questions">Questions</a></li>
                   <li className="group"><a>Tags</a></li>
-                  <li className="group"><a name="/users" onClick={this._handleClick} className="-users-">Users</a></li>
+                  <li className="group"><a name="/users" onClick={this._handleClick} className="-users">Users</a></li>
                 </ul>
               </nav>
               <nav className="ask-question-nav group">

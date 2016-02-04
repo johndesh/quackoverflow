@@ -2,9 +2,10 @@ var React = require('react');
 var UsersStore = require('../../stores/users_store');
 var UsersApiUtil = require('../../util/users_api_util');
 var History = require('react-router').History;
+var Navigation = require('react-router').Navigation
 var CurrentUserStore = require('../../stores/current_user_store');
 var UserShow = React.createClass({
-  mixins: [History],
+  mixins: [History, Navigation],
 
   getStateFromStore: function () {
     return { user: UsersStore.find(parseInt(this.props.params.userId)) };
@@ -24,7 +25,11 @@ var UserShow = React.createClass({
 
   componentDidMount: function () {
     this.userListener = UsersStore.addListener(this._onChange);
-    UsersApiUtil.fetchUser(parseInt(this.props.params.userId));
+    UsersApiUtil.fetchUser(parseInt(this.props.params.userId), function (user) {
+      if (!this.props.params.username) {
+        this.history.replaceState(null, user.id + "/" + user.username);
+      }
+    }.bind(this));
   },
 
   componentWillUnmount: function () {
@@ -33,7 +38,7 @@ var UserShow = React.createClass({
 
   editUser: function(e) {
     e.preventDefault();
-    this.history.pushState({user: this.state.user}, this.state.user.username + "/edit", {})
+    this.history.pushState({user: this.state.user}, "/" + this.state.user.username + "/edit", {})
   },
 
 

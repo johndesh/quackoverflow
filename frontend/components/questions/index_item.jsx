@@ -11,7 +11,7 @@ var IndexItem = React.createClass({
   },
 
   showUser: function (user) {
-    this.history.pushState('/users/' + user.id, {});
+    this.history.pushState(null, '/users/' + user.id + '/' + user.username, {});
   },
 
   render: function () {
