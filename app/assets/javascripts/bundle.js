@@ -61,9 +61,9 @@
 	    SessionForm = __webpack_require__(247),
 	    QuestionsIndex = __webpack_require__(248),
 	    QuestionShow = __webpack_require__(254),
-	    QuestionForm = __webpack_require__(483),
-	    SearchResults = __webpack_require__(484),
-	    App = __webpack_require__(486);
+	    QuestionForm = __webpack_require__(482),
+	    SearchResults = __webpack_require__(483),
+	    App = __webpack_require__(485);
 
 	function _ensureLoggedIn(nextState, replace, callback) {
 	  if (CurrentUserStore.userHasBeenFetched()) {
@@ -31937,30 +31937,37 @@
 	    }
 	    return React.createElement(
 	      'div',
-	      { className: 'user-info' },
+	      { className: 'user-index-wrapper' },
 	      React.createElement(
 	        'div',
-	        { className: 'user-info-sidebar' },
+	        { className: 'sub-header' },
 	        React.createElement(
-	          'div',
-	          { className: 'avatar-large' },
-	          React.createElement('img', { src: this.state.user.avatar })
+	          'h2',
+	          { className: 'group' },
+	          this.state.user.username
+	        ),
+	        React.createElement(
+	          'nav',
+	          { className: 'sub-header-nav group' },
+	          React.createElement(
+	            'a',
+	            { onClick: this.editUser, className: 'clicked group' },
+	            'Update Profile'
+	          )
 	        )
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'user-info-main' },
+	        { className: 'user-info' },
 	        React.createElement(
 	          'div',
-	          { className: 'user-main-details' },
+	          { className: 'user-info-sidebar' },
 	          React.createElement(
-	            'h2',
-	            null,
-	            this.state.user.username
-	          ),
-	          editLink
-	        ),
-	        React.createElement('div', { className: 'user-main-stats' })
+	            'div',
+	            { className: 'avatar-large' },
+	            React.createElement('img', { src: this.state.user.avatar })
+	          )
+	        )
 	      )
 	    );
 	  }
@@ -32022,7 +32029,6 @@
 
 	  _onChange: function () {
 	    this.setState(this.getStateFromStore());
-	    // this.history.replaceState({user: this.state.user}, this.state.user.username + "/edit", {});
 	  },
 
 	  getInitialState: function () {
@@ -32032,8 +32038,8 @@
 	    } else {
 	      user = this.getStateFromStore();
 	    }
-
-	    return { user: user, avatarFile: null, avatarUrl: "", _errors: null };
+	    var avatar = user.avatar || "";
+	    return { user: user, avatarFile: null, avatarUrl: avatar, _errors: null };
 	  },
 
 	  componentWillReceiveProps: function (newProps) {
@@ -32131,6 +32137,12 @@
 	    }
 	  },
 
+	  _goBack: function (e) {
+	    e.preventDefault();
+	    var user = this.state.user;
+	    this.history.pushState(null, '/users/' + user.id + '/' + user.username, {});
+	  },
+
 	  render: function () {
 	    if (!CurrentUserStore.userHasBeenFetched()) {
 	      return React.createElement('div', null);
@@ -32189,13 +32201,18 @@
 	          'Avatar',
 	          React.createElement('input', { type: 'file', onChange: this.changeFile })
 	        ),
-	        React.createElement('img', { className: 'preview-image', src: this.state.avatarUrl }),
+	        React.createElement('img', { className: 'user-avatar-preview-image', src: this.state.avatarUrl }),
 	        React.createElement(
 	          'div',
 	          { className: 'form-controls' },
 	          React.createElement(
 	            'button',
-	            { className: 'submit group' },
+	            { onClick: this._goBack, className: 'discard group' },
+	            'Discard'
+	          ),
+	          React.createElement(
+	            'button',
+	            { name: 'submit', className: 'submit group' },
 	            'Update'
 	          )
 	        )
@@ -59518,7 +59535,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var VoteApiUtil = __webpack_require__(482);
+	var VoteApiUtil = __webpack_require__(487);
 	var CurrentUserStore = __webpack_require__(245);
 
 	var VoteControls = React.createClass({
@@ -59559,26 +59576,6 @@
 
 /***/ },
 /* 482 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var QuestionActions = __webpack_require__(252);
-
-	var VoteApiUtil = {
-
-	  vote: function (votePath, value, callback) {
-	    $.post(votePath, { vote: { value: value } }, function (question) {
-	      if (!question.errors) {
-	        QuestionActions.receiveSingleQuestion(question);
-	      }
-	      callback && callback(question);
-	    });
-	  }
-	};
-
-	module.exports = VoteApiUtil;
-
-/***/ },
-/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -59660,14 +59657,14 @@
 	module.exports = QuestionForm;
 
 /***/ },
-/* 484 */
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SearchResultsStore = __webpack_require__(243);
 	var SearchApiUtil = __webpack_require__(239);
 	var QuestionIndexItem = __webpack_require__(253);
-	var Spinner = __webpack_require__(485);
+	var Spinner = __webpack_require__(484);
 	var SearchResults = React.createClass({
 	  displayName: 'SearchResults',
 
@@ -59727,7 +59724,7 @@
 	module.exports = SearchResults;
 
 /***/ },
-/* 485 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React, cx, objectAssign;
@@ -59807,11 +59804,11 @@
 	});
 
 /***/ },
-/* 486 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var Topbar = __webpack_require__(487);
+	var Topbar = __webpack_require__(486);
 	var History = __webpack_require__(159).History;
 
 	var App = React.createClass({
@@ -59916,7 +59913,7 @@
 	module.exports = App;
 
 /***/ },
-/* 487 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -60062,6 +60059,26 @@
 	});
 
 	module.exports = Topbar;
+
+/***/ },
+/* 487 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var QuestionActions = __webpack_require__(252);
+
+	var VoteApiUtil = {
+
+	  vote: function (votePath, value, callback) {
+	    $.post(votePath, { vote: { value: value } }, function (question) {
+	      if (!question.errors) {
+	        QuestionActions.receiveSingleQuestion(question);
+	      }
+	      callback && callback(question);
+	    });
+	  }
+	};
+
+	module.exports = VoteApiUtil;
 
 /***/ }
 /******/ ]);

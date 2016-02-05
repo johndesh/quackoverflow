@@ -49,22 +49,21 @@ var UserShow = React.createClass({
       editLink = <a onClick={this.editUser}>click here to edit</a>
     }
     return (
+      <div className="user-index-wrapper">
+        <div className="sub-header">
+          <h2 className="group">{this.state.user.username}</h2>
+          <nav className="sub-header-nav group">
+            <a onClick={this.editUser} className="clicked group">Update Profile</a>
+          </nav>
+        </div>
       <div className="user-info">
         <div className="user-info-sidebar">
           <div className="avatar-large">
             <img src={this.state.user.avatar} />
           </div>
         </div>
-        <div className="user-info-main">
-          <div className="user-main-details">
-            <h2>{this.state.user.username}</h2>
-            {editLink}
-          </div>
-          <div className="user-main-stats">
-
-          </div>
-        </div>
       </div>
+    </div>
     );
   }
 });

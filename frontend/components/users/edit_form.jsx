@@ -12,7 +12,6 @@ var EditUserForm = React.createClass({
 
   _onChange: function () {
     this.setState(this.getStateFromStore());
-    // this.history.replaceState({user: this.state.user}, this.state.user.username + "/edit", {});
   },
 
   getInitialState: function () {
@@ -22,8 +21,8 @@ var EditUserForm = React.createClass({
     } else {
       user =  this.getStateFromStore();
     }
-
-    return { user: user, avatarFile: null, avatarUrl: "", _errors: null };
+    var avatar = user.avatar || ""
+    return { user: user, avatarFile: null, avatarUrl: avatar, _errors: null };
   },
 
   componentWillReceiveProps: function (newProps) {
@@ -120,6 +119,12 @@ var EditUserForm = React.createClass({
     }
   },
 
+  _goBack: function (e) {
+    e.preventDefault();
+    var user = this.state.user
+    this.history.pushState(null, '/users/' + user.id + '/' + user.username, {});
+  },
+
   render: function () {
     if(!CurrentUserStore.userHasBeenFetched()) { return <div></div>; }
     var errors;
@@ -164,10 +169,10 @@ var EditUserForm = React.createClass({
               <input type="file" onChange={this.changeFile} />
           </label>
 
-          <img className="preview-image" src={this.state.avatarUrl}/>
+          <img className="user-avatar-preview-image" src={this.state.avatarUrl}/>
 
           <div className="form-controls">
-            <button className="submit group">Update</button>
+            <button onClick={this._goBack} className="discard group">Discard</button><button name='submit' className="submit group">Update</button>
           </div>
         </form>
       </div>
