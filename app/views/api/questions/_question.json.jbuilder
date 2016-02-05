@@ -5,7 +5,7 @@ json.asked time_ago_in_words(question.created_at)
 json.modified time_ago_in_words(question.updated_at)
 
 json.views question.views.size
-json.votes question.votes.size
+json.votes question.votes.sum(:value)
 
 json.author do
 

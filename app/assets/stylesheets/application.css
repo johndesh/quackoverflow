@@ -794,6 +794,52 @@ time, mark, audio, video {
   font-size: 12px;
 }
 
+/*       Vote Controls      */
+
+.vote {
+  width: 46px;
+  display: block;
+}
+
+.vote-up {
+  background-image: url(/assets/sprites-2b991ba5e6bd52e1ca2b29244ee87ecb9651bab57cb0bab1514b21b04069a284.svg), none;
+  background-size: initial;
+  height: 30px;
+  background-position: 3px -170px;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  margin-bottom: 3px;
+  overflow: hidden;
+  background-repeat: no-repeat;
+
+
+}
+
+.vote-count {
+  margin: 8px 0;
+  display: block;
+  color: #777;
+  font-size: 20px;
+  text-align: center;
+
+}
+
+.vote-down {
+  margin-bottom: 10px;
+  height: 30px;
+  background-image: url(/assets/sprites-2b991ba5e6bd52e1ca2b29244ee87ecb9651bab57cb0bab1514b21b04069a284.svg), none;
+  background-size: initial;
+  background-position: 3px -220px;
+  display: block
+  margin: 0 auto;
+  cursor: pointer;
+  overflow: hidden;
+  width: 100%;
+}
+
+
 /*                          Progress Spinner                              */
 
 .spinner {

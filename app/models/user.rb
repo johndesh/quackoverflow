@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   has_many :answers, class_name: "QuestionAnswer", foreign_key: :author_id
   has_many :views, class_name: "QuestionView"
   has_many :viewed_questions, through: :views, source: :question
-  has_many :votes
+  has_many :votes, dependent: :destroy
   has_many :voted_posts, through: :questions, source: :votes
   has_attached_file :avatar, default_url: "missing.png"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/

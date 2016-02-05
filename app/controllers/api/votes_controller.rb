@@ -1,16 +1,19 @@
-class VotesController < ApplicationController
+class Api::VotesController < ApplicationController
 
   def create
-    Target = vote_target == :question_id ? Question : QuestionAnswer
-    target = Target.find(params[:vote][target])
-    target.votes.create(user_id: current_user.id, value: vote_value)
-    @question = target.is_a? Question ? target : target.question
+    type = (vote_target == :question_id ? Question : QuestionAnswer)
+    target = params[vote_target]
+
+    Vote.create(user_id: current_user.id, votable_type: type, votable_id: target, value: vote_value)
+
+    @question = type.find(target)
+    @question = @queston.question if type == QuestionAnswer
     render 'api/questions/show'
   end
 
   private
     def vote_target
-      if params[:vote][:answer_id]
+      if params[:answer_id]
         target = :answer_id
       else
         target = :question_id
@@ -20,6 +23,6 @@ class VotesController < ApplicationController
     end
 
     def vote_value
-      params.require(:vote).permit(:value)
+      params.require(:vote).permit(:value)[:value]
     end
 end

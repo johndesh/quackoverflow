@@ -5,6 +5,7 @@ var QuestionStore = require('../../stores/question');
 var QuestionsApiUtil = require('../../util/questions_api_util');
 var QuestionAnswersForm = require('./question_answers_form');
 var QuestionAnswer = require('./question_answer');
+var VoteControls = require('../vote_controls');
 var QuestionShow = React.createClass({
   mixins: [History],
 
@@ -55,6 +56,9 @@ var QuestionShow = React.createClass({
         </h2>
       </div>
       <div className="question-wrapper">
+        <div className="vote">
+          <VoteControls voteCount={this.state.question.votes} votePath={'/api/' + this.props.location.pathname + '/vote'} />
+        </div>
         <div className="question markdown-body">
           <p dangerouslySetInnerHTML={{__html: this.state.question.body}}></p>
         </div>
