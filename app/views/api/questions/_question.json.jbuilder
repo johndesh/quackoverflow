@@ -3,7 +3,11 @@ json.extract! question, :id, :title, :body, :created_at
 json._answerCount question.answers.size
 json.asked time_ago_in_words(question.created_at)
 json.modified time_ago_in_words(question.updated_at)
-
+if logged_in? && question.voters.include?(current_user)
+  json.userVoteValue question.votes.find_by_user_id(current_user.id).value
+else
+  json.userVoteValue 0
+end
 json.views question.views.size
 json.votes question.votes.sum(:value)
 

@@ -4,22 +4,14 @@ var CurrentUserStore = require('../stores/current_user_store');
 
 var VoteControls = React.createClass({
 
-  getInitialState: function () {
-    return {vote: null};
-  },
-  
   _voteUp: function (e) {
-    $('.vote-controls').children("div").removeClass("vote-up-off");
     if (CurrentUserStore.isLoggedIn()) {
-      $(e.target).addClass("vote-up-on");
       VoteApiUtil.vote(this.props.votePath, 1);
     }
   },
 
   _voteDown: function (e) {
-    $('.vote-controls').children("div").removeClass("vote-down-off");
     if (CurrentUserStore.isLoggedIn()) {
-      $(e.target).addClass("vote-down-on");
       VoteApiUtil.vote(this.props.votePath, -1);
     }
   },
@@ -28,9 +20,9 @@ var VoteControls = React.createClass({
 
     return(
       <div className="vote-controls">
-        <div className={"vote-up"} onClick={this._voteUp}></div>
+        <div className={(this.props.voteValue > 0) ? "vote-up-on" : "vote-up-off"} onClick={this._voteUp}></div>
         <div className="vote-count">{this.props.voteCount}</div>
-        <div className="vote-down" onClick={this._voteDown}></div>
+        <div className={(this.props.voteValue < 0) ? "vote-down-on" : "vote-down-off"} onClick={this._voteDown}></div>
       </div>
     );
   }

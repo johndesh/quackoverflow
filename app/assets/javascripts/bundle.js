@@ -32778,7 +32778,7 @@
 	  mixins: [History],
 
 	  getStateFromStore: function () {
-	    return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };
+	    return { question: QuestionStore.find(parseInt(this.props.params.questionId)), voteValue: 0 };
 	  },
 
 	  _onChange: function () {
@@ -32838,7 +32838,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'vote' },
-	          React.createElement(VoteControls, { voteCount: this.state.question.votes, votePath: '/api/' + this.props.location.pathname + '/vote' })
+	          React.createElement(VoteControls, { voteValue: this.state.question.userVoteValue, voteCount: this.state.question.votes, votePath: '/api/' + this.props.location.pathname + '/vote' })
 	        ),
 	        React.createElement(
 	          'div',
@@ -59602,22 +59602,14 @@
 	var VoteControls = React.createClass({
 	  displayName: 'VoteControls',
 
-	  getInitialState: function () {
-	    return { vote: null };
-	  },
-
 	  _voteUp: function (e) {
-	    $('.vote-controls').children("div").removeClass("vote-up-off");
 	    if (CurrentUserStore.isLoggedIn()) {
-	      $(e.target).addClass("vote-up-on");
 	      VoteApiUtil.vote(this.props.votePath, 1);
 	    }
 	  },
 
 	  _voteDown: function (e) {
-	    $('.vote-controls').children("div").removeClass("vote-down-off");
 	    if (CurrentUserStore.isLoggedIn()) {
-	      $(e.target).addClass("vote-down-on");
 	      VoteApiUtil.vote(this.props.votePath, -1);
 	    }
 	  },
@@ -59627,13 +59619,13 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'vote-controls' },
-	      React.createElement('div', { className: "vote-up", onClick: this._voteUp }),
+	      React.createElement('div', { className: this.props.voteValue > 0 ? "vote-up-on" : "vote-up-off", onClick: this._voteUp }),
 	      React.createElement(
 	        'div',
 	        { className: 'vote-count' },
 	        this.props.voteCount
 	      ),
-	      React.createElement('div', { className: 'vote-down', onClick: this._voteDown })
+	      React.createElement('div', { className: this.props.voteValue < 0 ? "vote-down-on" : "vote-down-off", onClick: this._voteDown })
 	    );
 	  }
 	});
@@ -60028,6 +60020,7 @@
 	  },
 
 	  _onChange: function () {
+	    window.currentUser = CurrentUserStore.currentUser();
 	    this.setState({ currentUser: CurrentUserStore.currentUser() });
 	  },
 

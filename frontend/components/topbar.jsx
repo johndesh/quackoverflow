@@ -22,6 +22,7 @@ var Topbar = React.createClass({
   },
 
   _onChange: function () {
+    window.currentUser = CurrentUserStore.currentUser();
     this.setState({ currentUser: CurrentUserStore.currentUser() });
   },
 
@@ -43,7 +44,7 @@ var Topbar = React.createClass({
   },
 
   showAccount: function () {
-    var user = this.state.currentUser
+    var user = this.state.currentUser;
     this.history.pushState({user: user}, '/users/' + user.id + '/' + user.username, {});
   },
 
