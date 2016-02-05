@@ -5,7 +5,10 @@ Rails.application.routes.draw do
     resources :users, only: [:show, :index, :create, :update]
     resource :session, only: [:create, :destroy, :show]
     resources :questions, only: [:show, :index, :create, :update, :destroy] do
-      resources :question_answers, only: [:index, :show, :create], path: "/answers", as: :answers
+      resource :vote, only: [:create, :update, :destroy]
+      resources :question_answers, only: [:index, :show, :create], path: "/answers", as: :answers do
+        resource :vote, only: [:create, :update, :destroy]
+      end
     end
     get "search", to: "searches#index"
     get "search/users", to: "searches#user"

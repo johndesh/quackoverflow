@@ -9,12 +9,12 @@ class Api::QuestionAnswersController < ApplicationController
 
   def create
     @answer = QuestionAnswer.new(answer_params)
-    @answer.author_id ||= current_user.id
+    @answer.author_id = logged_in? ? current_user.id : guest_user.id
 
     @answer.save
     @question = @answer.question
 
-    render json: @question
+    render 'api/questions/show'
   end
 
   def update

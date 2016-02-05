@@ -1,4 +1,5 @@
-json.array! @questions do |question|
+json.array! questions do |question|
+  json._answerCount question.answers.size
   json.id question.id
   json.title question.title
   json.body question.body
@@ -20,6 +21,6 @@ json.array! @questions do |question|
     json.answered time_ago_in_words(answer.created_at)
     json.modified time_ago_in_words(answer.updated_at)
   end
-  json.views question.views.length
-  json.votes question.votes.length
+  json.views question.views.size
+  json.votes question.votes.size
 end

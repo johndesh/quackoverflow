@@ -36,19 +36,19 @@ users[3].questions.create!(title: "Read UTF-8 file into UCS-4 string", body: "I 
 
 users[4].questions.create!(title: "Traversing text in Insert mode", body: "While in Insert Mode in Vim, is there any way to traverse the text (like moving some characters forward and backward) other than using the arrow keys?")
 
-
-Question.first.views.create(user_id: example.id)
-
-Question.all[2].views.create(user_id: users[1].id)
-Question.all[2].views.create(user_id: users[2].id)
-Question.all[2].views.create(user_id: users[3].id)
-Question.all[3].views.create(user_id: users[0].id)
-Question.all[3].views.create(user_id: users[1].id)
-Question.all[3].views.create(user_id: users[2].id)
-Question.all[3].views.create(user_id: users[3].id)
-Question.all[3].views.create(user_id: users[4].id)
-Question.all[3].views.create(user_id: example.id)
-Question.all[3].views.create(user_id: guest.id)
-
-Question.last.views.create(user_id: example.id)
-Question.last.views.create(user_id: users.first.id)
+#
+# Question.first.views.create(user_id: example.id)
+#
+# Question.all[2].views.create(user_id: users[1].id)
+# Question.all[2].views.create(user_id: users[2].id)
+# Question.all[2].views.create(user_id: users[3].id)
+# Question.all[3].views.create(user_id: users[0].id)
+# Question.all[3].views.create(user_id: users[1].id)
+# Question.all[3].views.create(user_id: users[2].id)
+# Question.all[3].views.create(user_id: users[3].id)
+# Question.all[3].views.create(user_id: users[4].id)
+# Question.all[3].views.create(user_id: example.id)
+# Question.all[3].views.create(user_id: guest.id)
+#
+# Question.last.views.create(user_id: example.id)
+# Question.last.views.create(user_id: users.first.id)

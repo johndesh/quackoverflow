@@ -37,15 +37,15 @@ var IndexItem = React.createClass({
       <div className="question-item-wrapper">
         <div className="question-stats group">
           <div className="question-stat-count votes group">
-            <div className="stat-count">0</div>
-            <div className="stat-label">votes</div>
+            <div className="stat-count">{question.votes || 0}</div>
+            <div className="stat-label">vote{question.votes === 1 ? "" : "s"}</div>
           </div>
           <div className={answersKlass}>
             <div className="stat-count">{question === undefined ? "0" : question.answers.length}</div>
             <div className="stat-label">answer{question.answers && question.answers.length === 1 ? "" : "s"}</div>
           </div>
           <div className="question-stat-count views group">
-            <div className="stat-count">{question.views | 0}</div>
+            <div className="stat-count">{question.views || 0}</div>
             <div className="stat-label">view{question.views === 1 ? "" : "s"}</div>
           </div>
         </div>

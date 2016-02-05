@@ -1,25 +1,21 @@
 class Api::QuestionsController < ApplicationController
 
   def index
-    questions = Question.all
-    if !filter || filter == ''
-      questions = questions.includes(:views).order(created_at: :desc)
+    questions = Question.includes(:votes, :views, {:answers => :author}, :author)
+    if filter == 'views'
+      questions = questions.views_count
+    elsif filter == 'votes'
+      questions = questions.votes_count
     else
-      questions =
-        questions.
-          select("questions.*, count(question_#{filter}.id) AS #{filter}_count").
-          joins(filter.to_sym).
-          group('questions.id, question_views.id, question_answers.id, users.id, authors_questions.id').
-          includes(filter.to_sym).
-          order("#{filter}_count DESC")
+      questions = questions.order(created_at: :desc)
     end
-    @questions = questions.includes({:answers => :author}, :author)
+    @questions = questions
     render 'api/questions/index'
   end
 
   def show
-    @question = Question.includes({:answers => :author}, :author, :views).find(params[:id])
-    if current_user && !current_user.viewed_questions.include?(@question)
+    @question = Question.includes({:answers => :author},{:answers => :votes}, :author).find(params[:id])
+    if current_user && !@question.viewers.include?(current_user)
       @question.views.create(user_id: current_user.id) unless @question.author == current_user
     end
     @question

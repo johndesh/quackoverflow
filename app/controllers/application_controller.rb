@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find_by_session_token(session[:token])
   end
 
+  def guest_user
+    @guest_user ||= User.find_by_username("guest")
+  end
+
   def logged_in?
     !!current_user
   end

@@ -5,7 +5,7 @@ var QuestionsApiUtil = {
   fetchQuestions: function (callback, filter) {
     $.get('/api/questions', {filter: filter}, function(questions){
       QuestionActions.receiveAll(questions);
-      callback && callback();
+      callback && callback(questions);
     });
   },
 

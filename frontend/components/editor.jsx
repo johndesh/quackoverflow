@@ -71,10 +71,14 @@ var MarkdownEditor = React.createClass({
    return { __html: rawMarkup };
   },
 
+  resetEditor: function () {
+    this.setState({_editorHeight: "200px", dragging: false});
+  },
+
   parseForSubmit: function (e) {
     e.preventDefault();
     parsedBody = md.render(this.props.body.toString());
-    this.props.submit(parsedBody);
+    this.props.submit(parsedBody, this.resetEditor);
   },
 
   render: function () {

@@ -1,3 +1,1 @@
-json.results @search_results.map(&:searchable) do |question|
-		json.partial! "api/questions/question", question: question
-end
+json.partial! 'api/questions/questions', questions: @search_results.map(&:searchable)

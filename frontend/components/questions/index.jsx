@@ -15,6 +15,7 @@ var Index = React.createClass({
   },
 
   componentDidUpdate: function () {
+
   },
 
 
@@ -29,12 +30,13 @@ var Index = React.createClass({
   },
 
   _applyFilter: function (filter) {
-    QuestionsApiUtil.fetchQuestions(null, filter);
+    QuestionsApiUtil.fetchQuestions(function(questions) {
+      this.setState({questions: questions});
+    }.bind(this), filter);
   },
 
   _handleClick: function(e) {
     e.preventDefault();
-    console.log($(e.target).data('filter'));
     this._applyFilter($(e.target).data('filter'));
     $('.sub-header-nav').children('a').removeClass('clicked');
     $(e.currentTarget).addClass("clicked");
