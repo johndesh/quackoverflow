@@ -61,9 +61,9 @@
 	    SessionForm = __webpack_require__(247),
 	    QuestionsIndex = __webpack_require__(248),
 	    QuestionShow = __webpack_require__(254),
-	    QuestionForm = __webpack_require__(482),
-	    SearchResults = __webpack_require__(483),
-	    App = __webpack_require__(485);
+	    QuestionForm = __webpack_require__(483),
+	    SearchResults = __webpack_require__(484),
+	    App = __webpack_require__(486);
 
 	function _ensureLoggedIn(nextState, replace, callback) {
 	  if (CurrentUserStore.userHasBeenFetched()) {
@@ -59518,7 +59518,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var VoteApiUtil = __webpack_require__(487);
+	var VoteApiUtil = __webpack_require__(482);
 	var CurrentUserStore = __webpack_require__(245);
 
 	var VoteControls = React.createClass({
@@ -59559,6 +59559,26 @@
 
 /***/ },
 /* 482 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var QuestionActions = __webpack_require__(252);
+
+	var VoteApiUtil = {
+
+	  vote: function (votePath, value, callback) {
+	    $.post(votePath, { vote: { value: value } }, function (question) {
+	      if (!question.errors) {
+	        QuestionActions.receiveSingleQuestion(question);
+	      }
+	      callback && callback(question);
+	    });
+	  }
+	};
+
+	module.exports = VoteApiUtil;
+
+/***/ },
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -59640,14 +59660,14 @@
 	module.exports = QuestionForm;
 
 /***/ },
-/* 483 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SearchResultsStore = __webpack_require__(243);
 	var SearchApiUtil = __webpack_require__(239);
 	var QuestionIndexItem = __webpack_require__(253);
-	var Spinner = __webpack_require__(484);
+	var Spinner = __webpack_require__(485);
 	var SearchResults = React.createClass({
 	  displayName: 'SearchResults',
 
@@ -59707,7 +59727,7 @@
 	module.exports = SearchResults;
 
 /***/ },
-/* 484 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React, cx, objectAssign;
@@ -59787,11 +59807,11 @@
 	});
 
 /***/ },
-/* 485 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var Topbar = __webpack_require__(486);
+	var Topbar = __webpack_require__(487);
 	var History = __webpack_require__(159).History;
 
 	var App = React.createClass({
@@ -59896,7 +59916,7 @@
 	module.exports = App;
 
 /***/ },
-/* 486 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -60042,26 +60062,6 @@
 	});
 
 	module.exports = Topbar;
-
-/***/ },
-/* 487 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var QuestionActions = __webpack_require__(252);
-
-	var VoteApiUtil = {
-
-	  vote: function (votePath, value, callback) {
-	    $.post(votePath, { vote: { value: value } }, function (question) {
-	      if (!question.errors) {
-	        QuestionActions.receiveSingleQuestion(question);
-	      }
-	      callback && callback(question);
-	    });
-	  }
-	};
-
-	module.exports = VoteApiUtil;
 
 /***/ }
 /******/ ]);
