@@ -832,7 +832,7 @@ time, mark, audio, video {
   background-image: url(/assets/sprites-2b991ba5e6bd52e1ca2b29244ee87ecb9651bab57cb0bab1514b21b04069a284.svg), none;
   background-size: initial;
   background-position: 3px -220px;
-  display: block
+  display: block;
   margin: 0 auto;
   cursor: pointer;
   overflow: hidden;

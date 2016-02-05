@@ -35,20 +35,3 @@ users[2].questions.create!(title: "Scanning device fail android BLE", body: "I a
 users[3].questions.create!(title: "Read UTF-8 file into UCS-4 string", body: "I am trying to read a UTF-8 encoded file into a UTF-32 (UCS-4) string. Basically internally I want a fixed size character internally to the application.\nHere I want to make sure the translation is done as part of the stream processes (because that is what the Locale is supposed to be used for). Alternative questions have been posted to do the translation on the string (but this is wasteful as you have to do a translation phase in memory then you have to do a second pass to send it to the stream). By doing it with the locale in the stream you only have to do a single pass and there is not requirement for a copy to made (assuming you want to maintain the original).")
 
 users[4].questions.create!(title: "Traversing text in Insert mode", body: "While in Insert Mode in Vim, is there any way to traverse the text (like moving some characters forward and backward) other than using the arrow keys?")
-
-#
-# Question.first.views.create(user_id: example.id)
-#
-# Question.all[2].views.create(user_id: users[1].id)
-# Question.all[2].views.create(user_id: users[2].id)
-# Question.all[2].views.create(user_id: users[3].id)
-# Question.all[3].views.create(user_id: users[0].id)
-# Question.all[3].views.create(user_id: users[1].id)
-# Question.all[3].views.create(user_id: users[2].id)
-# Question.all[3].views.create(user_id: users[3].id)
-# Question.all[3].views.create(user_id: users[4].id)
-# Question.all[3].views.create(user_id: example.id)
-# Question.all[3].views.create(user_id: guest.id)
-#
-# Question.last.views.create(user_id: example.id)
-# Question.last.views.create(user_id: users.first.id)
