@@ -51,17 +51,16 @@ var UserShow = React.createClass({
     return (
       <div className="user-index-wrapper">
         <div className="sub-header">
-          <h2 className="group">{this.state.user.username}</h2>
+          <h2 className="sub-header-profile group">{this.state.user.username}</h2>
           <nav className="sub-header-nav group">
             <a onClick={this.editUser} className="clicked group">Update Profile</a>
           </nav>
         </div>
       <div className="user-info">
-        <div className="user-info-sidebar">
-          <div className="avatar-large">
-            <img src={this.state.user.avatar} />
+          <div className="profile-picture">
+            <img src={this.state.user.avatar} className="avatar-large" />
           </div>
-        </div>
+
       </div>
     </div>
     );

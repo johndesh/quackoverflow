@@ -31943,7 +31943,7 @@
 	        { className: 'sub-header' },
 	        React.createElement(
 	          'h2',
-	          { className: 'group' },
+	          { className: 'sub-header-profile group' },
 	          this.state.user.username
 	        ),
 	        React.createElement(
@@ -31961,12 +31961,8 @@
 	        { className: 'user-info' },
 	        React.createElement(
 	          'div',
-	          { className: 'user-info-sidebar' },
-	          React.createElement(
-	            'div',
-	            { className: 'avatar-large' },
-	            React.createElement('img', { src: this.state.user.avatar })
-	          )
+	          { className: 'profile-picture' },
+	          React.createElement('img', { src: this.state.user.avatar, className: 'avatar-large' })
 	        )
 	      )
 	    );
