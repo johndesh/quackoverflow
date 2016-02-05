@@ -61,9 +61,9 @@
 	    SessionForm = __webpack_require__(247),
 	    QuestionsIndex = __webpack_require__(248),
 	    QuestionShow = __webpack_require__(254),
-	    QuestionForm = __webpack_require__(482),
-	    SearchResults = __webpack_require__(483),
-	    App = __webpack_require__(485);
+	    QuestionForm = __webpack_require__(483),
+	    SearchResults = __webpack_require__(484),
+	    App = __webpack_require__(486);
 
 	function _ensureLoggedIn(nextState, replace, callback) {
 	  if (CurrentUserStore.userHasBeenFetched()) {
@@ -24537,20 +24537,81 @@
 
 	  mixins: [History],
 
+	  getInitialState: function () {
+	    return { _errors: null };
+	  },
+
+	  _validatePassword: function (creds) {
+	    var isValid = true;
+	    if (creds.passwordconfirm !== creds.password) {
+	      this._renderErrors(['passwords must match']);
+	      isValid = false;
+	    } else if (creds.password.length > 0 && creds.password.length < 6) {
+	      this._renderErrors(['passwords must be at least 6 characters']);
+	      isValid = false;
+	    } else {
+	      return isValid;
+	    }
+	  },
+
+	  _validateEmail: function (emailString) {
+	    if (emailString.match(/^[a-z0-9]+@{1}[a-z0-9]+.{1}[a-z]+$/g)) {
+	      return true;
+	    } else {
+	      this._renderErrors(['not a valid email address']);
+	      return false;
+	    }
+	  },
+
+	  _renderErrors: function (errors) {
+	    this.setState({ _errors: errors });
+	  },
+
+	  _validateCredentials: function (creds) {
+	    if (creds.username == undefined || creds.username === "") {
+	      this._renderErrors(['you need a username']);
+	      return false;
+	    }
+	    var valid = this._validateEmail(credentials.email);
+	    valid = this._validatePassword(credentials);
+	  },
+
+	  _redirectLogin: function (e) {
+	    e.preventDefault();
+	    this.history.pushState(null, "/users/login", {});
+	  },
+
 	  submit: function (e) {
 	    e.preventDefault();
 	    var credentials = $(e.currentTarget).serializeJSON();
-	    UsersApiUtil.createUser({ user: credentials }, function () {
-	      SessionsApiUtil.login(credentials, function () {
-	        this.history.pushState(null, "/", {});
+	    var valid = this._validateCredentials(credentials);
+
+	    if (valid) {
+	      delete credentials.passwordconfirm;
+	      UsersApiUtil.createUser({ user: credentials }, function () {
+	        SessionsApiUtil.login(credentials, function () {
+	          this.history.pushState(null, "/", {});
+	        }.bind(this));
 	      }.bind(this));
-	    }.bind(this));
+	    }
 	  },
 
 	  render: function () {
+	    var errors;
+	    if (this.state._errors == undefined) {
+	      errors = React.createElement('div', null);
+	    } else {
+	      errors = React.createElement(
+	        'div',
+	        { className: 'form-error' },
+	        React.createElement('div', { className: 'message-tip group' }),
+	        this.state._errors[0]
+	      );
+	    }
 	    return React.createElement(
 	      'div',
 	      { className: 'form-container' },
+	      errors,
 	      React.createElement(
 	        'form',
 	        { className: 'users-form', onSubmit: this.submit },
@@ -24573,8 +24634,19 @@
 	          React.createElement('input', { type: 'password', name: 'password', placeholder: '********' })
 	        ),
 	        React.createElement(
+	          'label',
+	          null,
+	          'Confirm Password',
+	          React.createElement('input', { type: 'password', name: 'passwordconfirm', placeholder: '********' })
+	        ),
+	        React.createElement(
 	          'div',
 	          { className: 'form-controls' },
+	          React.createElement(
+	            'button',
+	            { onClick: this._redirectLogin, className: 'login group' },
+	            'Login'
+	          ),
 	          React.createElement(
 	            'button',
 	            { className: 'submit group' },
@@ -25921,7 +25993,6 @@
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
-	 * @providesModule invariant
 	 */
 
 	'use strict';
@@ -25977,7 +26048,6 @@
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
-	 * @providesModule emptyFunction
 	 */
 
 	"use strict";
@@ -31684,13 +31754,8 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'users-search' },
-	        React.createElement(
-	          'label',
-	          null,
-	          'Type to find users:',
-	          React.createElement('input', { className: 'user-search-input', type: 'text', onKeyUp: this.searchUsers })
-	        )
+	        { className: 'user-search-container' },
+	        React.createElement('input', { className: 'user-search-input', type: 'text', onKeyUp: this.searchUsers, placeholder: 'start typing to search' })
 	      ),
 	      React.createElement(
 	        'div',
@@ -59531,7 +59596,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var VoteApiUtil = __webpack_require__(487);
+	var VoteApiUtil = __webpack_require__(482);
 	var CurrentUserStore = __webpack_require__(245);
 
 	var VoteControls = React.createClass({
@@ -59572,6 +59637,26 @@
 
 /***/ },
 /* 482 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var QuestionActions = __webpack_require__(252);
+
+	var VoteApiUtil = {
+
+	  vote: function (votePath, value, callback) {
+	    $.post(votePath, { vote: { value: value } }, function (question) {
+	      if (!question.errors) {
+	        QuestionActions.receiveSingleQuestion(question);
+	      }
+	      callback && callback(question);
+	    });
+	  }
+	};
+
+	module.exports = VoteApiUtil;
+
+/***/ },
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -59653,14 +59738,14 @@
 	module.exports = QuestionForm;
 
 /***/ },
-/* 483 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SearchResultsStore = __webpack_require__(243);
 	var SearchApiUtil = __webpack_require__(239);
 	var QuestionIndexItem = __webpack_require__(253);
-	var Spinner = __webpack_require__(484);
+	var Spinner = __webpack_require__(485);
 	var SearchResults = React.createClass({
 	  displayName: 'SearchResults',
 
@@ -59720,7 +59805,7 @@
 	module.exports = SearchResults;
 
 /***/ },
-/* 484 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React, cx, objectAssign;
@@ -59800,11 +59885,11 @@
 	});
 
 /***/ },
-/* 485 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var Topbar = __webpack_require__(486);
+	var Topbar = __webpack_require__(487);
 	var History = __webpack_require__(159).History;
 
 	var App = React.createClass({
@@ -59909,7 +59994,7 @@
 	module.exports = App;
 
 /***/ },
-/* 486 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -60055,26 +60140,6 @@
 	});
 
 	module.exports = Topbar;
-
-/***/ },
-/* 487 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var QuestionActions = __webpack_require__(252);
-
-	var VoteApiUtil = {
-
-	  vote: function (votePath, value, callback) {
-	    $.post(votePath, { vote: { value: value } }, function (question) {
-	      if (!question.errors) {
-	        QuestionActions.receiveSingleQuestion(question);
-	      }
-	      callback && callback(question);
-	    });
-	  }
-	};
-
-	module.exports = VoteApiUtil;
 
 /***/ }
 /******/ ]);

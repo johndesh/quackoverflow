@@ -19,7 +19,7 @@ var UserIndex = React.createClass({
 
   componentDidMount: function () {
     this.userListener = UsersStore.addListener(this._usersChanged);
-    this.userSearchListener = SearchResultsStore.addListener(this._usersFiltered)
+    this.userSearchListener = SearchResultsStore.addListener(this._usersFiltered);
     UsersApiUtil.fetchUsers();
   },
 
@@ -62,10 +62,9 @@ var UserIndex = React.createClass({
             <a href="#" onClick={_handleClick} className="group">moderators</a>
           </nav>
         </div>
-        <div className="users-search">
-          <label>Type to find users:
-            <input className="user-search-input" type="text" onKeyUp={ this.searchUsers } />
-          </label>
+        <div className="user-search-container">
+          <input className="user-search-input" type="text" onKeyUp={ this.searchUsers } placeholder="start typing to search"/>
+
         </div>
         <div className="users-index group">
           {users}

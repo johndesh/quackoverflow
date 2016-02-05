@@ -90,6 +90,34 @@ time, mark, audio, video {
    float: left;
  }
 
+ .user-search-container {
+   display: block;
+   width: 250px;
+   height: 37px;
+   margin: 8px auto;
+ }
+
+ .user-search-input {
+   margin: 5px 0 0 20px;
+   border: 1px solid black;
+   padding: 2px 5px 2px 22px;
+   width: 100%;
+   color: #444;
+
+   word-spacing: 0px;
+   font-size: 16px;
+   height: 16px;
+   box-shadow: 0 1px 2px rgba(34,36,38,0.1) inset;
+   line-height: normal;
+   background-image: url(/assets/share-sprite-new-87a5f5cd82547abe85298c6e3b1e84c60306265eaf240b21fecad7aec40c2b98.svg), none;
+   background-position: -268px -91px;
+   background-repeat: no-repeat;
+   background-size: auto;
+   font-weight: 300;
+   outline: 0;
+   text-shadow: none;
+ }
+
  .search-container {
    float: right;
    width: 237px;
@@ -264,7 +292,7 @@ time, mark, audio, video {
  }
 
  .sub-header-profile {
-   
+
  }
  .question-header {
    padding: 5px 0;
@@ -538,7 +566,8 @@ time, mark, audio, video {
   font-size: 13px;
 }
 
-.form-controls .discard {
+.form-controls .discard,
+.form-controls button {
   float: left;
   display: block;
   outline: none;
