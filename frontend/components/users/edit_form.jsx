@@ -21,7 +21,7 @@ var EditUserForm = React.createClass({
     } else {
       user =  this.getStateFromStore();
     }
-    var avatar = user.avatar || ""
+    var avatar = user.avatar || "";
     return { user: user, avatarFile: null, avatarUrl: avatar, _errors: null };
   },
 
@@ -109,7 +109,7 @@ var EditUserForm = React.createClass({
 
   submit: function (e) {
     e.preventDefault();
-    var userId = this.state.user.id
+    var userId = this.state.user.id;
 
     var credentials = $(e.currentTarget).serializeJSON();
     if (this._validate(credentials)) {
@@ -121,7 +121,7 @@ var EditUserForm = React.createClass({
 
   _goBack: function (e) {
     e.preventDefault();
-    var user = this.state.user
+    var user = this.state.user;
     this.history.pushState(null, '/users/' + user.id + '/' + user.username, {});
   },
 

@@ -10,7 +10,7 @@ var QuestionShow = React.createClass({
   mixins: [History],
 
   getStateFromStore: function () {
-    return { question: QuestionStore.find(parseInt(this.props.params.questionId)), voteValue: 0};
+    return { question: QuestionStore.find(parseInt(this.props.params.questionId))};
   },
 
   _onChange: function () {
@@ -56,7 +56,7 @@ var QuestionShow = React.createClass({
         </h2>
       </div>
       <div className="question-wrapper">
-        <div className="vote">
+        <div className="vote group">
           <VoteControls voteValue={this.state.question.userVoteValue} voteCount={this.state.question.votes} votePath={'/api/' + this.props.location.pathname + '/vote'} />
         </div>
         <div className="question markdown-body">

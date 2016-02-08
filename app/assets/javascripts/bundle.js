@@ -24549,13 +24549,16 @@
 	    } else if (creds.password.length > 0 && creds.password.length < 6) {
 	      this._renderErrors(['passwords must be at least 6 characters']);
 	      isValid = false;
+	    } else if (creds.password.length === 0) {
+	      this._renderErrors(['you must enter a password']);
+	      isValid = false;
 	    } else {
 	      return isValid;
 	    }
 	  },
 
 	  _validateEmail: function (emailString) {
-	    if (emailString.match(/^[a-z0-9]+@{1}[a-z0-9]+.{1}[a-z]+$/g)) {
+	    if (emailString.match(/^\w+@\w+[.]\w+$/g)) {
 	      return true;
 	    } else {
 	      this._renderErrors(['not a valid email address']);
@@ -24567,13 +24570,18 @@
 	    this.setState({ _errors: errors });
 	  },
 
-	  _validateCredentials: function (creds) {
+	  _validate: function (creds) {
 	    if (creds.username == undefined || creds.username === "") {
 	      this._renderErrors(['you need a username']);
 	      return false;
 	    }
-	    var valid = this._validateEmail(credentials.email);
-	    valid = this._validatePassword(credentials);
+	    if (!this._validateEmail(creds.email)) {
+	      return false;
+	    }
+	    if (!this._validatePassword(creds)) {
+	      return false;
+	    }
+	    return true;
 	  },
 
 	  _redirectLogin: function (e) {
@@ -24584,7 +24592,7 @@
 	  submit: function (e) {
 	    e.preventDefault();
 	    var credentials = $(e.currentTarget).serializeJSON();
-	    var valid = this._validateCredentials(credentials);
+	    var valid = this._validate(credentials);
 
 	    if (valid) {
 	      delete credentials.passwordconfirm;
@@ -24644,13 +24652,13 @@
 	          { className: 'form-controls' },
 	          React.createElement(
 	            'button',
-	            { onClick: this._redirectLogin, className: 'login group' },
-	            'Login'
+	            { className: 'submit group', type: 'submit' },
+	            'Sign up'
 	          ),
 	          React.createElement(
 	            'button',
-	            { className: 'submit group' },
-	            'Sign up'
+	            { onClick: this._redirectLogin, className: 'login group' },
+	            'Login'
 	          )
 	        )
 	      )
@@ -32516,6 +32524,12 @@
 	      resetQuestion(payload.question);
 	      QuestionStore.__emitChange();
 	      break;
+	    case QuestionConstants.VOTE_UPDATED:
+	      var question = QuestionStore.find(payload.vote.votable_id);
+	      question.userVoteValue += payload.vote.value;
+	      question.votes = question.votes + payload.vote.value;
+	      QuestionStore.__emitChange();
+	      break;
 	  }
 	};
 
@@ -32527,7 +32541,8 @@
 
 	var QuestionConstants = {
 	  QUESTIONS_RECEIVED: "QUESTIONS_RECEIVED",
-	  QUESTION_RECEIVED: "QUESTION_RECEIVED"
+	  QUESTION_RECEIVED: "QUESTION_RECEIVED",
+	  VOTE_UPDATED: "VOTE_UPDATED"
 	};
 
 	module.exports = QuestionConstants;
@@ -32593,6 +32608,13 @@
 	    AppDispatcher.dispatch({
 	      actionType: QuestionConstants.QUESTION_RECEIVED,
 	      question: question
+	    });
+	  },
+
+	  updateVoteValue: function (vote) {
+	    AppDispatcher.dispatch({
+	      actionType: QuestionConstants.VOTE_UPDATED,
+	      vote: vote
 	    });
 	  }
 	};
@@ -32774,7 +32796,7 @@
 	  mixins: [History],
 
 	  getStateFromStore: function () {
-	    return { question: QuestionStore.find(parseInt(this.props.params.questionId)), voteValue: 0 };
+	    return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };
 	  },
 
 	  _onChange: function () {
@@ -32833,7 +32855,7 @@
 	        { className: 'question-wrapper' },
 	        React.createElement(
 	          'div',
-	          { className: 'vote' },
+	          { className: 'vote group' },
 	          React.createElement(VoteControls, { voteValue: this.state.question.userVoteValue, voteCount: this.state.question.votes, votePath: '/api/' + this.props.location.pathname + '/vote' })
 	        ),
 	        React.createElement(
@@ -59600,14 +59622,20 @@
 
 
 	  _voteUp: function (e) {
-	    if (CurrentUserStore.isLoggedIn()) {
-	      VoteApiUtil.vote(this.props.votePath, 1);
+	    if (this.props.voteValue < 1) {
+
+	      if (CurrentUserStore.isLoggedIn()) {
+	        VoteApiUtil.vote(this.props.votePath, 1);
+	      }
 	    }
 	  },
 
 	  _voteDown: function (e) {
-	    if (CurrentUserStore.isLoggedIn()) {
-	      VoteApiUtil.vote(this.props.votePath, -1);
+	    if (this.props.voteValue > -1) {
+
+	      if (CurrentUserStore.isLoggedIn()) {
+	        VoteApiUtil.vote(this.props.votePath, -1);
+	      }
 	    }
 	  },
 
@@ -59638,11 +59666,12 @@
 	var VoteApiUtil = {
 
 	  vote: function (votePath, value, callback) {
-	    $.post(votePath, { vote: { value: value } }, function (question) {
-	      if (!question.errors) {
-	        QuestionActions.receiveSingleQuestion(question);
+	    $.post(votePath, { vote: { value: value } }, function (vote) {
+	      if (!vote.errors) {
+	        // QuestionActions.receiveSingleQuestion(question);
+	        QuestionActions.updateVoteValue(vote);
 	      }
-	      callback && callback(question);
+	      callback && callback(vote);
 	    });
 	  }
 	};

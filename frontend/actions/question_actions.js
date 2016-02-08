@@ -14,6 +14,14 @@ var QuestionActions = {
   		actionType: QuestionConstants.QUESTION_RECEIVED,
   		question: question
   	});
+  },
+
+  updateVoteValue: function (vote) {
+    AppDispatcher.dispatch({
+      actionType: QuestionConstants.VOTE_UPDATED,
+      vote: vote
+    });
+
   }
 };
 

@@ -5,14 +5,20 @@ var CurrentUserStore = require('../stores/current_user_store');
 var VoteControls = React.createClass({
 
   _voteUp: function (e) {
-    if (CurrentUserStore.isLoggedIn()) {
-      VoteApiUtil.vote(this.props.votePath, 1);
+    if (this.props.voteValue < 1) {
+
+      if (CurrentUserStore.isLoggedIn()) {
+        VoteApiUtil.vote(this.props.votePath, 1);
+      }
     }
   },
 
   _voteDown: function (e) {
-    if (CurrentUserStore.isLoggedIn()) {
-      VoteApiUtil.vote(this.props.votePath, -1);
+    if (this.props.voteValue > -1) {
+
+      if (CurrentUserStore.isLoggedIn()) {
+        VoteApiUtil.vote(this.props.votePath, -1);
+      }
     }
   },
 

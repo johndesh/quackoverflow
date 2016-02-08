@@ -339,6 +339,7 @@ time, mark, audio, video {
 
  .question-wrapper {
    width: 728px;
+   
  }
 
  .question-index {
@@ -895,6 +896,7 @@ time, mark, audio, video {
 .vote {
   width: 46px;
   display: block;
+  float: left;
 }
 
 .vote-up-off {
@@ -940,7 +942,7 @@ time, mark, audio, video {
   background-image: url(sprites-50507eb7782e2ab3a2b2f5f617a7513ce33795448e6170f8e7e7f2a23b88ef9f.svg), none;
   background-size: initial;
   height: 30px;
-  cursor: pointer;
+  cursor: default;
   display: block;
   margin: 0 auto;
   width: 100%;
@@ -957,7 +959,7 @@ time, mark, audio, video {
   background-position: -37px -220px;
   display: block;
   margin: 0 auto;
-  cursor: pointer;
+  cursor: default;
   overflow: hidden;
   width: 100%;
 }

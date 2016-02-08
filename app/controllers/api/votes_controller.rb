@@ -4,11 +4,8 @@ class Api::VotesController < ApplicationController
     type = (vote_target == :question_id ? Question : QuestionAnswer)
     target = params[vote_target]
 
-    Vote.create(user_id: current_user.id, votable_type: type, votable_id: target, value: vote_value)
-
-    @question = type.find(target)
-    @question = @queston.question if type == QuestionAnswer
-    render 'api/questions/show'
+    vote = Vote.create(user_id: current_user.id, votable_type: type, votable_id: target, value: vote_value)
+    render json: vote
   end
 
   private

@@ -19,13 +19,16 @@ var UserForm = React.createClass({
     } else if (creds.password.length > 0 && creds.password.length < 6) {
       this._renderErrors(['passwords must be at least 6 characters']);
       isValid = false;
+    } else if (creds.password.length === 0){
+      this._renderErrors(['you must enter a password']);
+      isValid = false;
     } else {
       return isValid;
     }
   },
 
   _validateEmail: function (emailString) {
-    if (emailString.match(/^[a-z0-9]+@{1}[a-z0-9]+.{1}[a-z]+$/g)) {
+    if (emailString.match(/^\w+@\w+[.]\w+$/g)) {
       return true;
     } else {
       this._renderErrors(['not a valid email address']);
@@ -37,13 +40,18 @@ var UserForm = React.createClass({
     this.setState({_errors: errors});
   },
 
-  _validateCredentials: function (creds) {
+  _validate: function (creds) {
     if (creds.username == undefined || creds.username === "") {
       this._renderErrors(['you need a username']);
       return false;
     }
-    var valid = this._validateEmail(credentials.email);
-    valid = this._validatePassword(credentials);
+    if (!this._validateEmail(creds.email)) {
+      return false;
+    }
+    if (!this._validatePassword(creds)) {
+      return false;
+    }
+    return true;
   },
 
   _redirectLogin: function (e) {
@@ -54,7 +62,8 @@ var UserForm = React.createClass({
   submit: function (e) {
     e.preventDefault();
     var credentials = $(e.currentTarget).serializeJSON();
-    var valid = this._validateCredentials(credentials);
+    var valid = this._validate(credentials);
+
 
     if ( valid ) {
       delete credentials.passwordconfirm;
@@ -100,8 +109,8 @@ var UserForm = React.createClass({
           </label>
 
           <div className="form-controls">
+            <button className="submit group" type="submit">Sign up</button>
             <button onClick={this._redirectLogin} className="login group">Login</button>
-            <button className="submit group">Sign up</button>
           </div>
         </form>
       </div>
