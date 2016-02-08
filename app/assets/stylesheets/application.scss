@@ -339,7 +339,7 @@ time, mark, audio, video {
 
  .question-wrapper {
    width: 728px;
-   
+
  }
 
  .question-index {
@@ -962,6 +962,25 @@ time, mark, audio, video {
   cursor: default;
   overflow: hidden;
   width: 100%;
+}
+
+.vote-modal {
+  display: block;
+  background: white;
+  border: 1px solid black;
+  width: 200px;
+  height: 50px;
+  position: fixed;
+  left: 0;
+
+}
+
+.modal-message {
+
+  margin-top: 17px;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
 }
 
 /*                          Progress Spinner                              */

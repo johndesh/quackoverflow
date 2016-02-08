@@ -59634,12 +59634,17 @@
 	var VoteControls = React.createClass({
 	  displayName: 'VoteControls',
 
+	  getInitialState: function () {
+	    return { _modalShown: false };
+	  },
 
 	  _voteUp: function (e) {
 	    if (this.props.voteValue < 1) {
 
 	      if (CurrentUserStore.isLoggedIn()) {
 	        VoteApiUtil.vote(this.props.votePath, 1);
+	      } else {
+	        this._showModal();
 	      }
 	    }
 	  },
@@ -59649,12 +59654,35 @@
 
 	      if (CurrentUserStore.isLoggedIn()) {
 	        VoteApiUtil.vote(this.props.votePath, -1);
+	      } else {
+	        this._showModal();
 	      }
 	    }
 	  },
 
-	  render: function () {
+	  _showModal: function () {
+	    var listener = $(document).on('click', this._hideModal);
+	    this.setState({ _modalShown: true });
+	  },
 
+	  _hideModal: function () {
+	    $(document).unbind('click');
+	    this.setState({ _modalShown: false });
+	  },
+
+	  render: function () {
+	    var modal;
+	    if (this.state._modalShown) {
+	      modal = React.createElement(
+	        'div',
+	        { className: 'vote-modal' },
+	        React.createElement(
+	          'p',
+	          { className: 'modal-message' },
+	          'Must be logged in to vote'
+	        )
+	      );
+	    }
 	    return React.createElement(
 	      'div',
 	      { className: 'vote-controls' },
@@ -59664,7 +59692,8 @@
 	        { className: 'vote-count' },
 	        this.props.voteCount
 	      ),
-	      React.createElement('div', { className: this.props.voteValue < 0 ? "vote-down-on" : "vote-down-off", onClick: this._voteDown })
+	      React.createElement('div', { className: this.props.voteValue < 0 ? "vote-down-on" : "vote-down-off", onClick: this._voteDown }),
+	      modal
 	    );
 	  }
 	});
