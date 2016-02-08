@@ -5,7 +5,7 @@ class Api::VotesController < ApplicationController
     target = params[vote_target]
 
     vote = Vote.create(user_id: current_user.id, votable_type: type, votable_id: target, value: vote_value)
-    render json: vote
+    render json: {questionId: params[:question_id], vote: {user_id: vote.user_id, votable_type: vote.votable_type, votable_id: vote.votable_id, value: vote.value}}
   end
 
   private

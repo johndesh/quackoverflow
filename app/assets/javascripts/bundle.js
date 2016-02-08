@@ -32525,10 +32525,17 @@
 	      QuestionStore.__emitChange();
 	      break;
 	    case QuestionConstants.VOTE_UPDATED:
-	      var question = QuestionStore.find(payload.vote.votable_id);
-	      question.userVoteValue += payload.vote.value;
-	      question.votes = question.votes + payload.vote.value;
+	      var question = QuestionStore.find(payload.vote.questionId);
+	      var post = question;
+	      if (payload.vote.vote.votable_type === "QuestionAnswer") {
+	        post = question.answers.filter(function (answer) {
+	          return answer.id === payload.vote.vote.votable_id;
+	        })[0];
+	      }
+	      post.userVoteValue += payload.vote.vote.value;
+	      post.votes = post.votes + payload.vote.vote.value;
 	      QuestionStore.__emitChange();
+
 	      break;
 	  }
 	};
@@ -32827,8 +32834,9 @@
 	    var Link = ReactRouter.Link;
 	    var answers;
 	    if (this.state.question.answers) {
+	      var questionId = this.state.question.id;
 	      answers = this.state.question.answers.map(function (answer, idx) {
-	        return React.createElement(QuestionAnswer, { answer: answer, key: idx });
+	        return React.createElement(QuestionAnswer, { answer: answer, key: idx, votePath: '/api/questions/' + questionId + '/answers/' + answer.id + '/vote' });
 	      });
 	    } else {
 	      answers = React.createElement('div', null);
@@ -59565,6 +59573,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var VoteControls = __webpack_require__(481);
 	var History = __webpack_require__(159).History;
 
 	var QuestionAnswer = React.createClass({
@@ -59582,6 +59591,11 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'answer' },
+	      React.createElement(
+	        'div',
+	        { className: 'vote group' },
+	        React.createElement(VoteControls, { voteValue: answer.userVoteValue, voteCount: answer.votes, votePath: this.props.votePath })
+	      ),
 	      React.createElement(
 	        'div',
 	        { className: 'answer-body markdown-body' },
@@ -59666,12 +59680,11 @@
 	var VoteApiUtil = {
 
 	  vote: function (votePath, value, callback) {
-	    $.post(votePath, { vote: { value: value } }, function (vote) {
-	      if (!vote.errors) {
-	        // QuestionActions.receiveSingleQuestion(question);
-	        QuestionActions.updateVoteValue(vote);
+	    $.post(votePath, { vote: { value: value } }, function (data) {
+	      if (!data.vote.errors) {
+	        QuestionActions.updateVoteValue(data);
 	      }
-	      callback && callback(vote);
+	      callback && callback(data);
 	    });
 	  }
 	};

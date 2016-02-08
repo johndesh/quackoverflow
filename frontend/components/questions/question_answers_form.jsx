@@ -16,7 +16,7 @@ var QuestionAnswersForm = React.createClass({
     var answer = { body: parsedBody, question_id: questionId };
     QuestionsApiUtil.createAnswer(answer, function (question) {
       this.setState({body: ""});
-      callback && callback()
+      callback && callback();
     }.bind(this));
   },
 

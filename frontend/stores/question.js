@@ -41,10 +41,17 @@ QuestionStore.__onDispatch = function (payload) {
       QuestionStore.__emitChange();
       break;
     case QuestionConstants.VOTE_UPDATED:
-      var question = QuestionStore.find(payload.vote.votable_id);
-      question.userVoteValue += payload.vote.value;
-      question.votes = question.votes + payload.vote.value;
+      var question = QuestionStore.find(payload.vote.questionId);
+      var post = question;
+      if (payload.vote.vote.votable_type === "QuestionAnswer") {
+        post = question.answers.filter(function (answer) {
+          return answer.id === payload.vote.vote.votable_id;
+        })[0];
+      }
+      post.userVoteValue += payload.vote.vote.value;
+      post.votes = post.votes + payload.vote.vote.value;
       QuestionStore.__emitChange();
+
       break;
     }
 };

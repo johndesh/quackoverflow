@@ -3,12 +3,11 @@ var QuestionActions = require('../actions/question_actions');
 var VoteApiUtil = {
 
   vote: function (votePath, value, callback) {
-    $.post(votePath, { vote: {value: value} }, function(vote) {
-      if (!vote.errors) {
-        // QuestionActions.receiveSingleQuestion(question);
-        QuestionActions.updateVoteValue(vote);
+    $.post(votePath, { vote: {value: value} }, function(data) {
+      if (!data.vote.errors) {
+        QuestionActions.updateVoteValue(data);
       }
-      callback && callback(vote);
+      callback && callback(data);
     });
   }
 };

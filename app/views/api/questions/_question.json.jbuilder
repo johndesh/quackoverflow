@@ -20,7 +20,13 @@ json.author do
 end
 
 json.answers question.answers do |answer|
-  json.votes answer.votes.length
+  json.id answer.id
+  if logged_in? && answer.voters.include?(current_user)
+    json.userVoteValue answer.votes.find_by_user_id(current_user.id).value
+  else
+    json.userVoteValue 0
+  end
+  json.votes answer.votes.sum(:value)
   json.answered time_ago_in_words(answer.created_at)
   json.body answer.body
 

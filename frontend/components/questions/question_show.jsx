@@ -39,9 +39,10 @@ var QuestionShow = React.createClass({
     var Link = ReactRouter.Link;
     var answers;
     if (this.state.question.answers) {
+      var questionId = this.state.question.id;
       answers = this.state.question.answers.map(function (answer, idx){
         return(
-          <QuestionAnswer answer={answer} key={idx} />
+          <QuestionAnswer answer={answer} key={idx} votePath={'/api/questions/' + questionId + '/answers/' + answer.id + '/vote'}/>
         );
       });
     } else {
