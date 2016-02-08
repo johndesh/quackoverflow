@@ -31996,8 +31996,8 @@
 	    if (CurrentUserStore.currentUser().id === this.state.user.id) {
 	      editLink = React.createElement(
 	        'a',
-	        { onClick: this.editUser },
-	        'click here to edit'
+	        { onClick: this.editUser, className: 'clicked group' },
+	        'Update Profile'
 	      );
 	    }
 	    return React.createElement(
@@ -32014,11 +32014,7 @@
 	        React.createElement(
 	          'nav',
 	          { className: 'sub-header-nav group' },
-	          React.createElement(
-	            'a',
-	            { onClick: this.editUser, className: 'clicked group' },
-	            'Update Profile'
-	          )
+	          editLink
 	        )
 	      ),
 	      React.createElement(
@@ -59602,6 +59598,7 @@
 	var VoteControls = React.createClass({
 	  displayName: 'VoteControls',
 
+
 	  _voteUp: function (e) {
 	    if (CurrentUserStore.isLoggedIn()) {
 	      VoteApiUtil.vote(this.props.votePath, 1);
@@ -59745,6 +59742,7 @@
 	var Spinner = __webpack_require__(485);
 	var SearchResults = React.createClass({
 	  displayName: 'SearchResults',
+
 
 	  componentDidMount: function () {
 	    this.listener = SearchResultsStore.addListener(this._onChange);

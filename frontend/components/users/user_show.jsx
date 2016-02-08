@@ -38,7 +38,7 @@ var UserShow = React.createClass({
 
   editUser: function(e) {
     e.preventDefault();
-    this.history.pushState({user: this.state.user}, "/" + this.state.user.username + "/edit", {})
+    this.history.pushState({user: this.state.user}, "/" + this.state.user.username + "/edit", {});
   },
 
 
@@ -46,14 +46,14 @@ var UserShow = React.createClass({
     if(this.state.user === undefined) { return <div></div>; }
     var editLink;
     if (CurrentUserStore.currentUser().id === this.state.user.id) {
-      editLink = <a onClick={this.editUser}>click here to edit</a>
+      editLink = <a onClick={this.editUser} className="clicked group">Update Profile</a>;
     }
     return (
       <div className="user-index-wrapper">
         <div className="sub-header">
           <h2 className="sub-header-profile group">{this.state.user.username}</h2>
           <nav className="sub-header-nav group">
-            <a onClick={this.editUser} className="clicked group">Update Profile</a>
+            {editLink}
           </nav>
         </div>
       <div className="user-info">
