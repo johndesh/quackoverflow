@@ -1,11 +1,24 @@
 class Api::QuestionsController < ApplicationController
 
   def index
-    questions = Question.includes(:votes, :views, {:answers => :author}, :author)
+    questions = Question.includes(:views, {:answers => :author}, :author).
+                          select("questions.*", "COALESCE(vote_count, 0) as vote_count").
+                          joins(<<-SQL)
+                            LEFT OUTER JOIN (
+                              SELECT 
+                                votes.*, SUM(votes.value) AS vote_count 
+                              FROM 
+                                votes 
+                              GROUP BY 
+                                votes.id
+                            ) AS foo 
+                            ON 
+                              questions.id = foo.votable_id
+                          SQL
     if filter == 'views'
-      questions = questions.views_count
+      questions = questions.order(question_views_count: :desc)
     elsif filter == 'votes'
-      questions = questions.votes_count
+      questions = questions.order('vote_count DESC')
     else
       questions = questions.order(created_at: :desc)
     end

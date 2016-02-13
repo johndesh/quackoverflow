@@ -21,4 +21,4 @@ json.answers question.answers do |answer|
   json.modified time_ago_in_words(answer.updated_at)
 end
 json.views question.views.size
-json.votes question.votes.sum(:value)
+json.votes question.vote_count

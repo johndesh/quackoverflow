@@ -10,10 +10,7 @@ class Question < ActiveRecord::Base
   has_many :votes, as: :votable
   has_many :voters, through: :votes, source: :user
   has_many :viewers, through: :views, source: :user
-  scope :views_count, -> { order(question_views_count: :desc) }
-  scope :votes_count, -> { select('questions.*, sum(votes.value) as votes_count').joins('INNER JOIN votes ON questions.id = votes.votable_id').group('questions.id').order('votes_count DESC') }
-
-
+  
 
 
 end
