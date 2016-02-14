@@ -1,4 +1,5 @@
 var React = require('react');
+var Buttons = require('./buttons');
 var History = require('react-router').History;
 var hljs = require('highlight.js');
 var md = require('markdown-it')({
@@ -26,6 +27,10 @@ md.enable("newline");
 
 var MarkdownEditor = React.createClass({
   mixins: [History],
+
+  undoHistory: [],
+
+  redoHistory: [],
 
   getInitialState: function () {
     return { _editorHeight: "200px", dragging: false };
@@ -81,12 +86,70 @@ var MarkdownEditor = React.createClass({
     this.props.submit(parsedBody, this.resetEditor);
   },
 
+  getCaretPosition: function (textarea) {
+    return textarea.selectionStart;
+  },
+
+  setSelectionStyle: function (selection, caretStart, style) {
+    var styleFrag = style.replace(/\?.*/g, "");
+    var startPos = caretStart - styleFrag.length;
+    var endPos = caretStart + selection.length + styleFrag.length;
+    var styleHood = this.props.body.substring(startPos, endPos);
+    var regex = new RegExp(styleFrag.replace(/\*/g, "/*") + selection + styleFrag.replace(/\*/g, "/*"))
+    this.undoHistory.push(this.props.body);
+
+    if (startPos < 0 || endPos > this.props.body.length) {
+      return {
+        replace: style.replace('?', selection),
+        selectionStart: caretStart,
+        selectionEnd: caretStart + selection.length
+      };
+    }
+    if (styleHood.match(regex)) {
+      return {
+        replace: RegExp.lastMatch,
+        selectionStart: startPos,
+        selectionEnd: endPos
+      };
+    } else {
+      return {
+        replace: style.replace('?', selection),
+        selectionStart: caretStart,
+        selectionEnd: caretStart + selection.length
+      };
+    }
+  },
+
+  _applyStyle: function (e, selection) {
+    var body = this.props.body;
+    var startPos = this.getCaretPosition(document.getElementById('body-field'));
+    var checkStyle = $(e.currentTarget).data('style');
+    var selectionStyle = this.setSelectionStyle(selection, startPos, checkStyle);
+    var styledBody = body.substring(0, selectionStyle.selectionStart) +
+          selectionStyle.replace +
+          body.substring(selectionStyle.selectionEnd, body.length);
+    this.props.applyStyle(styledBody);
+  },
+
+  _undo: function () {
+    this.redoHistory.push(this.props.body);
+    this.props.applyStyle(this.undoHistory.pop());
+  },
+
+  _redo: function () {
+    this.undoHistory.push(this.props.body);
+    this.props.applyStyle(this.redoHistory.pop());
+  },
+
   render: function () {
+
     return (
         <div className="markdown-editor">
           <div className="body-editor">
+            <div className="button-bar"><Buttons _applyStyle={this._applyStyle} _undo={this._undo} _undoEmpty={this.undoHistory.length === 0} _redoEmpty={this.redoHistory.length === 0} _redo={this._redo} /></div>
             <textarea
               name="body"
+              id="body-field"
               style={{height: this.state._editorHeight}}
               onChange={this.props.onChange}
               className="body-field"

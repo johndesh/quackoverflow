@@ -20,6 +20,10 @@ var QuestionAnswersForm = React.createClass({
     }.bind(this));
   },
 
+  applyStyle: function (styledBody) {
+    this.setState({body: styledBody});
+  },
+
   handleChange: function (e) {
     this.setState({body: e.target.value});
   },
@@ -28,14 +32,15 @@ var QuestionAnswersForm = React.createClass({
     return (
       <div className="question-form-wrapper group">
         <div className="question-form" id="question-form">
-          <div className="new-answer-header">
+          <h2 className="new-answer-header">
             Your Answer
-          </div>
+          </h2>
           <MarkdownEditor
             onChange={this.handleChange}
             submit={this.createAnswer}
             submitMessage="Post Your Answer"
-            body={this.state.body} />
+            body={this.state.body}
+            applyStyle={this.applyStyle} />
         </div>
       </div>
     );

@@ -31,6 +31,10 @@ var QuestionForm = React.createClass({
     this.setState({body: e.target.value});
   },
 
+  applyStyle: function (styledBody) {
+    this.setState({body: styledBody});
+  },
+
   render: function () {
     var errors;
     if (this.state._errors == undefined) {
@@ -51,7 +55,8 @@ var QuestionForm = React.createClass({
             onChange={this.handleChange}
             submit={this.createQuestion}
             submitMessage="Post Your Question"
-            body={this.state.body} />
+            body={this.state.body} 
+            applyStyle={this.applyStyle} />
         </div>
       </div>
     );

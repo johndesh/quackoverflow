@@ -1,0 +1,1232 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+
+
+
+ */
+/* line 18, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 100%;
+  font: inherit;
+  box-sizing: content-box;
+  vertical-align: baseline;
+}
+
+/* line 43, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+a {
+  cursor: pointer;
+}
+
+/* line 47, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+body {
+  font-family: "Helvetica Neue", Arial;
+  color: #222426;
+}
+
+/* line 51, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.group:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* line 56, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.topbar {
+  height: 34px;
+  width: 100%;
+  min-width: 1075px;
+  display: block;
+  background: #222426;
+  position: relative;
+}
+
+/* line 65, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.topbar-wrapper {
+  width: 1060px;
+  display: block;
+  height: 100%;
+  background: #222426;
+  margin: auto;
+}
+
+/* line 74, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.network-items {
+  color: white;
+  width: 147px;
+  padding-top: 9px;
+  float: left;
+}
+
+/* line 82, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.topbar-links {
+  height: 100%;
+  float: right;
+}
+
+/* line 88, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.links-container {
+  height: 100%;
+  float: left;
+}
+
+/* line 94, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.user-search-container {
+  display: block;
+  width: 250px;
+  height: 37px;
+  margin: 8px 30%;
+}
+
+/* line 101, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.user-search-input {
+  margin: 5px 0 0 20px;
+  border: 1px solid black;
+  padding: 2px 5px 2px 22px;
+  width: 100%;
+  color: #444;
+  word-spacing: 0px;
+  font-size: 15px;
+  height: 16px;
+  box-shadow: 0 1px 2px rgba(34, 36, 38, 0.1) inset;
+  line-height: 1.5;
+  text-align: center;
+  background-image: url(share-sprite-new-87a5f5cd82547abe85298c6e3b1e84c60306265eaf240b21fecad7aec40c2b98.svg), none;
+  background-position: -269px -92px;
+  background-repeat: no-repeat;
+  background-size: initial;
+  font-weight: 300;
+  outline: 0;
+  text-shadow: none;
+}
+
+/* line 123, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.search-container {
+  float: right;
+  width: 237px;
+  height: 100%;
+  margin-top: 1px;
+}
+
+/* line 131, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.search-container input {
+  margin: 5px 0 0 20px;
+  border: 1px solid black;
+  padding: 2px 5px 2px 22px;
+  width: 188px;
+  color: #444;
+  height: 16px;
+  word-spacing: 0px;
+  font-size: 13px;
+  box-shadow: 0 1px 2px rgba(34, 36, 38, 0.1) inset;
+  line-height: normal;
+  background-image: url(share-sprite-new-87a5f5cd82547abe85298c6e3b1e84c60306265eaf240b21fecad7aec40c2b98.svg), none;
+  background-position: -269px -92px;
+  background-repeat: no-repeat;
+  font-weight: normal;
+  outline: 0;
+  text-shadow: none;
+}
+
+/* line 150, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+::-webkit-input-placeholder {
+  font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+  line-height: 1.4;
+  color: #ccc;
+}
+
+/* line 157, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.links-container a {
+  text-decoration: none;
+  color: #e0e0e0;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 400;
+  padding: 10px 7px 0 7px;
+  display: inline-block;
+}
+
+/* line 168, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.main {
+  margin: auto;
+  padding: 15px;
+  width: 1060px;
+}
+
+/* line 174, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.main-header {
+  display: block;
+  width: 1060px;
+  height: 96px;
+  padding: 0 15px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* line 184, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.main-header-logo {
+  display: inline-block;
+  margin: 21px 0;
+  float: left;
+}
+
+/* line 192, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.main-header-logo a {
+  background-image: url(sprites-50507eb7782e2ab3a2b2f5f617a7513ce33795448e6170f8e7e7f2a23b88ef9f.svg), none;
+  background-position: top left;
+  text-indent: -999em;
+  display: block;
+  width: 200px;
+  height: 50px;
+  background-repeat: no-repeat;
+}
+
+/* line 202, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.main-header-nav {
+  float: right;
+  position: relative;
+  top: 38px;
+  /*right: 15px;*/
+}
+
+/* line 209, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.main-header-nav ul {
+  list-style: none;
+}
+
+/* line 213, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.main-nav, .main-nav li {
+  float: left;
+}
+
+/* line 217, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.main-header-nav li {
+  margin-left: 3.5px;
+}
+
+/* line 221, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.main-header-nav a:hover, .main-header-nav a.clicked {
+  background: #f69c55;
+}
+
+/* line 225, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.main-header-nav a {
+  padding: 4px 10px 5px 10px;
+  font-size: 14px;
+  text-decoration: none;
+  line-height: 1.3em;
+  background: #9ea3a9;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  display: block;
+  cursor: pointer;
+  color: white;
+}
+
+/* line 239, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.ask-question-nav {
+  float: right;
+}
+
+/* line 243, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.sub-header {
+  margin-bottom: 0;
+  border-bottom: 1px solid #eaebec;
+  height: 34px;
+}
+
+/* line 250, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.sub-header h2,
+.answers-header h2 {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0;
+  color: #444;
+  line-height: 1.3;
+  float: left;
+  text-align: left;
+  margin-left: 10px;
+}
+
+/* line 261, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.sub-header-nav {
+  float: right;
+  margin: 0;
+  font-size: 12px;
+}
+
+/* line 267, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.sub-header-nav a {
+  float: left;
+  display: block;
+  height: 12px;
+  border: 1px solid transparent;
+  color: #767d84;
+  border-top-width: 2px;
+  border-bottom-color: #eaebec;
+  text-decoration: none;
+  line-height: 1;
+  padding: 10px;
+  margin-right: 8px;
+}
+
+/* line 281, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.sub-header-nav a.clicked, .sub-header-nav a:hover {
+  border-color: #eaebec;
+  border-bottom-color: #fff;
+  border-top-color: #f69c55;
+}
+
+/* line 287, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.sub-header-nav a.clicked {
+  color: black;
+}
+
+/* line 291, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.sub-header-nav a:last-child {
+  margin-right: 10px;
+}
+
+/* line 299, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-header {
+  padding: 5px 0;
+  border-bottom: 1px solid #E5E5E5;
+  margin-bottom: 1em;
+}
+
+/* line 305, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-header h2 {
+  text-align: left;
+  display: block;
+  margin-bottom: 11px;
+}
+
+/* line 311, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-title {
+  color: #222426;
+  text-decoration: none;
+  font-size: 24px;
+  line-height: 1.35;
+  font-weight: normal;
+  margin-bottom: .5em;
+}
+
+/* line 320, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.featured-count-tab {
+  color: #fff;
+  display: inline;
+  float: left;
+  background-color: #0077dd;
+  padding: 2.5px 5px 3px 5px;
+  border-radius: 2px;
+  font-size: 10px;
+  text-align: left;
+  position: relative;
+  top: -1px;
+  line-height: 1;
+  margin-right: 8px;
+}
+
+/* line 337, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-index-wrapper {
+  margin: 0 auto;
+  width: 728px;
+}
+
+/* line 342, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-wrapper {
+  width: 728px;
+}
+
+/* line 347, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-index {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+/* line 353, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-item-wrapper {
+  height: 52.25px;
+  border-bottom: 1px solid #eaebec;
+  padding-top: 12px;
+  padding-bottom: 10px;
+}
+
+/* line 361, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-stats {
+  float: left;
+  width: 174.25px;
+  height: 50px;
+  display: block;
+  margin-right: 10px;
+}
+
+/* line 369, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-stat-count {
+  float: left;
+  color: #777;
+  width: 38px;
+  height: 38px;
+  padding: 5px;
+  padding-bottom: 6px;
+  margin-right: 3px;
+}
+
+/* line 379, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.stat-count {
+  text-align: center;
+  margin-bottom: 4px;
+  height: 16px;
+  width: 100%;
+  font-size: 17px;
+  font-weight: 300;
+}
+
+/* line 392, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.stat-label {
+  line-height: 16.9px;
+  display: block;
+  text-align: center;
+  margin-top: 5px;
+  font-size: 11px;
+}
+
+/* line 402, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.answers {
+  color: black;
+  width: 44px;
+  height: 38px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+/* line 410, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.answers.answered {
+  background-color: #75845c;
+  color: white;
+}
+
+/* line 415, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.answers.answered.accepted {
+  color: #e1e818;
+}
+
+/* line 419, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.views {
+  margin-right: 7px;
+}
+
+/* line 423, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-index-item {
+  width: 530px;
+  text-align: left;
+  float: left;
+  height: 52.25px;
+}
+
+/* line 429, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-link-wrapper {
+  font-size: 16px;
+  line-height: 1.3;
+  width: 530px;
+  height: 20px;
+  margin-bottom: 5.25px;
+  display: block;
+}
+
+/* line 437, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-link {
+  color: #0077cc;
+  margin-bottom: 19.2px;
+}
+
+/* line 442, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-link:hover,
+.question-details-author:hover,
+.answer-details-author:hover {
+  color: #33aaff;
+  cursor: pointer;
+}
+
+/* line 449, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-details {
+  height: 16px;
+  float: right;
+  padding-top: 4px;
+  text-align: right;
+  font-size: 12px;
+  color: #999999;
+}
+
+/* line 459, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-details-time:hover {
+  color: #0077cc;
+  cursor: pointer;
+}
+
+/* line 464, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-details-author,
+.answer-details-author {
+  color: #0077cc;
+}
+
+/* Question Answers */
+/* line 470, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question, .answer {
+  margin-left: 61px;
+}
+
+/* line 474, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.answers-wrapper {
+  color: #222426;
+  float: left;
+  padding-top: 10px;
+  width: 728px;
+}
+
+/* line 481, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.answers-header {
+  margin-top: 10px;
+  height: 34px;
+  border-bottom: 1px solid #eaebec;
+}
+
+/* line 488, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.answer {
+  padding: 20px 0;
+  border-bottom: 1px solid #eaebec;
+}
+
+/* line 493, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.form-container {
+  border: 1px solid #e6e6e6;
+  width: 280px;
+  display: block;
+  padding: 30px;
+  margin: auto;
+}
+
+/* line 502, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.new-answer-header {
+  font-weight: 400;
+  padding-top: 20px;
+  font-size: 18px;
+  line-height: 1.3;
+  margin-bottom: 1em;
+  color: #222426;
+}
+
+/* line 511, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.users-form label {
+  font-family: Arial;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+/* line 517, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.users-form input {
+  width: 263px;
+  height: 18px;
+  outline: none;
+  display: block;
+  padding: 8px;
+  border: 1px solid #e6e6e6;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+/* line 528, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.users-form input:hover {
+  border-color: lightblue;
+}
+
+/* line 532, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.users-form input:focus {
+  box-shadow: none;
+  border: 1px solid lightblue;
+}
+
+/* line 537, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.user-avatar-preview-image {
+  border: 2px solid black;
+  margin-left: 40px;
+  width: 200px;
+  height: 200px;
+  border-radius: 3px;
+}
+
+/* line 547, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.form-controls {
+  width: 100%;
+  height: 37px;
+  padding-top: 20px;
+}
+
+/* line 553, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.guest-login {
+  float: left;
+  position: relative;
+  top: 15px;
+  text-decoration: none;
+  color: #0077cc;
+  font-size: 13px;
+}
+
+/* line 562, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.form-controls .submit {
+  float: right;
+  display: block;
+  outline: none;
+  background: #0077cc;
+  margin: 5px 0 5px 0;
+  width: 130px;
+  height: 37px;
+  text-align: center;
+  color: white;
+  padding: 12px 40px;
+  box-shadow: none;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+  border-radius: 3px;
+  font-size: 13px;
+}
+
+/* line 583, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.form-controls .discard,
+.form-controls button {
+  float: left;
+  display: block;
+  outline: none;
+  background: #0077cc;
+  margin: 5px 0 5px 0;
+  width: 130px;
+  height: 37px;
+  text-align: center;
+  color: white;
+  padding: 12px 40px;
+  box-shadow: none;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+  border-radius: 3px;
+  font-size: 13px;
+}
+
+/* line 605, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.topbar-user-info {
+  float: left;
+  padding: 0 5px 0 5px;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* line 613, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.topbar-user-info:hover {
+  background-color: #444;
+}
+
+/* line 617, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.avatar-wrapper {
+  display: inline-block;
+  width: 35px;
+  height: 100%;
+}
+
+/* line 623, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.user-info {
+  width: 728px;
+  margin: 0 auto;
+}
+
+/* line 628, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.profile-picture {
+  position: relative;
+  margin: 0 auto;
+  overflow: hidden;
+  width: 300px;
+}
+
+/* line 638, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.avatar-large {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  max-width: 100%;
+  -moz-transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+/* line 648, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.avatar-large:hover {
+  -moz-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+/* line 653, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.topbar-user-info img {
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  margin-top: 1px;
+}
+
+/* line 660, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.topbar-user-info .reputation {
+  float: right;
+  color: #e0e0e0;
+  margin: 0;
+  vertical-align: top;
+  display: inline-block;
+  font-size: 13px;
+  line-height: 1;
+  padding-top: 10px;
+  padding-right: 5px;
+}
+
+/* line 673, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.logout {
+  float: left;
+  display: block;
+  border: none;
+  outline: none;
+  padding: 5px;
+  box-shadow: none;
+  background: #0077cc;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+/* line 688, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.form-error {
+  position: absolute;
+  padding: 15px 35px 15px 15px;
+  text-align: left;
+  font-size: 13px;
+  color: white;
+  top: 215px;
+  left: 60%;
+  background-color: #C04848;
+}
+
+/* line 699, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.message-tip {
+  position: absolute;
+  top: 0;
+  left: -9px;
+  border-left: 9px solid transparent;
+  border-top: 9px  solid #C04848;
+}
+
+/* Question Form */
+/* line 710, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-form-wrapper {
+  width: 665px;
+  float: left;
+}
+
+/* line 715, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.question-form {
+  font-size: 13px;
+  line-height: 1.3em;
+  display: block;
+}
+
+/* line 722, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.form-item-title {
+  display: block;
+  width: 668px;
+  height: 44px;
+  padding: 10px 0 15px 0;
+}
+
+/* line 731, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.form-item-title label {
+  font-weight: bold;
+  font-size: 13px;
+  width: 40px;
+  margin: auto;
+  padding-right: 14px;
+  padding-bottom: 3px;
+}
+
+/* line 742, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.title-field {
+  margin: 5px 0;
+  box-shadow: 0 1px 2px rgba(34, 36, 38, 0.1) inset;
+  width: 598px;
+  height: 16px;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #cccccc;
+}
+
+/* line 752, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.title-field:focus {
+  border-color: #0077CC;
+  outline: 0;
+}
+
+/*          Markdown Editor         */
+/* line 759, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.markdown-editor {
+  margin-top: 30px;
+}
+
+/* line 763, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.button-bar {
+  height: 44px;
+  width: 634px;
+  border: 1px solid #ccc;
+  border-bottom: 0;
+  padding: 0 12px;
+}
+
+/* line 771, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.button-bar-row {
+  height: 36px;
+}
+
+/* line 775, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.button {
+  width: 20px;
+  height: 32px;
+  padding: 12px 0 0 0;
+  margin: 0 1px;
+  cursor: pointer;
+  float: left;
+  list-style: none;
+}
+
+/* line 786, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.button span {
+  display: inline-block;
+  background-image: url(editor-buttons.svg), none;
+  background-size: initial;
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+}
+
+/* line 795, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.button:hover span {
+  background-position: 0px -40px;
+}
+
+/* line 799, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+#ital-button {
+  margin-right: 20px;
+}
+
+/*
+#ital-button span {
+  background-position: -20px 0px;
+}
+
+#link-button span {
+  background-position: -40px 0px;
+}
+
+#quote-button span {
+  background-position: -60px 0px;
+}
+#code-button span {
+  background-position: -80px 0px;
+}
+*/
+/* line 818, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+#img-button {
+  margin-right: 20px;
+}
+
+/*
+#img-button span {
+  background-position: -100px 0px;
+}
+
+#ol-button span {
+  background-position: -120px 0px;
+}
+
+#ul-button span {
+  background-position: -140px 0px;
+}
+
+#heading-button span {
+  background-position: -160px 0px;
+}
+*/
+/* line 838, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+#hr-button {
+  margin-right: 20px;
+}
+
+/*
+#hr-button span {
+  background-position: -180px 0px;
+}
+
+#undo-button span {
+  background-position: -200px 0px;
+}
+
+#redo-button span {
+  background-position: -220px 0px;
+}*/
+/* line 854, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+#help-button {
+  float: right;
+}
+
+/*
+#help-button span {
+  background-position: -240px 0px;
+}*/
+/* line 862, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.button:hover span {
+  background-position: 0px -40px;
+}
+
+/* line 866, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.body-editor {
+  width: 660px;
+  margin-top: 10px;
+  margin-bottom: 32px;
+}
+
+/* line 872, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.body-field {
+  width: 660px;
+  font-size: 14px;
+  line-height: 1.3em;
+  height: 200px;
+  background-attachment: scroll;
+  background-size: auto;
+  flex-direction: column;
+  white-space: pre-wrap;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  font-family: 'Menlo';
+  padding: 10px;
+  border: 1px solid #cccccc;
+  color: #444;
+  resize: none;
+}
+
+/* line 890, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.body-field:focus {
+  border: 1px solid #0077cc;
+  outline: 0;
+}
+
+/* line 895, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.gripple {
+  background-image: url(sprites-50507eb7782e2ab3a2b2f5f617a7513ce33795448e6170f8e7e7f2a23b88ef9f.svg), none;
+  background-position: 279px -366px;
+  background-size: initial;
+  background-repeat: no-repeat;
+  width: 658px;
+  margin-top: -4px;
+  border: 1px solid #dddddd;
+  border-top: none;
+  height: 9px;
+  overflow: hidden;
+  cursor: s-resize;
+  background-color: #eeeeee;
+}
+
+/* line 910, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.body-preview {
+  width: 660px;
+  margin-bottom: 5px;
+  word-wrap: break-word;
+  font-size: 15px;
+  box-sizing: border-box;
+  padding: 10px 0;
+  border-top: 1px dotted #ccc;
+  border-bottom: 1px dotted #ccc;
+}
+
+/* line 921, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.body-preview p {
+  margin-bottom: 1em;
+  font-size: 100%;
+  display: block;
+  line-height: 1.3em;
+}
+
+/* line 928, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.form-submit {
+  padding: 10px 0 15px 0;
+  display: block;
+}
+
+/* line 934, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.submit-button {
+  padding: .6em .8em;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+  border: 1px solid #1777b7;
+  border-radius: 3px;
+  font-size: 100%;
+  background: #009afd;
+  line-height: 1;
+  margin: 5px 0;
+}
+
+/* line 951, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.discard-question {
+  margin-left: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  color: #0077CC;
+  line-height: 1.3em;
+  font-size: 100%;
+}
+
+/* Users Index */
+/* line 962, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.user-item {
+  width: 25%;
+  float: left;
+}
+
+/* line 967, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.user-item:nth-child(4n) {
+  float: right;
+}
+
+/* line 970, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.user-info {
+  overflow: hidden;
+  margin-bottom: 1.2em;
+  box-sizing: border-box;
+  color: #52575c;
+  padding: 5px 6px 7px 7px;
+  width: 100%;
+}
+
+/* line 979, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.user-avatar-thumb {
+  float: left;
+  width: 48px;
+  height: 48px;
+}
+
+/* line 985, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.user-avatar-thumb img {
+  border-radius: 2px;
+  width: 48px;
+  height: 48px;
+}
+
+/* line 992, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.user-details {
+  float: left;
+  width: calc(100% - 64px);
+  margin-left: 9px;
+}
+
+/* line 998, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.user-details a {
+  color: #0077cc;
+  font-size: 14px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* line 1005, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.user-details a:hover {
+  color: #3af;
+}
+
+/* line 1009, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.user-location {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 12px;
+}
+
+/*       Vote Controls      */
+/* line 1017, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.vote {
+  width: 46px;
+  display: block;
+  float: left;
+}
+
+/* line 1023, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.vote-up-off {
+  background-image: url(sprites-50507eb7782e2ab3a2b2f5f617a7513ce33795448e6170f8e7e7f2a23b88ef9f.svg), none;
+  background-size: initial;
+  height: 30px;
+  background-position: 3px -170px;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  margin-bottom: 3px;
+  overflow: hidden;
+  background-repeat: no-repeat;
+}
+
+/* line 1039, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.vote-count {
+  margin: 8px 0;
+  display: block;
+  color: #777;
+  font-size: 20px;
+  text-align: center;
+}
+
+/* line 1048, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.vote-down-off {
+  margin-bottom: 10px;
+  height: 30px;
+  background-image: url(sprites-50507eb7782e2ab3a2b2f5f617a7513ce33795448e6170f8e7e7f2a23b88ef9f.svg), none;
+  background-size: initial;
+  background-position: 3px -220px;
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* line 1061, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.vote-up-on {
+  background-position: -37px -170px;
+  background-image: url(sprites-50507eb7782e2ab3a2b2f5f617a7513ce33795448e6170f8e7e7f2a23b88ef9f.svg), none;
+  background-size: initial;
+  height: 30px;
+  cursor: default;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  margin-bottom: 3px;
+  overflow: hidden;
+  background-repeat: no-repeat;
+}
+
+/* line 1075, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.vote-down-on {
+  margin-bottom: 10px;
+  height: 30px;
+  background-image: url(sprites-50507eb7782e2ab3a2b2f5f617a7513ce33795448e6170f8e7e7f2a23b88ef9f.svg), none;
+  background-size: initial;
+  background-position: -37px -220px;
+  display: block;
+  margin: 0 auto;
+  cursor: default;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* line 1088, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.vote-modal {
+  display: block;
+  background: white;
+  border: 1px solid black;
+  width: 200px;
+  height: 50px;
+  position: fixed;
+  left: 0;
+}
+
+/* line 1099, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.modal-message {
+  margin-top: 17px;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+}
+
+/*                          Progress Spinner                              */
+/* line 1109, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.spinner {
+  width: 200px;
+  margin-left: calc(50% - 50px);
+  margin-top: 200px;
+}
+
+/* Three Dots */
+/* line 1118, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.three-bounce > div {
+  width: 18px;
+  height: 18px;
+  background-color: #333;
+  margin: 0 1px;
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: bouncedelay 1.2s infinite ease-in-out;
+  animation: bouncedelay 1.2s infinite ease-in-out;
+  /* Prevent first frame from flickering when animation starts */
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+/* line 1132, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.three-bounce .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+/* line 1137, /Users/john/Desktop/quack-overflow/app/assets/stylesheets/application.scss */
+.three-bounce .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes bouncedelay {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+  }
+  40% {
+    -webkit-transform: scale(1);
+  }
+}
+@keyframes bouncedelay {
+  0%, 80%, 100% {
+    transform: scale(0);
+    -webkit-transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+  }
+}

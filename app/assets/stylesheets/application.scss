@@ -334,7 +334,8 @@ time, mark, audio, video {
 
 
  .question-index-wrapper {
-   width: 100%;
+   margin: 0 auto;
+   width: 728px;
  }
 
  .question-wrapper {
@@ -349,6 +350,7 @@ time, mark, audio, video {
  }
 
 .question-item-wrapper {
+   
    height: 52.25px;
    border-bottom: 1px solid #eaebec;
    padding-top: 12px;
@@ -479,7 +481,7 @@ time, mark, audio, video {
   margin-top: 10px;
   height: 34px;
   border-bottom: 1px solid #eaebec;
-  margin-bottom: 15px;
+  
 }
 
 .answer {
@@ -494,6 +496,15 @@ time, mark, audio, video {
   padding: 30px;
   margin: auto;
 
+}
+
+.new-answer-header {
+  font-weight: 400;
+  padding-top: 20px;
+  font-size: 18px;
+  line-height: 1.3;
+  margin-bottom: 1em;
+  color: #222426;
 }
 
 .users-form label {
@@ -741,6 +752,62 @@ time, mark, audio, video {
   border-color: #0077CC;
   outline: 0;
 }
+
+/*          Markdown Editor         */
+
+.markdown-editor {
+  margin-top: 30px;
+}
+
+.button-bar {
+  height: 44px;
+  width: 634px;
+  border: 1px solid #ccc;
+  border-bottom: 0;
+  padding: 0 12px;
+}
+
+.button-bar-row {
+  height: 36px;
+}
+
+.button {
+  width: 20px;
+  height: 32px;
+  padding: 12px 0 0 0;
+  margin: 0 1px;
+  cursor: pointer;
+  float: left;
+  list-style: none;
+  
+}
+
+.button span {
+  display: inline-block;
+  background-image: url(editor-buttons.svg), none;
+  background-size: initial;
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+}
+
+
+#ital-button {
+  margin-right: 20px;
+}
+
+#img-button {
+  margin-right: 20px;
+}
+
+#hr-button {
+  margin-right: 20px;
+}
+
+#help-button {
+  float: right;
+}
+
 
 .body-editor {
   width: 660px;
