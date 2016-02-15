@@ -1,20 +1,11 @@
 class Api::QuestionsController < ApplicationController
 
   def index
-    @questions = Question.with_votes_cached
-    fresh_when :last_modified => @questions.last.updated_at.utc, :etag => @questions
+    @questions = Question.with_votes
   end
   
   def filter
-    @questions = Question.with_votes_cached
-    if filter_params == 'views'
-      @questions = @questions.interesting
-    elsif filter_params == 'votes'
-      @questions = @questions.hot
-    else
-      @questions = @questions.recent
-    end
-
+    @questions = Question.filter_cached(filter_params)
     render 'api/questions/index'
   end
 
@@ -28,7 +19,6 @@ class Api::QuestionsController < ApplicationController
   end
 
   def create
-    
     @question = Question.new(question_params)
     @question.author_id = current_user.id
 
@@ -40,7 +30,6 @@ class Api::QuestionsController < ApplicationController
   end
 
   def update
-    
     @question = Question.find(params[:id])
     @question.update(question_params)
 
