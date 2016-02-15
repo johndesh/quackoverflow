@@ -1,35 +1,18 @@
 class Api::QuestionsController < ApplicationController
-
+  caches_action :index
   def index
-    in_cache = Rails.cache.read('Question.with_votes')
-
-    @questions = in_cache ? in_cache : Question.with_votes_cached
+    @questions = Question.with_votes_cached
 
   end
   
   def filter
     @questions = Question.with_votes_cached
     if filter_params == 'views'
-      in_cache = Rails.cache.read('Question.interesting')
-      if in_cache
-        @questions = in_cache
-      else
-        @questions = @questions.interesting
-      end
+      @questions = @questions.interesting
     elsif filter_params == 'votes'
-      in_cache = Rails.cache.read('Question.hot')
-      if in_cache
-        @questions = in_cache
-      else
-        @questions = @questions.hot
-      end
+      @questions = @questions.hot
     else
-      in_cache = Rails.cache.read('Question.recent')
-      if in_cache
-        @questions = in_cache
-      else
-        @questions = @questions.recent
-      end
+      @questions = @questions.recent
     end
 
     render 'api/questions/index'
@@ -45,6 +28,7 @@ class Api::QuestionsController < ApplicationController
   end
 
   def create
+    expire_action action: :index
     @question = Question.new(question_params)
     @question.author_id = current_user.id
 
@@ -56,6 +40,7 @@ class Api::QuestionsController < ApplicationController
   end
 
   def update
+    expire_action action: :index
     @question = Question.find(params[:id])
     @question.update(question_params)
 
