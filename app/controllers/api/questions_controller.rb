@@ -1,7 +1,9 @@
 class Api::QuestionsController < ApplicationController
 
   def index
-    @questions = Question.with_votes_cached
+    in_cache = Rails.cache.read('Question.with_votes')
+
+    @questions = in_cache ? in_cache : Question.with_votes_cached
 
   end
   
