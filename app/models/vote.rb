@@ -14,10 +14,7 @@ private
       return self
     else
       vote = Vote.find_by_votable_id_and_user_id(self.votable_id, self.user_id)
-      unless vote.value == self.value
-        vote.votable.touch
-        Vote.destroy(vote.id)
-      end
+      Vote.destroy(vote.id) unless vote.value == self.value
     end
   end
 end
