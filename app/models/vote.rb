@@ -16,7 +16,7 @@ private
       vote = Vote.find_by_votable_id_and_user_id(self.votable_id, self.user_id)
       unless vote.value == self.value
         Vote.destroy(vote.id)
-        vote.question.touch
+        vote.votable.touch
       end
     end
   end
