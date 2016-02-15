@@ -12,9 +12,9 @@ class Question < ActiveRecord::Base
   has_many :voters, through: :votes, source: :user
   has_many :viewers, through: :views, source: :user
   
-  scope :interesting, -> { order(question_views_count: :desc) }
-  scope :hot, -> { order('vote_count DESC') }
-  scope :recent, -> { order(created_at: :desc) }
+  scope :interesting, -> { Rails.cache.fetch('Question.interesting') { order(question_views_count: :desc) } }
+  scope :hot, -> { Rails.cache.fetch('Question.hot') { order('vote_count DESC') } }
+  scope :recent, -> { Rails.cache.fetch('Question.recent') { order(created_at: :desc) } }
 
   scope :with_votes, -> { includes(:views, {:answers => :author}, :author).
       										select("questions.*", "COALESCE(SUM(votes.value), 0) as vote_count").
@@ -27,15 +27,18 @@ class Question < ActiveRecord::Base
                               questions.id
                           SQL
 
-  after_save :expire_with_votes_cache
-  after_update :expire_with_votes_cache
-  after_destroy :expire_with_votes_cache
+  after_save :expire_caches
+  after_update :expire_caches
+  after_destroy :expire_caches
 
   def self.with_votes_cached
     Rails.cache.fetch('Question.with_votes') { with_votes }
   end
 
-  def expire_with_votes_cache
+  def expire_caches
   	Rails.cache.delete('Question.with_votes')
+  	Rails.cache.delete('Question.interesting')
+  	Rails.cache.delete('Question.hot')
+  	Rails.cache.delete('Question.recent')
   end
 end
