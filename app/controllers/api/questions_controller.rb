@@ -2,7 +2,7 @@ class Api::QuestionsController < ApplicationController
 
   def index
     @questions = Question.with_votes_cached
-
+    fresh_when :last_modified => @questions.last.updated_at.utc, :etag => @questions
   end
   
   def filter
