@@ -15,6 +15,13 @@ var QuestionsApiUtil = {
     });
   },
 
+  filterQuestions: function (callback, filter) {
+    $.get('/api/questions/filter', {filter: filter}, function(questions){
+      QuestionActions.receiveAll(questions);
+      callback && callback(questions);
+    });
+  },
+
   createQuestion: function (data, callback) {
     $.post('/api/questions', { question: data }, function(question) {
       if (!question.errors) {

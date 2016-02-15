@@ -32418,7 +32418,7 @@
 	  },
 
 	  _applyFilter: function (filter) {
-	    QuestionsApiUtil.fetchQuestions(function (questions) {
+	    QuestionsApiUtil.filterQuestions(function (questions) {
 	      this.setState({ questions: questions });
 	    }.bind(this), filter);
 	  },
@@ -32572,6 +32572,13 @@
 	  fetchSingleQuestion: function (id) {
 	    $.get('/api/questions/' + id, function (question) {
 	      QuestionActions.receiveSingleQuestion(question);
+	    });
+	  },
+
+	  filterQuestions: function (callback, filter) {
+	    $.get('/api/questions/filter', { filter: filter }, function (questions) {
+	      QuestionActions.receiveAll(questions);
+	      callback && callback(questions);
 	    });
 	  },
 

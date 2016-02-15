@@ -30,7 +30,7 @@ var Index = React.createClass({
   },
 
   _applyFilter: function (filter) {
-    QuestionsApiUtil.fetchQuestions(function(questions) {
+    QuestionsApiUtil.filterQuestions(function(questions) {
       this.setState({questions: questions});
     }.bind(this), filter);
   },

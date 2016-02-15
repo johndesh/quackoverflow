@@ -1,26 +1,23 @@
 class Api::QuestionsController < ApplicationController
 
   def index
-    questions = Question.includes(:views, {:answers => :author}, :author).
-                          select("questions.*", "COALESCE(SUM(votes.value), 0) as vote_count").
-                          joins(<<-SQL)
-                            LEFT OUTER JOIN
-                              votes
-                            ON
-                              votes.votable_id = questions.id
-                            GROUP BY
-                              questions.id
-                          SQL
-    if filter == 'views'
-      questions = questions.order(question_views_count: :desc)
-    elsif filter == 'votes'
-      questions = questions.order('vote_count DESC')
+    @questions = Question.with_votes_cached
+
+  end
+  
+  def filter
+    @questions = Question.with_votes_cached
+    if filter_params == 'views'
+      @questions = @questions.interesting
+    elsif filter_params == 'votes'
+      @questions = @questions.hot
     else
-      questions = questions.order(created_at: :desc)
+      @questions = @questions.recent
     end
-    @questions = questions
+
     render 'api/questions/index'
   end
+
 
   def show
     @question = Question.includes({:answers => :author},{:answers => :votes}, :author).find(params[:id])
@@ -58,7 +55,7 @@ class Api::QuestionsController < ApplicationController
       params.require(:question).permit(:title, :body)
     end
 
-    def filter
+    def filter_params
       params[:filter]
     end
 end

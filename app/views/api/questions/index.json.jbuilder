@@ -1,1 +1,1 @@
-json.array! @questions, partial: 'api/questions/questions', as: :question
+json.partial! partial: 'api/questions/questions', collection: @questions, as: :question

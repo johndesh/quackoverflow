@@ -4,7 +4,10 @@ Rails.application.routes.draw do
   namespace :api, defaults: {format: :json} do
     resources :users, only: [:show, :index, :create, :update]
     resource :session, only: [:create, :destroy, :show]
-    resources :questions, only: [:show, :index, :create, :update, :destroy] do
+    resources :questions, except: [:edit, :new] do
+      collection do
+        get "filter"
+      end
       resources :votes, only: [:create, :destroy], path: "/vote", as: :votes
       resources :question_answers, only: [:index, :show, :create], path: "/answers", as: :answers do
         resources :votes, only: [:create, :destroy], path: "/vote", as: :votes
