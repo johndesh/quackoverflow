@@ -12,6 +12,7 @@ class Question < ActiveRecord::Base
   has_many :voters, through: :votes, source: :user
   has_many :viewers, through: :views, source: :user
 
+  after_touch :expire_caches
   after_update :expire_caches
   after_save :expire_caches
 
