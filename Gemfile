@@ -15,7 +15,7 @@ gem 'coffee-rails', '~> 4.1.0'
 # gem 'therubyracer', platforms: :ruby
 gem 'pg_search'
 
-gem 'dalli'
+gem 'redis-rails'
 
 gem 'memcachier'
 

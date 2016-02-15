@@ -1,5 +1,5 @@
 class Api::QuestionsController < ApplicationController
-  caches_action :index
+
   def index
     @questions = Question.with_votes_cached
 
@@ -28,7 +28,7 @@ class Api::QuestionsController < ApplicationController
   end
 
   def create
-    expire_action action: :index
+    
     @question = Question.new(question_params)
     @question.author_id = current_user.id
 
@@ -40,7 +40,7 @@ class Api::QuestionsController < ApplicationController
   end
 
   def update
-    expire_action action: :index
+    
     @question = Question.find(params[:id])
     @question.update(question_params)
 
