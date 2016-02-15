@@ -5,8 +5,8 @@ class Vote < ActiveRecord::Base
 
   after_rollback :interpret_vote
 
-  belongs_to :votable, polymorphic: true, touch: true, dependent: :destroy
-  belongs_to :user, dependent: :destroy
+  belongs_to :votable, polymorphic: true, touch: true
+  belongs_to :user
 
 private
   def interpret_vote
