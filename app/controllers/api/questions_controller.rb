@@ -8,11 +8,26 @@ class Api::QuestionsController < ApplicationController
   def filter
     @questions = Question.with_votes_cached
     if filter_params == 'views'
-      @questions = @questions.interesting
+      in_cache = Rails.cache.read('Question.interesting')
+      if in_cache
+        @questions = in_cache
+      else
+        @questions = @questions.interesting
+      end
     elsif filter_params == 'votes'
-      @questions = @questions.hot
+      in_cache = Rails.cache.read('Question.hot')
+      if in_cache
+        @questions = in_cache
+      else
+        @questions = @questions.hot
+      end
     else
-      @questions = @questions.recent
+      in_cache = Rails.cache.read('Question.recent')
+      if in_cache
+        @questions = in_cache
+      else
+        @questions = @questions.recent
+      end
     end
 
     render 'api/questions/index'
