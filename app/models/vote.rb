@@ -5,17 +5,19 @@ class Vote < ActiveRecord::Base
 
   after_rollback :interpret_vote
 
-  belongs_to :votable, polymorphic: true, touch: true
-  belongs_to :user
+  belongs_to :votable, polymorphic: true, touch: true, dependent: :destroy
+  belongs_to :user, dependent: :destroy
 
 private
   def interpret_vote
-
     if self.valid?
       return self
     else
       vote = Vote.find_by_votable_id_and_user_id(self.votable_id, self.user_id)
-      Vote.destroy(vote.id) unless vote.value == self.value
+      unless vote.value == self.value
+        Vote.votable.touch
+        Vote.destroy(vote.id)
+      end
     end
   end
 end

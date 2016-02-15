@@ -26,22 +26,18 @@ class Question < ActiveRecord::Base
                               questions.id
                           SQL
 
-  def self.with_votes_cached
-    Rails.cache.fetch('Question.with_votes') { with_votes }
-  end
 
   def self.filter_cached(filter)
   	if filter == 'views'
-      Rails.cache.fetch('Question.interesting') { with_votes_cached.order(question_views_count: :desc) }
+      Rails.cache.fetch('Question.interesting') { with_votes.order(question_views_count: :desc) }
     elsif filter == 'votes'
-      Rails.cache.fetch('Question.hot') { with_votes_cached.order('vote_count DESC') }
+      Rails.cache.fetch('Question.hot') { with_votes.order('vote_count DESC') }
     else
-			Rails.cache.fetch('Question.recent') { with_votes_cached.order(created_at: :desc) }
+			Rails.cache.fetch('Question.recent') { with_votes.order(created_at: :desc) }
     end
   end
 
   def expire_caches
-  	Rails.cache.delete('Question.with_votes')
   	Rails.cache.delete('Question.interesting')
   	Rails.cache.delete('Question.hot')
   	Rails.cache.delete('Question.recent')
