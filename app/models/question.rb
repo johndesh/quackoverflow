@@ -12,5 +12,4 @@ class Question < ActiveRecord::Base
   has_many :viewers, through: :views, source: :user
   
 
-
 end
