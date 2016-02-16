@@ -1,5 +1,5 @@
-json.array!(@search_results.map(&:searchable)) do |question|
-  json.cache! question do
-    json.partial! "searches", question: question
+json.array!(@search_results) do |res|
+  json.cache! res do
+	json.partial! 'searches', question: res.searchable
   end
 end
