@@ -31822,10 +31822,10 @@
 	var AppDispatcher = __webpack_require__(229);
 
 	var SearchActions = {
-	  receiveResults: function (questions) {
+	  receiveResults: function (data) {
 	    AppDispatcher.dispatch({
 	      actionType: SearchConstants.RECEIVE_SEARCH_RESULTS,
-	      searchResults: questions
+	      searchResults: data.results
 	    });
 	  },
 
@@ -32663,7 +32663,7 @@
 	    var question = this.props.question;
 
 	    var timeAgo;
-	    if (question.answers && question.answers.length > 0) {
+	    if (question._answerCount > 0) {
 	      var answered = question.answers[question.answers.length - 1].answered;
 	      var author = question.answers[question.answers.length - 1].author;
 	      timeAgo = React.createElement(

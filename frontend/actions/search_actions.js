@@ -2,10 +2,10 @@ var SearchConstants = require('../constants/search_constants');
 var AppDispatcher = require('./../dispatcher/dispatcher');
 
 var SearchActions = {
-  receiveResults: function (questions) {
+  receiveResults: function (data) {
     AppDispatcher.dispatch({
       actionType: SearchConstants.RECEIVE_SEARCH_RESULTS,
-      searchResults: questions
+      searchResults: data.results
     });
   },
 

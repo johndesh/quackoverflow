@@ -21,7 +21,7 @@ var IndexItem = React.createClass({
     var question = this.props.question;
 
     var timeAgo;
-    if (question.answers && question.answers.length > 0) {
+    if (question._answerCount > 0) {
       var answered = question.answers[question.answers.length - 1].answered;
       var author = question.answers[question.answers.length - 1].author;
       timeAgo = <div className="question-details group"><span className="question-details-time" onClick={this.showQuestion.bind(this, question)}>answered {answered} ago </span><span className="question-details-author" onClick={this.showUser.bind(this, author)}>{author.username}</span></div>;
