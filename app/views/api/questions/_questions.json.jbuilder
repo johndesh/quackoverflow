@@ -15,7 +15,7 @@ json.answers question.answers do |answer|
   json.author do
     json.id answer.author.id
     json.username answer.author.username
-    json.avatar answer.author.avatar
+    json.avatar answer.author.avatar.url()
   end
   json.answered time_ago_in_words(answer.created_at)
   json.modified time_ago_in_words(answer.updated_at)

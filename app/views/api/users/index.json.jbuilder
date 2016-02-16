@@ -1,1 +1,5 @@
-json.array! @users, partial: 'api/users/user', as: :user
+json.array! @users do |user|
+  json.cache! user do
+  	json.partial! "user", user: user
+  end
+end

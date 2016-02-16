@@ -1,7 +1,7 @@
 class Api::QuestionsController < ApplicationController
 
   def index
-    @questions = Question.with_votes
+    @questions = Question.with_votes_cached
   end
   
   def filter
