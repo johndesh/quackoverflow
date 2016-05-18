@@ -1,8 +1,8 @@
 ## Quack Overflow
   Stack Overflow clone built using React/Flux.
 
-  [Live Demo][heroku]
-[heroku]: https://quack-overflow.herokuapp.com/
+  [Live Demo][quack]
+[quack]: https://www.quack-overflow.com/
 ### Documentation
   [Docs][docs]
 
